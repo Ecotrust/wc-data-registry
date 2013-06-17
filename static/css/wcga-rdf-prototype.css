@@ -1,0 +1,78 @@
+
+body {
+	font-family: arial, "helvetica neue", helvetica, sans-serif;
+	background: #344770;
+	}
+
+a:focus,
+.btn:focus { outline: none; }
+
+button::-moz-focus-inner,
+ input::-moz-focus-inner { border: 0; }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 { font-weight: normal; }
+
+/*
+h1 {
+	color: white;
+}
+*/
+
+.container-masthead {
+	margin-top: 10px;
+	background: transparent;
+}
+
+.masthead {
+	margin-bottom: 20px;
+	height: 60px; padding: 20px;
+	background: #5170b0;
+	background: -webkit-linear-gradient(top, #5170b0 0%, #516181 100%);
+	background:    -moz-linear-gradient(top, #5170b0 0%, #516181 100%);
+	background:     -ms-linear-gradient(top, #5170b0 0%, #516181 100%);
+	background:      -o-linear-gradient(top, #5170b0 0%, #516181 100%);
+	background: linear-gradient(top bottom,   #5170b0 0%, #516181 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5170b0', endColorstr='#516181',GradientType=0 );
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	   -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+		    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.masthead-logo {
+	float: left;
+	color: #fff;
+}
+
+.masthead-logo p { margin-bottom: 2px; }
+
+.masthead-logo-line1 { font-size: 20px; letter-spacing: 1px; }
+.masthead-logo-line2 { font-size: 16px; letter-spacing: 2.55px; }
+.masthead-logo-line3 { font-size: 10px; color: #999; text-align: right; }
+
+
+.masthead-title {
+	float: right; margin-left: 22px;
+	font-size: 34px; color: #ddd; line-height: 44px;
+}
+
+.masthead-btn-group { float: right; }
+
+.clearfix {
+	clear: both;
+}
+
+.wcga-rdf-content {
+	overflow: auto;
+	margin: 10px 0px; padding: 10px;
+	background: #fff;
+	border: 1px solid #eee;
+	height: inherit;
+	/*-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.25);
+       -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.25);
+			box-shadow: 0 1px 1px rgba(0,0,0,0.25);*/
+}
