@@ -1,0 +1,1 @@
+var apiKey = 'Your bing API key here.';

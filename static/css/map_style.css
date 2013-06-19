@@ -1,0 +1,20 @@
+.olControlAttribution {
+    bottom: 5px;
+}
+
+.smallmap {
+    width: 520px;
+    height: 330px;
+    border: 1px solid #CCCCCC;
+}
+
+/* avoid pink tiles */
+.olImageLoadError {
+    background-color: transparent !important;
+}
+
+img.olTileImage {   /* Bootstrap messes with OL styles, this returns them(?)*/
+    max-width: 257% !important;
+    width: 257% !important;
+    height: 257% !important;
+}
