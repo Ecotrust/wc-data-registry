@@ -3,6 +3,7 @@ var app = {};
 function viewModel() {
     var self = this;
 
+    self.totalRecordsCount = ko.observable(0);
     self.keywords = ko.observable("");
     self.title = ko.observable("");
     self.extension = ko.observable("");
@@ -43,17 +44,29 @@ function viewModel() {
         self.bbLat(lat.toFixed(6).toString());
         self.bbLon(lon.toFixed(6).toString());
     }
-
 }
 
 app.viewModel = new viewModel();
 ko.applyBindings(app.viewModel);
 window.location.hash.replace('#', '');
 
+function load() {
+    querySolr(
+        '*', 
+        '',
+        'id',
+        'json',
+        function(data) { /* process e.g. data.response.docs... */ 
+            var items = [];
+            app.viewModel.totalRecordsCount(data.response.numFound.toString());
+            console.log(data);
+        }
+    );
+}
+
 $('#location-tab').on('shown', function (e) {
      init();    //Init the map
 });
-
 
 function unwrap(lst, depth){
     fullList = [];
@@ -81,6 +94,21 @@ function unwrap(lst, depth){
     fullList.push('</dl>');
     return fullList.join('');
 };
+
+function querySolr(q, fq, fl, wt, callback) {
+    $.ajax({
+        url: 'http://localhost:8983/solr/collection1/select',
+        data: {
+            'wt':wt, 
+            'q':q, 
+            'fq': fq,
+            'fl':fl
+        },
+        dataType: 'jsonp',
+        jsonp: 'json.wrf',
+        success: callback
+    });
+}
 
 $(document).ready(function(){
 
@@ -132,7 +160,6 @@ $(document).ready(function(){
             if (app.viewModel.toDate() == undefined){
                 app.viewModel.toDate('*');
             }
-
             app.viewModel.q_query(app.viewModel.q_query() + "sys.src.item.lastmodified_tdt:[" + formatDate(app.viewModel.fromDate(), 'from') + " TO " +
                 formatDate(app.viewModel.toDate(), 'to') + "] ");
         }
@@ -143,15 +170,12 @@ $(document).ready(function(){
             app.viewModel.fq_query("");
         }
 
-        $.ajax({
-            url: 'http://localhost:8983/solr/collection1/select',
-            data: {
-                'wt':'json', 
-                'q':app.viewModel.q_query(), 
-                'fq': app.viewModel.fq_query(),
-                'fl':'id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt'
-            },
-            success: function(data) { /* process e.g. data.response.docs... */ 
+        querySolr(
+            app.viewModel.q_query(), 
+            app.viewModel.fq_query(),
+            'id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt',
+            'json',
+            function(data) { /* process e.g. data.response.docs... */ 
                 var items = [];
                 app.viewModel.numFound(data.response.numFound.toString());
 
@@ -160,9 +184,7 @@ $(document).ready(function(){
                     items.push(unwrap(val1, 0));
                 });
                 app.viewModel.resultsDisplay(items.join(''));
-            },
-            dataType: 'jsonp',
-            jsonp: 'json.wrf'
-        });
+            }
+        );
     });
 });

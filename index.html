@@ -42,7 +42,7 @@
         <script src="static/js/map.js"></script>
 
     </HEAD>
-    <BODY>
+    <BODY onload="load()">
         <div class="container-fluid container-masthead">
             <div class="masthead">
                 <div class="masthead-logo">
@@ -70,6 +70,9 @@
                                     </li>
                                     <li>
                                         <a href="#tab-location-content" data-toggle="tab" id="location-tab">Location</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab-extension-content" data-toggle="tab" id="extension-tab">File Type</a>
                                     </li>
                                 </ul>
                                 <!-- Tab content -->
@@ -121,11 +124,11 @@
                                                         <div id="map" class="smallmap"></div>
                                                     </div>
                                                     <div class="span6">
-                                                    	<div class="row-fluid">
+                                                        <div class="row-fluid">
                                                             <div class="span12">
                                                                 <label class="checkbox">
-                                                                	<input type="checkbox" data-bind="checked: useBb">Filter by location
-                                                            	</label>
+                                                                    <input type="checkbox" data-bind="checked: useBb">Filter by location
+                                                                </label>
                                                             </div>
                                                         </div>
                                                         <div class="row-fluid">
@@ -133,7 +136,7 @@
                                                                 <p>Latitude:</p>
                                                             </div>
                                                             <div class="span8">
-                                                            	<p><strong data-bind="text: bbLat"></strong></p>
+                                                                <p><strong data-bind="text: bbLat"></strong></p>
                                                             </div>
                                                         </div>
                                                         <div class="row-fluid">
@@ -149,6 +152,12 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="tab-pane" id="tab-extension-content">
+                                        <div class="row-fluid">
+                                            <div class="span12">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -158,6 +167,7 @@
             <div class="row-fluid">
                 <div class="span12">
                     <button>Get External Content</button>
+                    <h4 id="total-count">Total records: <strong data-bind="text: totalRecordsCount"></strong></h4>
                 </div>
             </div>
             <div class="row-fluid">
