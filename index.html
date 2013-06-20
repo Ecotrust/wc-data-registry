@@ -121,14 +121,27 @@
                                                         <div id="map" class="smallmap"></div>
                                                     </div>
                                                     <div class="span6">
-                                                        <div class="row-fluid">
+                                                    	<div class="row-fluid">
                                                             <div class="span12">
-                                                                <p>Latitude:<strong data-bind="text: bbLat"></strong></p>
+                                                                <label class="checkbox">
+                                                                	<input type="checkbox" data-bind="checked: useBb">Filter by location
+                                                            	</label>
                                                             </div>
                                                         </div>
                                                         <div class="row-fluid">
-                                                            <div class="span12">
-                                                                <p>Longitude:<strong data-bind="text: bbLon"></strong></p>
+                                                            <div class="span4">
+                                                                <p>Latitude:</p>
+                                                            </div>
+                                                            <div class="span8">
+                                                            	<p><strong data-bind="text: bbLat"></strong></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row-fluid">
+                                                            <div class="span4">
+                                                                <p>Longitude:</p>
+                                                            </div>
+                                                            <div class="span8">
+                                                                <p><strong data-bind="text: bbLon"></strong></p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -153,6 +166,8 @@
                     <p>From Date: <strong data-bind="text: fromDate"></strong></p>
                     <p>To Date: <strong data-bind="text: toDate"></strong></p>
                     <p>Q Query: <strong data-bind="text: q_query"></strong></p>
+                    <p>FQ Query: <strong data-bind="text: fq_query"></strong></p>
+
                     <p>Found: <strong data-bind="text: numFound"></strong></p>
                     <dl class="my-new-list dl-horizontal" data-bind="html: resultsDisplay">
                     </dl>

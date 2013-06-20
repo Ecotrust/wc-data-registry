@@ -9,9 +9,10 @@ function viewModel() {
     self.resultsDisplay = ko.observable("");
     self.numFound = ko.observable("");
     self.q_query = ko.observable("");
+    self.fq_query = ko.observable("");
     self.bbLat = ko.observable("");
     self.bbLon = ko.observable("");
-    self.useBb = ko.observable("");
+    self.useBb = ko.observable(false);
 
     self.queryFilter = ko.observableArray();
 
@@ -118,6 +119,8 @@ $(document).ready(function(){
         //Keyword search
         if (app.viewModel.keywords().length > 0){
             app.viewModel.q_query(app.viewModel.q_query() + app.viewModel.keywords() + " ");
+        } else {
+            app.viewModel.q_query(app.viewModel.q_query() + "* ");
         }
 
         //Date Search
@@ -134,11 +137,18 @@ $(document).ready(function(){
                 formatDate(app.viewModel.toDate(), 'to') + "] ");
         }
 
+        if (app.viewModel.useBb() && app.viewModel.bbLat() != "" && app.viewModel.bbLon() != "") {
+            app.viewModel.fq_query("{!bbox pt=" + app.viewModel.bbLat() + "," + app.viewModel.bbLon() + " sfield=envelope_geo d=0.001} ");
+        } else {
+            app.viewModel.fq_query("");
+        }
+
         $.ajax({
             url: 'http://localhost:8983/solr/collection1/select',
             data: {
                 'wt':'json', 
                 'q':app.viewModel.q_query(), 
+                'fq': app.viewModel.fq_query(),
                 'fl':'id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt'
             },
             success: function(data) { /* process e.g. data.response.docs... */ 
