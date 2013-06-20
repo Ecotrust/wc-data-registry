@@ -9,6 +9,9 @@ function viewModel() {
     self.resultsDisplay = ko.observable("");
     self.numFound = ko.observable("");
     self.q_query = ko.observable("");
+    self.bbLat = ko.observable("");
+    self.bbLon = ko.observable("");
+    self.useBb = ko.observable("");
 
     self.queryFilter = ko.observableArray();
 
@@ -33,7 +36,13 @@ function viewModel() {
             $("#fromDate")[0].value = "";
         }
         $(event.target).closest('.input-append').find('input').datepicker().trigger('change');
-    };
+    }
+
+    self.updateCoordVals = function(lon, lat) {
+        self.bbLat(lat.toFixed(6).toString());
+        self.bbLon(lon.toFixed(6).toString());
+    }
+
 }
 
 app.viewModel = new viewModel();
