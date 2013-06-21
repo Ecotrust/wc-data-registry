@@ -1,12 +1,15 @@
 var app = {};
+var facets = ["keywords", "manu"];
 
 function viewModel() {
     var self = this;
 
     self.totalRecordsCount = ko.observable(0);
-    self.keywords = ko.observable("");
+    self.currentRecords = ko.observable({});
+    self.search = ko.observable("");
     self.title = ko.observable("");
-    self.extension = ko.observable("");
+    self.keywords = ko.observable({});
+    self.keywordsDisplay = ko.observable("");
     self.resultsDisplay = ko.observable("");
     self.numFound = ko.observable("");
     self.q_query = ko.observable("");
@@ -54,19 +57,55 @@ function load() {
     querySolr(
         '*', 
         '',
-        'id',
+        '',
         'json',
         function(data) { /* process e.g. data.response.docs... */ 
             var items = [];
             app.viewModel.totalRecordsCount(data.response.numFound.toString());
             console.log(data);
+            app.viewModel.currentRecords(data);
         }
     );
 }
 
 $('#location-tab').on('shown', function (e) {
-     init();    //Init the map
+    init();    //Init the map
 });
+
+$('#keyword-tab').on('shown', updateKeywords);
+
+ function updateKeywords() {
+    // self.keywords({});
+    html = "<div class=\"row-fluid\"><div class=\"span12\" id =\"keyword-html\">";
+    for (var i=0; i < 20; i=i+2) {
+        var kw = app.viewModel.currentRecords().facet_counts.facet_fields.keywords[i];
+        var count = app.viewModel.currentRecords().facet_counts.facet_fields.keywords[i+1];
+        html = html + "<div class=\"row-fluid\"><div class=\"span12\"><a onclick='kwSearch(\"" + kw + "\")''>" + kw + " (" + count + ")</a></div></div>";
+    }
+    app.viewModel.keywordsDisplay(html);
+
+
+};
+
+function kwSearch(keyword){
+    // var kwq_query = "";
+    if (app.viewModel.q_query().length == 0) {
+        app.viewModel.q_query("{!lucene q.op=AND df=text}")
+    }
+    app.viewModel.q_query(app.viewModel.q_query() + "keywords: \"" + keyword + "\" ");
+
+    querySolr(
+        app.viewModel.q_query(), 
+        '',
+        '',
+        'json',
+        function(data) { /* process e.g. data.response.docs... */ 
+            app.viewModel.currentRecords(data);
+            updateKeywords();
+            app.runQuery(app.viewModel.q_query());
+        }
+    );
+}
 
 function unwrap(lst, depth){
     fullList = [];
@@ -96,13 +135,22 @@ function unwrap(lst, depth){
 };
 
 function querySolr(q, fq, fl, wt, callback) {
+
+    //Cannot figure out how to search multiple facets with jquery ajax syntax. Using for loop instead.
+    var url = 'http://localhost:8983/solr/collection1/select?';
+    for (var i = 0; i<facets.length; i++) {
+        url = url + 'facet.field=' + facets[i] + '&';
+    }
+
     $.ajax({
-        url: 'http://localhost:8983/solr/collection1/select',
+        url: url,
         data: {
             'wt':wt, 
             'q':q, 
             'fq': fq,
-            'fl':fl
+            'fl':fl,
+            'facet':true
+            // 'facet.limit': 10
         },
         dataType: 'jsonp',
         jsonp: 'json.wrf',
@@ -140,51 +188,53 @@ $(document).ready(function(){
         }
     }
     
-    $("button").click(function(){
-
-        app.viewModel.q_query("{!lucene q.op=AND df=text}");
-
-        //Keyword search
-        if (app.viewModel.keywords().length > 0){
-            app.viewModel.q_query(app.viewModel.q_query() + app.viewModel.keywords() + " ");
-        } else {
-            app.viewModel.q_query(app.viewModel.q_query() + "* ");
-        }
-
-        //Date Search
-        if (app.viewModel.fromDate() != undefined || app.viewModel.toDate() != undefined) {
-            if (app.viewModel.fromDate() == undefined){
-                app.viewModel.fromDate('*');
-            }
-
-            if (app.viewModel.toDate() == undefined){
-                app.viewModel.toDate('*');
-            }
-            app.viewModel.q_query(app.viewModel.q_query() + "sys.src.item.lastmodified_tdt:[" + formatDate(app.viewModel.fromDate(), 'from') + " TO " +
-                formatDate(app.viewModel.toDate(), 'to') + "] ");
-        }
-
-        if (app.viewModel.useBb() && app.viewModel.bbLat() != "" && app.viewModel.bbLon() != "") {
-            app.viewModel.fq_query("{!bbox pt=" + app.viewModel.bbLat() + "," + app.viewModel.bbLon() + " sfield=envelope_geo d=0.001} ");
-        } else {
-            app.viewModel.fq_query("");
-        }
-
-        querySolr(
-            app.viewModel.q_query(), 
-            app.viewModel.fq_query(),
-            'id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt',
-            'json',
-            function(data) { /* process e.g. data.response.docs... */ 
-                var items = [];
-                app.viewModel.numFound(data.response.numFound.toString());
-
-                console.log(data);
-                $.each(data.response, function(key1, val1){
-                    items.push(unwrap(val1, 0));
-                });
-                app.viewModel.resultsDisplay(items.join(''));
-            }
-        );
-    });
+    $("button").click(app.runQuery("{!lucene q.op=AND df=text}"));
 });
+
+app.runQuery = function(q_query){
+    app.viewModel.q_query(q_query);
+
+    //Free text search
+    if (app.viewModel.search().length > 0){
+        app.viewModel.q_query(app.viewModel.q_query() + app.viewModel.search() + " ");
+    } else {
+        app.viewModel.q_query(app.viewModel.q_query() + "* ");
+    }
+
+    //Date Search
+    if (app.viewModel.fromDate() != undefined || app.viewModel.toDate() != undefined) {
+        if (app.viewModel.fromDate() == undefined){
+            app.viewModel.fromDate('*');
+        }
+
+        if (app.viewModel.toDate() == undefined){
+            app.viewModel.toDate('*');
+        }
+        app.viewModel.q_query(app.viewModel.q_query() + "sys.src.item.lastmodified_tdt:[" + formatDate(app.viewModel.fromDate(), 'from') + " TO " +
+            formatDate(app.viewModel.toDate(), 'to') + "] ");
+    }
+
+    if (app.viewModel.useBb() && app.viewModel.bbLat() != "" && app.viewModel.bbLon() != "") {
+        app.viewModel.fq_query("{!bbox pt=" + app.viewModel.bbLat() + "," + app.viewModel.bbLon() + " sfield=envelope_geo d=0.001} ");
+    } else {
+        app.viewModel.fq_query("");
+    }
+
+    querySolr(
+        app.viewModel.q_query(), 
+        app.viewModel.fq_query(),
+        'id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt',
+        'json',
+        function(data) { /* process e.g. data.response.docs... */ 
+            var items = [];
+            app.viewModel.numFound(data.response.numFound.toString());
+
+            console.log(data);
+            $.each(data.response, function(key1, val1){
+                items.push(unwrap(val1, 0));
+            });
+            app.viewModel.resultsDisplay(items.join(''));
+            app.viewModel.currentRecords(data);
+        }
+    );
+}
