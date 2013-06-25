@@ -1,7 +1,12 @@
 
 body {
-    font-family: arial, "helvetica neue", helvetica, sans-serif;
-    background: #344770;
+    font-family: "helvetica neue", helvetica, Arial, sans-serif;
+    background: #FFFFFF;
+    color: #333333;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0;
+    margin-top: 110px;
     }
 
 a:focus,
@@ -21,7 +26,7 @@ h6 { font-weight: normal; }
 h1 {
     color: white;
 }
-*/
+
 
 .container-masthead {
     margin-top: 10px;
@@ -43,38 +48,113 @@ h1 {
             box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 
-.masthead-logo {
+*/
+
+.navbar-logo {
     float: left;
-    color: #fff;
+    color: #aaa;
 }
 
-.masthead-logo p { margin-bottom: 2px; }
+.navbar-logo p { margin-bottom: 2px; }
 
-.masthead-logo-line1 { font-size: 20px; letter-spacing: 1px; }
-.masthead-logo-line2 { font-size: 16px; letter-spacing: 2.55px; }
-.masthead-logo-line3 { font-size: 10px; color: #999; text-align: right; }
+.navbar-logo-line1 { font-size: 20px; letter-spacing: 1px; line-height: 20px; color: #aaa;}
+/*
+.navbar-logo-line2 { font-size: 16px; letter-spacing: 2.55px; text-align: left; }
+.navbar-logo-line3 { font-size: 10px; color: #999; text-align: left; }
+*/
+.navbar-logo-img { width: 220px; }
 
 
-.masthead-title {
-    float: right; margin-left: 22px;
-    font-size: 34px; color: #ddd; line-height: 44px;
+.navbar-title {
+    float: left; 
+    margin-right: 22px;
+    font-size: 34px; 
+    color: #888; 
+    line-height: 45px;
 }
 
-.masthead-btn-group { float: right; }
+.navbar-subtitle {
+    float: left;
+    margin-right: 22px;
+    font-size: 20px;
+    color: #aaa;
+    line-height: 35px;
+}
 
+.navbar-btn-group { float: right; }
+/*
 .clearfix {
     clear: both;
+}
+*/
+
+/*** MARCO STYLES ***/
+
+.navbar {
+    background-color: white;
+    border-bottom: 1px solid #CCCCCC;
+    height: 90px;
+}
+
+.navbar .navbar-inner {
+    background-color: white !important;
+    background-image: none !important;
+    box-shadow: none;
+    filter: none;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.navbar .nav > li a {
+    background-color: white;
+    border-left: 1px solid #CCCCCC;
+    font-size: 12px;
+    height: 44px;
+    padding-top: 35px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 80px;
+}
+
+.navbar .nav > li > a {
+    color: #333333;
+    line-height: 12px;
+}
+
+
+
+/*** END MARCO STYLES ***/
+
+.navbar-logo a {
+    padding-top: 15px !important;
+    padding-bottom: 30px !important;
+    text-align: left !important;
+    text-transform: none !important;
+    width: 170px !important;
 }
 
 .wcga-rdf-content {
     overflow: auto;
-    margin: 10px 0px; padding: 10px;
+    margin: 10px 0px; padding: 10px 0;
     background: #fff;
-    border: 1px solid #eee;
+    border: 1px solid #ddd;
     height: inherit;
     /*-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.25);
        -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.25);
             box-shadow: 0 1px 1px rgba(0,0,0,0.25);*/
+}
+
+.filters .tab-content {
+    padding: 10px;
+}
+
+#query-info {
+    padding: 10px;
+    margin: 10px;
+    width: 90%;
+    background: #f0f0f0;
 }
 
 #total-count {

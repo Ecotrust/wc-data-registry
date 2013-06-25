@@ -43,20 +43,49 @@
 
     </HEAD>
     <BODY onload="load()">
-        <div class="container-fluid container-masthead">
-            <div class="masthead">
-                <div class="masthead-logo">
-                    <p class="masthead-logo-line1">GeoPortal</p>
-                    <p class="masthead-logo-line2">Solr Query</p>
-                    <p class="masthead-logo-line3">Prototype</p>
+        <header role="banner">
+            <div class="navbar navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <div class="row-fluid">
+                            <div class="span5">
+                                <p class="navbar-title">West Coast Data Registry</p>
+                                <a class="navbar-subtitle" href="old_prototype/index.html">Old Prototype</a>
+                            </div>
+                            <div class="span7">
+                                <div class="nav-collapse">
+                                    <div>
+                                        <ul class="nav pull-right">
+                                            <li>
+                                                <a href="#">Discover</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Contribute</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Connect</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">About</a>
+                                            </li>
+                                            <li class="navbar-logo">
+                                                <a href="#">
+                                                    <p class="navbar-logo-line1">A Project of:</p>
+                                                    <img class="navbar-logo-img" src="static/img/wcga_logo.png"/>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <p class="masthead-title">GeoPortal Solr Query Prototype</p>
-                <div class="clearfix"></div>
             </div>
-        </div>
-        <div class="container-fluid container-content">
-            <div class="row-fluid">
-                <div class="span11 wcga-rdf-content" id="filter">
+        </header>
+        <div class="container">
+            <div class="content" class="row">
+                <div class="span12 wcga-rdf-content" id="filter">
                     <div class="row-fluid filters">
                         <div class="span12">
                             <!-- Tab scaffolding -->
@@ -152,14 +181,14 @@
                         </div>
                     </div>
                     <div class="row-fluid">
-                        <div class="span11 wcga-rdf-content">
+                        <div class="span12 wcga-rdf-content" id="query-info">
                             <h4>Query:</h4>
                             <p data-bind="visible: search">Search: <strong data-bind="text: search"></strong></p>
                             <p data-bind="visible: fromDate">From Date: <strong data-bind="text: fromDate"></strong></p>
                             <p data-bind="visible: toDate">To Date: <strong data-bind="text: toDate"></strong></p>
                             <p data-bind="visible: useBb">Coordinates: <strong data-bind="text: bbLat"></strong>, <strong data-bind="text: bbLon"></strong></p>
-                            <!-- <p>Q Query: <strong data-bind="text: q_query"></strong></p>
-                            <p>FQ Query: <strong data-bind="text: fq_query"></strong></p> -->
+                            <p>Q Query: <strong data-bind="text: q_query"></strong></p>
+                            <p>FQ Query: <strong data-bind="text: fq_query"></strong></p>
                         </div>
                     </div>
                 </div>

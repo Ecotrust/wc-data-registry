@@ -102,7 +102,6 @@ function kwSearch(keyword){
         function(data) { /* process e.g. data.response.docs... */ 
             app.viewModel.currentRecords(data);
             updateKeywords();
-            app.runQuery(app.viewModel.q_query());
         }
     );
 }
@@ -186,9 +185,11 @@ $(document).ready(function(){
         } else {
             return date_obj;
         }
-    }
+    };
     
-    $("button").click(app.runQuery("{!lucene q.op=AND df=text}"));
+    $("button").click(function() {
+        app.runQuery("{!lucene q.op=AND df=text}");
+    });
 });
 
 app.runQuery = function(q_query){
