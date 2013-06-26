@@ -232,30 +232,37 @@ app.buildPaginator = function() {
     paginator.push('<div class="pagination">');
     paginator.push('<ul>');
     if (app.viewModel.startIndex() == 0) {
-        paginator.push(app.buildPaginatorButton("&laquo;", "disabled"));
+        paginator.push(app.buildPaginatorButton("&laquo;", "&laquo;", "disabled"));
     } else {
-        paginator.push(app.buildPaginatorButton("&laquo;", false));
+        paginator.push(app.buildPaginatorButton("&laquo;", "&laquo;", false));
     }
-    for (var i = app.viewModel.pageIndex(); i < app.viewModel.pageIndex() + app.viewModel.displayPages(); i++) {       //displayPages, pageIndex
+
+    if (app.viewModel.pageCount() < app.viewModel.displayPages()) {
+        var ceiling = app.viewModel.pageCount();
+    } else {
+        var ceiling = app.viewModel.displayPages();
+    }
+
+    for (var i = app.viewModel.pageIndex(); i < app.viewModel.pageIndex() + ceiling; i++) {       //displayPages, pageIndex
         if ((app.viewModel.startIndex() + i == 0) || (app.viewModel.startIndex() / (i * app.viewModel.displayRows())) == 1) {
-            paginator.push(app.buildPaginatorButton(i, "active"));
+            paginator.push(app.buildPaginatorButton(i, i+1, "active"));
         } else {
-            paginator.push(app.buildPaginatorButton(i, false));
+            paginator.push(app.buildPaginatorButton(i, i+1, false));
         }
     }
     if ((app.viewModel.startIndex() + app.viewModel.displayRows()) >= app.viewModel.numFound()) {
-        paginator.push(app.buildPaginatorButton("&raquo;", "disabled"));
+        paginator.push(app.buildPaginatorButton("&raquo;", "&raquo;", "disabled"));
     } else {
-        paginator.push(app.buildPaginatorButton("&raquo;", false));
+        paginator.push(app.buildPaginatorButton("&raquo;", "&raquo;", false));
     }
     return paginator.join('');
 }
 
-app.buildPaginatorButton = function(text, status) {
+app.buildPaginatorButton = function(val, text, status) {
     if (status) {
         return '<li class="' + status + '"><span>' + text + '</span></li>';
     } else {
-        return '<li><a href="#" onclick="app.pageButton(\'' + text + '\')">' + text + '</li>';
+        return '<li><a href="#" onclick="app.pageButton(\'' + val + '\')">' + text + '</a></li>';
     }
 
 }
@@ -268,13 +275,17 @@ app.pageButton = function(button) {
             break;
         case '»':
             app.viewModel.startIndex((app.viewModel.pageCount() - 1) * app.viewModel.displayRows());
-            app.viewModel.pageIndex(app.viewModel.pageCount() - app.viewModel.displayPages());
+            if (app.viewModel.pageCount() > app.viewModel.displayPages()){
+                app.viewModel.pageIndex(app.viewModel.pageCount() - app.viewModel.displayPages());
+            } else {
+                app.viewModel.pageIndex(0);
+            }
             break;
         default:
             app.viewModel.startIndex(parseInt(button) * app.viewModel.displayRows());
             var intBtn = parseInt(button);
             var deviation = Math.floor(app.viewModel.displayPages() / 2);
-            if (intBtn > deviation) {
+            if (intBtn > deviation && app.viewModel.pageCount > app.viewModel.displayPages()) {
                 if (intBtn + deviation < app.viewModel.pageCount()) {
                     app.viewModel.pageIndex(parseInt(button) - Math.floor(app.viewModel.displayPages() / 2));
                 } else {

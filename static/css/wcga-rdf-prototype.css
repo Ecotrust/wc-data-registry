@@ -150,6 +150,10 @@ h1 {
     padding: 10px;
 }
 
+.results-display {
+    margin: 3% 0;
+}
+
 #text-search {
     border: 1px solid #ddd;
     padding: 0 10px;
