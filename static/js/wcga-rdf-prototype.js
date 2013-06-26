@@ -97,28 +97,23 @@ function kwSearch(keyword){
 
 function unwrap(lst, depth){
     fullList = [];
-    fullList.push('<dl>');
-    for(var i=0; i<lst.length; i++){
-        if (depth == 0){
-            fullList.push('<hr />');
-        }
-        $.each(lst[i], function(key, val){
-            if(typeof val == 'object'){
-                if (typeof val[0] == 'string'){
-                    fullList.push('<dt id="' + key + '">' + key + '</dt><dd> [<ul>')
-                    for (var j=0; j<val.length; j++){
-                        fullList.push('<li>' + val[j] + '</li>')
-                    }
-                    fullList.push('</ul>]</dd>')
-                } else {
-                    fullList.push('<dt id="' + key + '">' + key + '</dt><dd>' + unwrap(val, depth+1) + '</dd>')
-                }
-            } else {
-                fullList.push('<dt id="' + key + '">' + key + '</dt><dd>' + val + '</dd>')
-            }
-        });
+    if (lst.title) {
+        fullList.push('<h3 class="record-title">' + lst.title[0] + '</h3>');
+    } else {
+        fullList.push('<h3 class="record-title">' + 'No Title Provided' + '</h3>');
     }
-    fullList.push('</dl>');
+    if (lst.description) {
+        fullList.push('<p class="record-abstract">' + lst.description + '</p>');
+    } else {
+        fullList.push('<p class="record-abstract">' + 'No description provided.' + '</p>');
+    }
+
+    if (lst["sys.src.item.lastmodified_tdt"]) {
+        var date = new Date(lst["sys.src.item.lastmodified_tdt"]);
+        var date_string = (date.getMonth() + 1).toString() + '/' + date.getDate().toString() + '/' + date.getFullYear().toString();
+        fullList.push('<p class="record-date">Last updated: ' + date_string + '</p>');
+    }
+
     return fullList.join('');
 };
 
@@ -224,10 +219,17 @@ app.defaultQueryCallback = function(data){
     app.viewModel.numFound(data.response.numFound.toString());
 
     console.log(data);
-    $.each(data.response, function(key1, val1){
+    items.push('<div id="results-box">');
+    $.each(data.response.docs, function(key1, val1){
         items.push(unwrap(val1, 0));
     });
+    items.push('</div>');
     app.viewModel.resultsDisplay(items.join(''));
     app.viewModel.currentRecords(data);
     app.updateKeywords();
+}
+
+//FROM: http://stackoverflow.com/a/8764051
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 }

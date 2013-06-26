@@ -177,3 +177,7 @@ h1 {
 #keywords {
     padding-left: 10px;
 }
+
+#results-box {
+    margin: -25px 10px 5px 10px;
+}
