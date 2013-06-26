@@ -17,6 +17,12 @@ function viewModel() {
     self.bbLat = ko.observable("");
     self.bbLon = ko.observable("");
     self.useBb = ko.observable(false);
+    self.displayRows = ko.observable(5);
+    self.startIndex = ko.observable(0);
+    self.recordPaginator = ko.observable("");
+    self.pageCount = ko.observable(0);
+    self.displayPages = ko.observable(5);
+    self.pageIndex = ko.observable(0);
 
     self.queryFilter = ko.observableArray();
 
@@ -65,6 +71,7 @@ function load() {
             console.log(data);
             app.viewModel.currentRecords(data);
             app.updateKeywords();
+            app.viewModel.recordPaginator(app.buildPaginator());
         }
     );
     init();      //Init the map
@@ -85,6 +92,8 @@ function kwSearch(keyword){
         app.viewModel.q_query("{!lucene q.op=AND df=text}")
     }
     app.viewModel.q_query(app.viewModel.q_query() + "keywords: \"" + keyword + "\" ");
+
+    app.viewModel.pageIndex(0);
 
     querySolr(
         app.viewModel.q_query(), 
@@ -128,12 +137,14 @@ function querySolr(q, fq, fl, wt, callback) {
     $.ajax({
         url: url,
         data: {
+            'start': app.viewModel.startIndex(),
+            'rows': app.viewModel.displayRows(),
             'wt':wt, 
             'q':q, 
             'fq': fq,
             'fl':fl,
             'facet':true
-            // 'facet.limit': 10
+
         },
         dataType: 'jsonp',
         jsonp: 'json.wrf',
@@ -172,6 +183,7 @@ $(document).ready(function(){
     };
     
     $("button").click(function() {
+        app.viewModel.pageIndex(0);
         app.runQuery("{!lucene q.op=AND df=text}");
     });
 });
@@ -214,6 +226,68 @@ app.runQuery = function(q_query){
     );
 }
 
+app.buildPaginator = function() {
+    var paginator = [];
+    app.viewModel.pageCount(Math.ceil(app.viewModel.numFound()/app.viewModel.displayRows()));
+    paginator.push('<div class="pagination">');
+    paginator.push('<ul>');
+    if (app.viewModel.startIndex() == 0) {
+        paginator.push(app.buildPaginatorButton("&laquo;", "disabled"));
+    } else {
+        paginator.push(app.buildPaginatorButton("&laquo;", false));
+    }
+    for (var i = app.viewModel.pageIndex(); i < app.viewModel.pageIndex() + app.viewModel.displayPages(); i++) {       //displayPages, pageIndex
+        if ((app.viewModel.startIndex() + i == 0) || (app.viewModel.startIndex() / (i * app.viewModel.displayRows())) == 1) {
+            paginator.push(app.buildPaginatorButton(i, "active"));
+        } else {
+            paginator.push(app.buildPaginatorButton(i, false));
+        }
+    }
+    if ((app.viewModel.startIndex() + app.viewModel.displayRows()) >= app.viewModel.numFound()) {
+        paginator.push(app.buildPaginatorButton("&raquo;", "disabled"));
+    } else {
+        paginator.push(app.buildPaginatorButton("&raquo;", false));
+    }
+    return paginator.join('');
+}
+
+app.buildPaginatorButton = function(text, status) {
+    if (status) {
+        return '<li class="' + status + '"><span>' + text + '</span></li>';
+    } else {
+        return '<li><a href="#" onclick="app.pageButton(\'' + text + '\')">' + text + '</li>';
+    }
+
+}
+
+app.pageButton = function(button) {
+    switch(button) {
+        case '«':
+            app.viewModel.startIndex(0);
+            app.viewModel.pageIndex(0);
+            break;
+        case '»':
+            app.viewModel.startIndex((app.viewModel.pageCount() - 1) * app.viewModel.displayRows());
+            app.viewModel.pageIndex(app.viewModel.pageCount() - app.viewModel.displayPages());
+            break;
+        default:
+            app.viewModel.startIndex(parseInt(button) * app.viewModel.displayRows());
+            var intBtn = parseInt(button);
+            var deviation = Math.floor(app.viewModel.displayPages() / 2);
+            if (intBtn > deviation) {
+                if (intBtn + deviation < app.viewModel.pageCount()) {
+                    app.viewModel.pageIndex(parseInt(button) - Math.floor(app.viewModel.displayPages() / 2));
+                } else {
+                    app.viewModel.pageIndex(app.viewModel.pageCount() - app.viewModel.displayPages());
+                }
+            } else {
+                app.viewModel.pageIndex(0);
+            }
+            break;
+    }
+    app.runQuery(app.viewModel.q_query());
+}
+
 app.defaultQueryCallback = function(data){
     var items = [];
     app.viewModel.numFound(data.response.numFound.toString());
@@ -225,6 +299,7 @@ app.defaultQueryCallback = function(data){
     });
     items.push('</div>');
     app.viewModel.resultsDisplay(items.join(''));
+    app.viewModel.recordPaginator(app.buildPaginator());
     app.viewModel.currentRecords(data);
     app.updateKeywords();
 }
