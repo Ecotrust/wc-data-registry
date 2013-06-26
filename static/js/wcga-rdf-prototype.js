@@ -64,13 +64,13 @@ function load() {
             app.viewModel.totalRecordsCount(data.response.numFound.toString());
             console.log(data);
             app.viewModel.currentRecords(data);
-            updateKeywords();
+            app.updateKeywords();
         }
     );
     init();      //Init the map
 }
 
-function updateKeywords() {
+app.updateKeywords = function() {
     html = "<div class=\"row-fluid\"><div class=\"span12\" id =\"keyword-html\">";
     for (var i=0; i < 20; i=i+2) {
         var kw = app.viewModel.currentRecords().facet_counts.facet_fields.keywords[i];
@@ -78,8 +78,6 @@ function updateKeywords() {
         html = html + "<div class=\"row-fluid\"><div class=\"span12\"><a onclick='kwSearch(\"" + kw + "\")''>" + kw + " (" + count + ")</a></div></div>";
     }
     app.viewModel.keywordsDisplay(html);
-
-
 };
 
 function kwSearch(keyword){
@@ -93,10 +91,7 @@ function kwSearch(keyword){
         '',
         '',
         'json',
-        function(data) { /* process e.g. data.response.docs... */ 
-            app.viewModel.currentRecords(data);
-            updateKeywords();
-        }
+        app.defaultQueryCallback
     );
 }
 
@@ -220,16 +215,19 @@ app.runQuery = function(q_query){
         app.viewModel.fq_query(),
         'id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt',
         'json',
-        function(data) { /* process e.g. data.response.docs... */ 
-            var items = [];
-            app.viewModel.numFound(data.response.numFound.toString());
-
-            console.log(data);
-            $.each(data.response, function(key1, val1){
-                items.push(unwrap(val1, 0));
-            });
-            app.viewModel.resultsDisplay(items.join(''));
-            app.viewModel.currentRecords(data);
-        }
+        app.defaultQueryCallback
     );
+}
+
+app.defaultQueryCallback = function(data){
+    var items = [];
+    app.viewModel.numFound(data.response.numFound.toString());
+
+    console.log(data);
+    $.each(data.response, function(key1, val1){
+        items.push(unwrap(val1, 0));
+    });
+    app.viewModel.resultsDisplay(items.join(''));
+    app.viewModel.currentRecords(data);
+    app.updateKeywords();
 }
