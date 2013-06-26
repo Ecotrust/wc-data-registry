@@ -64,18 +64,13 @@ function load() {
             app.viewModel.totalRecordsCount(data.response.numFound.toString());
             console.log(data);
             app.viewModel.currentRecords(data);
+            updateKeywords();
         }
     );
+    init();      //Init the map
 }
 
-$('#location-tab').on('shown', function (e) {
-    init();    //Init the map
-});
-
-$('#keyword-tab').on('shown', updateKeywords);
-
- function updateKeywords() {
-    // self.keywords({});
+function updateKeywords() {
     html = "<div class=\"row-fluid\"><div class=\"span12\" id =\"keyword-html\">";
     for (var i=0; i < 20; i=i+2) {
         var kw = app.viewModel.currentRecords().facet_counts.facet_fields.keywords[i];
@@ -88,7 +83,6 @@ $('#keyword-tab').on('shown', updateKeywords);
 };
 
 function kwSearch(keyword){
-    // var kwq_query = "";
     if (app.viewModel.q_query().length == 0) {
         app.viewModel.q_query("{!lucene q.op=AND df=text}")
     }

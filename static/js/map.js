@@ -72,5 +72,5 @@ function init() {
     map.addControl(point);
     point.activate();
 
-    map.setCenter(new OpenLayers.LonLat(-120, 45), 4);
+    map.setCenter(new OpenLayers.LonLat(-120, 45), 3);
 }

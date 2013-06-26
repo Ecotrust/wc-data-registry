@@ -150,6 +150,19 @@ h1 {
     padding: 10px;
 }
 
+#text-search {
+    border: 1px solid #ddd;
+    padding: 0 10px;
+}
+#text-search  textarea {
+    width: 95%;
+}
+
+#search-button {
+    margin-right: 0;
+    margin-left: auto;
+}
+
 #query-info {
     padding: 10px;
     margin: 10px;
@@ -158,5 +171,9 @@ h1 {
 }
 
 #total-count {
-	color: white;
+	color: #333;
+}
+
+#keywords {
+    padding-left: 10px;
 }
