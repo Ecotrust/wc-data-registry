@@ -79,29 +79,30 @@ function load() {
 
 app.updateKeywords = function() {
     html = "<div class=\"row-fluid\"><div class=\"span12\" id =\"keyword-html\">";
+
+    $.each(app.viewModel.keywords(), function(key, val){
+        html = html + "<div class=\"row-fluid\"><div class=\"span10\">" + key + " (" + val + ")</div>" +
+        "<div class=\"span2\"><img src='static/img/cross.png' onclick='app.removeKeyword(\"" + key + "\")'/></div></div>";
+    });
+
     for (var i=0; i < 20; i=i+2) {
         var kw = app.viewModel.currentRecords().facet_counts.facet_fields.keywords[i];
         var count = app.viewModel.currentRecords().facet_counts.facet_fields.keywords[i+1];
-        html = html + "<div class=\"row-fluid\"><div class=\"span12\"><a onclick='kwSearch(\"" + kw + "\")''>" + kw + " (" + count + ")</a></div></div>";
+        html = html + "<div class=\"row-fluid\"><div class=\"span12\"><a onclick='kwSearch(\"" + kw + "\", " + count + ")''>" + kw + " (" + count + ")</a></div></div>";
     }
     app.viewModel.keywordsDisplay(html);
 };
 
-function kwSearch(keyword){
-    if (app.viewModel.q_query().length == 0) {
-        app.viewModel.q_query("{!lucene q.op=AND df=text}")
-    }
-    app.viewModel.q_query(app.viewModel.q_query() + "keywords: \"" + keyword + "\" ");
-
+function kwSearch(keyword, count){
     app.viewModel.pageIndex(0);
+    app.viewModel.keywords()[keyword] = count;
+    app.runQuery(app.defaultQueryCallback);
+}
 
-    querySolr(
-        app.viewModel.q_query(), 
-        '',
-        '',
-        'json',
-        app.defaultQueryCallback
-    );
+app.removeKeyword = function(keyword){
+    delete app.viewModel.keywords()[keyword];
+    app.updateKeywords();
+    app.runQuery(app.defaultQueryCallback);
 }
 
 function unwrap(lst, depth){
@@ -184,12 +185,12 @@ $(document).ready(function(){
     
     $("button").click(function() {
         app.viewModel.pageIndex(0);
-        app.runQuery("{!lucene q.op=AND df=text}");
+        app.runQuery(app.defaultQueryCallback);
     });
 });
 
-app.runQuery = function(q_query){
-    app.viewModel.q_query(q_query);
+app.runQuery = function(callback){
+    app.viewModel.q_query("{!lucene q.op=AND df=text}");
 
     //Free text search
     if (app.viewModel.search().length > 0){
@@ -198,18 +199,35 @@ app.runQuery = function(q_query){
         app.viewModel.q_query(app.viewModel.q_query() + "* ");
     }
 
-    //Date Search
-    if (app.viewModel.fromDate() != undefined || app.viewModel.toDate() != undefined) {
-        if (app.viewModel.fromDate() == undefined){
-            app.viewModel.fromDate('*');
+    //keyword search
+    var keywords = '(';
+    var count = 0;
+    $.each(app.viewModel.keywords(), function(key, val){
+        if (count > 0) {
+            keywords = keywords + ' AND ';
         }
+        keywords = keywords + key;
+        count++;
+    });
 
-        if (app.viewModel.toDate() == undefined){
-            app.viewModel.toDate('*');
-        }
-        app.viewModel.q_query(app.viewModel.q_query() + "sys.src.item.lastmodified_tdt:[" + formatDate(app.viewModel.fromDate(), 'from') + " TO " +
-            formatDate(app.viewModel.toDate(), 'to') + "] ");
+    keywords = keywords + ')';
+
+    if (keywords.length > 0) {
+       app.viewModel.q_query(app.viewModel.q_query() + "keywords: " + keywords + " "); 
     }
+
+    //Date Search
+    // if (app.viewModel.fromDate() != undefined || app.viewModel.toDate() != undefined) {
+    //     if (app.viewModel.fromDate() == undefined){
+    //         app.viewModel.fromDate('*');
+    //     }
+
+    //     if (app.viewModel.toDate() == undefined){
+    //         app.viewModel.toDate('*');
+    //     }
+    //     app.viewModel.q_query(app.viewModel.q_query() + "sys.src.item.lastmodified_tdt:[" + formatDate(app.viewModel.fromDate(), 'from') + " TO " +
+    //         formatDate(app.viewModel.toDate(), 'to') + "] ");
+    // }
 
     if (app.viewModel.useBb() && app.viewModel.bbLat() != "" && app.viewModel.bbLon() != "") {
         app.viewModel.fq_query("{!bbox pt=" + app.viewModel.bbLat() + "," + app.viewModel.bbLon() + " sfield=envelope_geo d=0.001} ");
@@ -222,7 +240,7 @@ app.runQuery = function(q_query){
         app.viewModel.fq_query(),
         'id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt',
         'json',
-        app.defaultQueryCallback
+        callback
     );
 }
 
@@ -296,7 +314,7 @@ app.pageButton = function(button) {
             }
             break;
     }
-    app.runQuery(app.viewModel.q_query());
+    app.runQuery(app.defaultQueryCallback);
 }
 
 app.defaultQueryCallback = function(data){
