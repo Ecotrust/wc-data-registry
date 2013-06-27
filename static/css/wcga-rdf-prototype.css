@@ -22,34 +22,6 @@ h4,
 h5,
 h6 { font-weight: normal; }
 
-/*
-h1 {
-    color: white;
-}
-
-
-.container-masthead {
-    margin-top: 10px;
-    background: transparent;
-}
-
-.masthead {
-    margin-bottom: 20px;
-    height: 60px; padding: 20px;
-    background: #5170b0;
-    background: -webkit-linear-gradient(top, #5170b0 0%, #516181 100%);
-    background:    -moz-linear-gradient(top, #5170b0 0%, #516181 100%);
-    background:     -ms-linear-gradient(top, #5170b0 0%, #516181 100%);
-    background:      -o-linear-gradient(top, #5170b0 0%, #516181 100%);
-    background: linear-gradient(top bottom,   #5170b0 0%, #516181 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5170b0', endColorstr='#516181',GradientType=0 );
-    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-       -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-}
-
-*/
-
 .navbar-logo {
     float: left;
     color: #aaa;
@@ -58,10 +30,7 @@ h1 {
 .navbar-logo p { margin-bottom: 2px; }
 
 .navbar-logo-line1 { font-size: 20px; letter-spacing: 1px; line-height: 20px; color: #aaa;}
-/*
-.navbar-logo-line2 { font-size: 16px; letter-spacing: 2.55px; text-align: left; }
-.navbar-logo-line3 { font-size: 10px; color: #999; text-align: left; }
-*/
+
 .navbar-logo-img { width: 220px; }
 
 
@@ -82,11 +51,6 @@ h1 {
 }
 
 .navbar-btn-group { float: right; }
-/*
-.clearfix {
-    clear: both;
-}
-*/
 
 /*** MARCO STYLES ***/
 
@@ -123,8 +87,6 @@ h1 {
     line-height: 12px;
 }
 
-
-
 /*** END MARCO STYLES ***/
 
 .navbar-logo a {
@@ -152,6 +114,19 @@ h1 {
 
 .results-display {
     margin: 3% 0;
+}
+
+.row-fluid.selected-keyword {
+    border: solid;
+    padding: 1% 0 2% 3%;
+    margin-bottom: 2%;
+    background-color:#EEE;
+}
+
+.selected-keyword {
+    width: 85%;
+    margin-top: 1%;
+    min-height: 20px !important;
 }
 
 #text-search {

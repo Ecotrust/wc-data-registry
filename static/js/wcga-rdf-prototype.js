@@ -1,5 +1,5 @@
 var app = {};
-var facets = ["keywords", "manu"];
+var facets = ["keywords"];
 
 function viewModel() {
     var self = this;
@@ -81,39 +81,53 @@ app.updateKeywords = function() {
     html = "<div class=\"row-fluid\"><div class=\"span12\" id =\"keyword-html\">";
 
     $.each(app.viewModel.keywords(), function(key, val){
-        html = html + "<div class=\"row-fluid\"><div class=\"span10\">" + key + " (" + val + ")</div>" +
-        "<div class=\"span2\"><img src='static/img/cross.png' onclick='app.removeKeyword(\"" + key + "\")'/></div></div>";
+        html = html + "<div class=\"row-fluid selected-keyword\"><div class=\"span10 selected-keyword\">" + key + "</div>" +
+        "<div class=\"span2 selected-keyword\"><img src='static/img/cross.png' onclick='app.removeKeyword(\"" + key + "\")'/></div></div>";
     });
 
-    for (var i=0; i < 20; i=i+2) {
-        var kw = app.viewModel.currentRecords().facet_counts.facet_fields.keywords[i];
-        var count = app.viewModel.currentRecords().facet_counts.facet_fields.keywords[i+1];
-        html = html + "<div class=\"row-fluid\"><div class=\"span12\"><a onclick='kwSearch(\"" + kw + "\", " + count + ")''>" + kw + " (" + count + ")</a></div></div>";
+    var facet_keywords = app.viewModel.currentRecords().facet_counts.facet_fields.keywords;
+
+    for (var i=0, j = 0; j < 10 && i < facet_keywords.length; i = i+2) {
+        var kw = facet_keywords[i];
+        if (!app.viewModel.keywords()[kw]) {
+            var count = facet_keywords[i+1];
+            html = html + "<div class=\"row-fluid\"><div class=\"span12\"><a onclick='kwSearch(\"" + kw + "\", " + count + ")''>" + kw + " (" + count + ")</a></div></div>";
+            j++;
+        }
     }
     app.viewModel.keywordsDisplay(html);
 };
 
 function kwSearch(keyword, count){
     app.viewModel.pageIndex(0);
+    app.viewModel.startIndex(0);
     app.viewModel.keywords()[keyword] = count;
     app.runQuery(app.defaultQueryCallback);
 }
 
 app.removeKeyword = function(keyword){
     delete app.viewModel.keywords()[keyword];
+    app.viewModel.startIndex(0);
+    app.viewModel.pageIndex(0);
     app.updateKeywords();
     app.runQuery(app.defaultQueryCallback);
+
 }
 
 function unwrap(lst, depth){
-    fullList = [];
+    var fullList = [];
+    var maxDesc = 300;
     if (lst.title) {
         fullList.push('<h3 class="record-title">' + lst.title[0] + '</h3>');
     } else {
         fullList.push('<h3 class="record-title">' + 'No Title Provided' + '</h3>');
     }
     if (lst.description) {
-        fullList.push('<p class="record-abstract">' + lst.description + '</p>');
+        fullList.push('<p class="record-abstract">' + lst.description.slice(0, maxDesc));
+        if (lst.description.length > maxDesc){
+            fullList.push('...');
+        }
+        fullList.push('</p>');
     } else {
         fullList.push('<p class="record-abstract">' + 'No description provided.' + '</p>');
     }
@@ -128,11 +142,11 @@ function unwrap(lst, depth){
 };
 
 function querySolr(q, fq, fl, wt, callback) {
-
+    var mincount = 1;
     //Cannot figure out how to search multiple facets with jquery ajax syntax. Using for loop instead.
     var url = 'http://localhost:8983/solr/collection1/select?';
     for (var i = 0; i<facets.length; i++) {
-        url = url + 'facet.field=' + facets[i] + '&';
+        url = url + 'facet.field=' + facets[i] + '&facet.mincount=' + mincount + '&';
     }
 
     $.ajax({
@@ -185,6 +199,7 @@ $(document).ready(function(){
     
     $("button").click(function() {
         app.viewModel.pageIndex(0);
+        app.viewModel.startIndex(0);
         app.runQuery(app.defaultQueryCallback);
     });
 });
@@ -200,20 +215,24 @@ app.runQuery = function(callback){
     }
 
     //keyword search
-    var keywords = '(';
-    var count = 0;
-    $.each(app.viewModel.keywords(), function(key, val){
-        if (count > 0) {
-            keywords = keywords + ' AND ';
+
+    if (!isEmpty(app.viewModel.keywords())) {
+
+        var keywords = '(';
+        var count = 0;
+        $.each(app.viewModel.keywords(), function(key, val){
+            if (count > 0) {
+                keywords = keywords + ' AND ';
+            }
+            keywords = keywords + key;
+            count++;
+        });
+
+        keywords = keywords + ')';
+
+        if (keywords.length > 0) {
+           app.viewModel.q_query(app.viewModel.q_query() + "keywords: " + keywords + " "); 
         }
-        keywords = keywords + key;
-        count++;
-    });
-
-    keywords = keywords + ')';
-
-    if (keywords.length > 0) {
-       app.viewModel.q_query(app.viewModel.q_query() + "keywords: " + keywords + " "); 
     }
 
     //Date Search
@@ -242,6 +261,16 @@ app.runQuery = function(callback){
         'json',
         callback
     );
+}
+
+//FROM: http://stackoverflow.com/a/679937
+function isEmpty(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+            return false;
+    }
+
+    return true;
 }
 
 app.buildPaginator = function() {
@@ -323,17 +352,22 @@ app.defaultQueryCallback = function(data){
 
     console.log(data);
     items.push('<div id="results-box">');
-    $.each(data.response.docs, function(key1, val1){
-        items.push(unwrap(val1, 0));
-    });
+    if (data.response.docs.length > 0){
+        $.each(data.response.docs, function(key1, val1){
+            items.push(unwrap(val1, 0));
+        });
+    } else {
+        items.push('<h2>No items match your query.</h2>');
+    }
     items.push('</div>');
     app.viewModel.resultsDisplay(items.join(''));
     app.viewModel.recordPaginator(app.buildPaginator());
     app.viewModel.currentRecords(data);
     app.updateKeywords();
+
 }
 
 //FROM: http://stackoverflow.com/a/8764051
-function getURLParameter(name) {
-    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
-}
+// function getURLParameter(name) {
+//     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+// }
