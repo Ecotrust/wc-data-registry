@@ -37,6 +37,7 @@ h6 { font-weight: normal; }
 .navbar-title {
     float: left; 
     margin-right: 22px;
+    margin-top: 20px;
     font-size: 34px; 
     color: #888; 
     line-height: 45px;
