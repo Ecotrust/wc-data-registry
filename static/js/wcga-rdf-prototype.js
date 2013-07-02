@@ -168,6 +168,12 @@ function querySolr(q, fq, fl, wt, callback) {
     });
 }
 
+app.submit = function () {
+    app.viewModel.pageIndex(0);
+    app.viewModel.startIndex(0);
+    app.runQuery(app.defaultQueryCallback);
+}
+
 $(document).ready(function(){
 
     var formatDate = function(date_obj, limit){
@@ -198,11 +204,14 @@ $(document).ready(function(){
         }
     };
     
-    $("button").click(function() {
-        app.viewModel.pageIndex(0);
-        app.viewModel.startIndex(0);
-        app.runQuery(app.defaultQueryCallback);
-    });
+    $("button").click(app.submit);
+    $("#search-bar").on('keypress', function(e){
+        if (e.keyCode == 13){
+            e.preventDefault();
+            app.viewModel.search($('#search-bar').val());
+            app.submit();
+        }
+    })
 });
 
 app.runQuery = function(callback){
