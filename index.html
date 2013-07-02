@@ -114,14 +114,19 @@
                     <div class="span9">
                         <div class="row-fluid">
                             <div class="span12" id="text-search">
-                                <h4>Filter by free text search</h4>
-                                <textarea data-bind="value: search" placeholder='Free text search. Example - cable*'></textarea>
+                                <div class="row-fluid search-div">
+                                    <form>
+                                        <div class="span10">
+                                            <input class="search-bar" data-bind="value: search" placeholder='Free text search. Example - cable*'></input>
+                                        </div>
+                                        <div class="span2">
+                                            <button id="search-button">Search</button>
+                                        </div>
+                                    </form>
+                                </div>
                                 <div class="row-fluid">
                                     <div class="span10">
                                         <p data-bind="visible:numFound"><strong data-bind="text: numFound"></strong> resource(s) found <span data-bind="visible: search">for <span data-bind="text: search"></span></span></p>
-                                    </div>
-                                    <div class="span2">
-                                        <button id="search-button">Search</button>
                                     </div>
                                 </div>
                             </div>
