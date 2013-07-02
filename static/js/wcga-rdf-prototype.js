@@ -1,5 +1,6 @@
 var app = {};
 var facets = ["keywords"];
+var solr_url = 'http://localhost:8983/solr/collection1/select?';
 
 function viewModel() {
     var self = this;
@@ -144,7 +145,7 @@ function unwrap(lst, depth){
 function querySolr(q, fq, fl, wt, callback) {
     var mincount = 1;
     //Cannot figure out how to search multiple facets with jquery ajax syntax. Using for loop instead.
-    var url = 'http://localhost:8983/solr/collection1/select?';
+    var url = solr_url;
     for (var i = 0; i<facets.length; i++) {
         url = url + 'facet.field=' + facets[i] + '&facet.mincount=' + mincount + '&';
     }
