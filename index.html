@@ -19,11 +19,15 @@
         <link href="static/third-party/pageguide/css/pageguide.css" rel="stylesheet">
 
         <link href="static/css/wcga-rdf-prototype.css" rel="stylesheet">
-        <link href="static/css/map_style.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="static/third-party/Leaflet/leaflet.css" />
+         <!--[if lte IE 8]>
+             <link rel="stylesheet" href="static/third-party/Leaflet/leaflet.ie.css" />
+         <![endif]-->
 
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
-        <link href="{{STATIC_URL}}css/ie.css" rel="stylesheet">
+        <link href="static/css/ie.css" rel="stylesheet">
 
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -39,7 +43,9 @@
         <SCRIPT src="static/third-party/bootstrap/js/bootstrap.min.js" ></SCRIPT>
         <SCRIPT src="static/third-party/datepicker/js/bootstrap-datepicker.js" ></SCRIPT>
         <SCRIPT src="static/third-party/OpenLayers-2.12/OpenLayers.js" ></SCRIPT>
+        <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
         <script src="static/js/map.js"></script>
+
 
     </HEAD>
     <BODY onload="load()">
@@ -92,7 +98,7 @@
                 <div class="row-fluid">
                     <div class="span3">
                         <div class="row-fluid">
-                            <div id="map" class="span12 wcga-rdf-content smallmap">
+                            <div id="map" class="span12 wcga-rdf-content">
                             </div>
                         </div>
                         <div class="row-fluid">

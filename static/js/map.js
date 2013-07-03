@@ -1,76 +1,24 @@
-var map;
-var layerExtent = new OpenLayers.Bounds( -14050000, 3800000, -13000000 , 6300000);
-var map_extent = new OpenLayers.Bounds(-20037508, -20037508, 20037508, 20037508.34);
-
-//Map base options
-var map_options = {
-    controls: [],
-    projection: new OpenLayers.Projection("EPSG:900913"),
-    displayProjection: new OpenLayers.Projection("EPSG:4326"),
-    units: "m",
-    numZoomLevels: 13,
-    maxResolution: 156543.0339,
-    eventListeners: {
-        "zoomend": this.zoomHandler,
-        scope: this
-    }
-};    
-
+var map; 
+var marker = new L.Marker([0, 0]);
 function init() {
-    map = new OpenLayers.Map("map", {
-      restrictedExtent: layerExtent,
-      displayProjection: new OpenLayers.Projection("EPSG:4326"),
-      projection: "EPSG:3857"
-    });
+    map = L.map('map').setView([39, -120], 3);
+    //var marker = L.marker([0,0]);
 
-    var hybrid = new OpenLayers.Layer.Bing({
-        name: "Hybrid",
-        key: apiKey,
-        type: "AerialWithLabels"
-    });
+    L.tileLayer('http://{s}.tile.cloudmade.com/efb495f98c9b4dac95d13787e0a72603/997/256/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+        maxZoom: 18
+    }).addTo(map);
 
-    var pointLayer = new OpenLayers.Layer.Vector("Point Layer");
+    map.on('click', onMapClick);
+}
 
-    var point = new OpenLayers.Control.DrawFeature(
-        pointLayer,
-        OpenLayers.Handler.Point,
-        {
-            "featureAdded": pointDrawn
-        }
-    );
-
-    function pointDrawn(point) {
-        var lonlat = point.geometry.transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
-        clearOldPoints(point);
-        app.viewModel.updateCoordVals(lonlat.x, lonlat.y);
-        // re-project point to 900913
-        point.geometry.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+function onMapClick(e) {
+    if (map.hasLayer(marker)) {
+        map.removeLayer(marker);
     }
-
-    // Only display the newest selected point
-    function clearOldPoints(point){
-        for (var i = 0; i <= pointLayer.features.length; i++){
-            if (pointLayer.features[i] != point){
-                pointLayer.removeFeatures(pointLayer.features[i]);
-            }
-        }
-    }
-
-    function pointSelected(lat, lon){
-        var zoom = map.zoom < 12 ? map.zoom + 2: 12;
-        point = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(parseFloat(lon), parseFloat(lat)));
-        point.geometry.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
-        pointLayer.addFeatures(point);
-        pointLayer.drawFeature(point);
-        clearOldPoints(point);
-        map.setCenter([pointLayer.features[0].geometry.x, pointLayer.features[0].geometry.y], zoom);
-        pointLayer.redraw()
-    }
-
-    map.addLayers([hybrid, pointLayer]);
-
-    map.addControl(point);
-    point.activate();
-
-    map.setCenter(new OpenLayers.LonLat(-120, 45), 3);
+    marker.setLatLng(e.latlng);
+    app.viewModel.bbLat(e.latlng.lat);
+    app.viewModel.bbLon(e.latlng.lng);
+    app.viewModel.useBb(true);
+    map.addLayer(marker);
 }

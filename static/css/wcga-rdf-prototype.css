@@ -155,6 +155,10 @@ hr {
     margin: auto;
 }
 
+#map {
+    height:200px;
+}
+
 #text-search {
     border: 1px solid #ddd;
     padding: 0 10px;
