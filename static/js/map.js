@@ -85,8 +85,14 @@ function onMapClick(e) {
         map.removeLayer(marker);
     }
     marker.setLatLng(e.latlng);
-    app.viewModel.bbLat(e.latlng.lat);
-    app.viewModel.bbLon(e.latlng.lng);
+    app.viewModel.bbLat(e.latlng.lat);      //Cannot go above 90 anyway.
+    if (e.latlng.lng >= 0) {
+        var offset = Math.floor((e.latlng.lng + 180)/360);
+    } else {
+        var offset = Math.ceil((e.latlng.lng - 180)/360);
+    }
+    app.viewModel.bbLon(e.latlng.lng - (offset * 360));
+    // alert(e.latlng.lat + ', ' + e.latlng.lng + '\n' + app.viewModel.bbLat() + ', ' + app.viewModel.bbLon());
     app.viewModel.useBb(true);
     map.addLayer(marker);
     clearControl._container.hidden = false;
