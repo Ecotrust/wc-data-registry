@@ -12,7 +12,7 @@ var clearBtn = L.Control.extend({
         this._button = {};
         this.setButton({
             text: 'clear',
-            // iconUrl: '',
+            iconUrl: 'static/img/cross.png',
             onClick: clearMarkers
         });
     },
