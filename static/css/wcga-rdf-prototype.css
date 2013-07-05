@@ -145,6 +145,7 @@ hr {
 .social h5 {
     font-weight: normal;
     text-transform: uppercase;
+    margin-bottom: 3px;
 }
 
 .footer-center {
