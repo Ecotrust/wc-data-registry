@@ -1,6 +1,6 @@
 var app = {};
 var facets = ["keywords"];
-var solr_url = 'http://localhost:8983/solr/collection1/select?';
+var solr_url = settings_solr_url;
 
 function viewModel() {
     var self = this;
