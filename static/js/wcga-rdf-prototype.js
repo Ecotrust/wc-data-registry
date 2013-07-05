@@ -50,10 +50,9 @@ function viewModel() {
         $(event.target).closest('.input-append').find('input').datepicker().trigger('change');
     }
 
-    self.updateCoordVals = function(lon, lat) {
-        self.bbLat(lat.toFixed(6).toString());
-        self.bbLon(lon.toFixed(6).toString());
-    }
+    self.useBb.subscribe(function(val){
+        app.runQuery(app.defaultQueryCallback);
+    });
 }
 
 app.viewModel = new viewModel();

@@ -96,6 +96,7 @@ function onMapClick(e) {
     app.viewModel.useBb(true);
     map.addLayer(marker);
     clearControl._container.hidden = false;
+    app.runQuery(app.defaultQueryCallback);
 }
 
 function clearMarkers() {
