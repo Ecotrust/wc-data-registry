@@ -27,29 +27,6 @@ function viewModel() {
 
     self.queryFilter = ko.observableArray();
 
-    self.fromDate = ko.observable();
-    self.fromDatePick = $("#fromDate").datepicker().on('changeDate', function(ev) {
-        self.fromDate(self.fromDatePick.date);
-        self.fromDatePick.hide();
-    }).data('datepicker');
-
-      self.toDate = ko.observable();
-    self.toDatePick = $("#toDate").datepicker().on('changeDate', function(ev) {
-        self.toDate(self.toDatePick.date);
-        self.toDatePick.hide();
-    }).data('datepicker');
-
-    self.removeDate = function (self, event) {
-        if ($(event.target).closest('.input-append')[0].id == "to") {
-            self.toDate(undefined);
-            $("#toDate")[0].value = "";
-        } else {
-            self.fromDate(undefined);
-            $("#fromDate")[0].value = "";
-        }
-        $(event.target).closest('.input-append').find('input').datepicker().trigger('change');
-    }
-
     self.useBb.subscribe(function(val){
         app.runQuery(app.defaultQueryCallback);
     });
@@ -243,19 +220,6 @@ app.runQuery = function(callback){
            app.viewModel.q_query(app.viewModel.q_query() + "keywords: " + keywords + " "); 
         }
     }
-
-    //Date Search
-    // if (app.viewModel.fromDate() != undefined || app.viewModel.toDate() != undefined) {
-    //     if (app.viewModel.fromDate() == undefined){
-    //         app.viewModel.fromDate('*');
-    //     }
-
-    //     if (app.viewModel.toDate() == undefined){
-    //         app.viewModel.toDate('*');
-    //     }
-    //     app.viewModel.q_query(app.viewModel.q_query() + "sys.src.item.lastmodified_tdt:[" + formatDate(app.viewModel.fromDate(), 'from') + " TO " +
-    //         formatDate(app.viewModel.toDate(), 'to') + "] ");
-    // }
 
     if (app.viewModel.useBb() && app.viewModel.bbLat() != "" && app.viewModel.bbLon() != "") {
         app.viewModel.fq_query("{!bbox pt=" + app.viewModel.bbLat() + "," + app.viewModel.bbLon() + " sfield=envelope_geo d=0.001} ");
