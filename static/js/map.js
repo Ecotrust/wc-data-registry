@@ -66,21 +66,7 @@ var clearBtn = L.Control.extend({
     }
 });
 
-function init() {
-    map = L.map('map').setView([39, -127], 3);
-
-    L.tileLayer('http://{s}.tile.cloudmade.com/efb495f98c9b4dac95d13787e0a72603/997/256/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-        maxZoom: 18
-    }).addTo(map);
-
-    map.on('click', onMapClick);
-    clearControl = new clearBtn();
-    map.addControl(clearControl);
-    clearControl._container.hidden = true;
-}
-
-function onMapClick(e) {
+function updateMap(e) {
     if (map.hasLayer(marker)) {
         map.removeLayer(marker);
     }
@@ -97,6 +83,20 @@ function onMapClick(e) {
     map.addLayer(marker);
     clearControl._container.hidden = false;
     app.runQuery(app.defaultQueryCallback);
+}
+
+function init() {
+    map = L.map('map').setView([39, -127], 3);
+
+    L.tileLayer('http://{s}.tile.cloudmade.com/efb495f98c9b4dac95d13787e0a72603/997/256/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+        maxZoom: 18
+    }).addTo(map);
+
+    map.on('click', updateMap);
+    clearControl = new clearBtn();
+    map.addControl(clearControl);
+    clearControl._container.hidden = true;
 }
 
 function clearMarkers() {

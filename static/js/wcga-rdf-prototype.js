@@ -37,21 +37,45 @@ ko.applyBindings(app.viewModel);
 window.location.hash.replace('#', '');
 
 function load() {
-    querySolr(
-        '*', 
-        '',
-        '',
-        'json',
-        function(data) { /* process e.g. data.response.docs... */ 
-            var items = [];
-            app.viewModel.totalRecordsCount(data.response.numFound.toString());
-            console.log(data);
-            app.viewModel.currentRecords(data);
-            app.updateKeywords();
-            app.viewModel.recordPaginator(app.buildPaginator());
-        }
-    );
+
     init();      //Init the map
+
+    if (getURLParameter('search')) {
+        app.viewModel.search(getURLParameter('search'));
+    }
+    
+    if (getURLParameter('keywords')) {
+        for (var i = 0; i < JSON.parse(getURLParameter('keywords')).length; i++){
+            app.viewModel.keywords()[JSON.parse(getURLParameter('keywords'))[i].toLowerCase()] = 1;
+        }
+    }
+    
+    if (getURLParameter('useBb').toLowerCase() == "true" && getURLParameter('lat') && getURLParameter('lon')) {
+        app.viewModel.useBb(true);
+        app.viewModel.bbLat(getURLParameter('lat'));
+        app.viewModel.bbLon(getURLParameter('lon'));
+        updateMap({
+            'latlng':{
+                'lat': app.viewModel.bbLat(),
+                'lng': app.viewModel.bbLon()
+            }
+        });
+    }
+
+    if (app.viewModel.search() == "" && !app.viewModel.useBb() && isEmpty(app.viewModel.keywords())) {
+        app.runQuery(function(data) { /* process e.g. data.response.docs... */ 
+                var items = [];
+                app.viewModel.totalRecordsCount(data.response.numFound.toString());
+                console.log(data);
+                app.viewModel.currentRecords(data);
+                app.updateKeywords();
+                app.viewModel.recordPaginator(app.buildPaginator());
+            }
+        );
+    } else {
+        app.runQuery(app.defaultQueryCallback);
+    }
+
 }
 
 app.updateKeywords = function() {
@@ -341,6 +365,6 @@ app.defaultQueryCallback = function(data){
 }
 
 //FROM: http://stackoverflow.com/a/8764051
-// function getURLParameter(name) {
-//     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
-// }
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+}
