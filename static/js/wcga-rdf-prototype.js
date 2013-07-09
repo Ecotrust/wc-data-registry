@@ -199,14 +199,19 @@ function querySolr(q, fq, fl, wt, callback) {
 
 function getRecord(id){
     var rec_id = id.slice(0,8) + '-' + id.slice(8,12) + '-' + id.slice(12,16) + '-' + id.slice(16,20) + '-' + id.slice(20);
-    var url = gp_url + '/csw?service=CSW&request=GetRecordById&id=' + rec_id;
+    var url = gp_url + '/rest/document';
     $.ajax({
+        // type: 'Get',
         url: url,
         data: {
-            'f':'jsonp'
+            'id': rec_id,
+            // 'id': '%7B' + rec_id + '%7D',
+            'f':'pjson'
         },
-        dataType: 'jsonp',  
-        jsonp: 'json.wrf',
+        dataType: 'text',  
+        // jsonp: false,
+        // crossDomain: true,
+        // jsonpCallback: "callback",
         success: function(val){
             alert(val);
         }
