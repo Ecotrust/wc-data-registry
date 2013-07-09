@@ -200,6 +200,17 @@ function querySolr(q, fq, fl, wt, callback) {
 
 function getRecord(id){
     var url = gp_url + '/csw?service=CSW&request=GetRecordById&id=' + id;
+    $.ajax({
+        url: url,
+        data: {
+            'f':jsonp
+        },
+        dataType: 'jsonp',  
+        jsonp: 'json.wrf',
+        success: function(val){
+            alert(val);
+        }
+    });
 }
 
 app.submit = function () {
