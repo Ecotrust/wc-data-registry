@@ -190,7 +190,6 @@ function querySolr(q, fq, fl, wt, callback) {
             'fq': fq,
             'fl':fl,
             'facet':true
-
         },
         dataType: 'jsonp',
         jsonp: 'json.wrf',
@@ -199,11 +198,12 @@ function querySolr(q, fq, fl, wt, callback) {
 }
 
 function getRecord(id){
-    var url = gp_url + '/csw?service=CSW&request=GetRecordById&id=' + id;
+    var rec_id = id.slice(0,8) + '-' + id.slice(8,12) + '-' + id.slice(12,16) + '-' + id.slice(16,20) + '-' + id.slice(20);
+    var url = gp_url + '/csw?service=CSW&request=GetRecordById&id=' + rec_id;
     $.ajax({
         url: url,
         data: {
-            'f':jsonp
+            'f':'jsonp'
         },
         dataType: 'jsonp',  
         jsonp: 'json.wrf',
