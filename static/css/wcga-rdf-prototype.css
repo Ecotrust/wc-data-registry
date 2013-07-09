@@ -121,10 +121,6 @@ h6 { font-weight: normal; }
     padding: 10px;
 }
 
-.results-display {
-    margin: 3% 0;
-}
-
 .row-fluid.selected-keyword {
     border: solid;
     padding: 1% 0 2% 3%;
@@ -136,6 +132,19 @@ h6 { font-weight: normal; }
     width: 85%;
     margin-top: 1%;
     min-height: 20px !important;
+}
+
+.results-display {
+    margin: 3% 0;
+}
+
+.record {
+    margin-top: 1%;
+    padding: 1%;
+}
+
+.record:hover {
+    background: #DDD;
 }
 
 hr {

@@ -1,10 +1,13 @@
 var app = {};
 var facets = ["keywords"];
 var solr_url = settings_solr_url;
+var gp_url = settings_gp_url;
 
 function viewModel() {
     var self = this;
 
+
+    //HOME PAGE
     self.totalRecordsCount = ko.observable(0);
     self.currentRecords = ko.observable({});
     self.search = ko.observable("");
@@ -30,6 +33,17 @@ function viewModel() {
     self.useBb.subscribe(function(val){
         app.runQuery(app.defaultQueryCallback);
     });
+
+    //RECORD PAGE
+    self.record_id = ko.observable("");
+    self.record_title = ko.observable("");
+    self.record_abstract = ko.observable("");
+    self.record_originator = ko.observable("");
+    self.record_updated = ko.observable("");
+    self.record_source = ko.observable("");
+
+
+
 }
 
 app.viewModel = new viewModel();
@@ -78,6 +92,15 @@ function load() {
 
 }
 
+function load_record() {
+    init();
+
+    if (getURLParameter('id')) {
+        app.viewModel.record_id(getURLParameter('id'));
+        getRecord(app.viewModel.record_id());
+    }
+}
+
 app.updateKeywords = function() {
     html = "<div class=\"row-fluid\"><div class=\"span12\" id =\"keyword-html\">";
 
@@ -115,9 +138,14 @@ app.removeKeyword = function(keyword){
 
 }
 
-function unwrap(lst, depth){
+function unwrap(lst){
     var fullList = [];
     var maxDesc = 300;
+    if (lst.id) {
+        fullList.push('<div id = "' + lst.id + '" class="record" onclick="window.location=\'record.html?id=' + lst.id + '\'">');
+    } else {
+        fullList.push('<div class="record">');
+    }
     if (lst.title) {
         fullList.push('<h3 class="record-title">' + lst.title[0] + '</h3>');
     } else {
@@ -138,6 +166,8 @@ function unwrap(lst, depth){
         var date_string = (date.getMonth() + 1).toString() + '/' + date.getDate().toString() + '/' + date.getFullYear().toString();
         fullList.push('<p class="record-date">Last updated: ' + date_string + '</p>');
     }
+
+    fullList.push('</div>');
 
     return fullList.join('');
 };
@@ -166,6 +196,10 @@ function querySolr(q, fq, fl, wt, callback) {
         jsonp: 'json.wrf',
         success: callback
     });
+}
+
+function getRecord(id){
+    var url = gp_url + '/csw?service=CSW&request=GetRecordById&id=' + id;
 }
 
 app.submit = function () {
@@ -351,7 +385,7 @@ app.defaultQueryCallback = function(data){
     items.push('<div id="results-box">');
     if (data.response.docs.length > 0){
         $.each(data.response.docs, function(key1, val1){
-            items.push(unwrap(val1, 0));
+            items.push(unwrap(val1));
         });
     } else {
         items.push('<h2>No items match your query.</h2>');
