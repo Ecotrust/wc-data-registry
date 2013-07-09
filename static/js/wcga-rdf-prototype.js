@@ -41,6 +41,7 @@ function viewModel() {
     self.record_originator = ko.observable("");
     self.record_updated = ko.observable("");
     self.record_source = ko.observable("");
+    self.record_bbox = ko.observable();
 
 
 
@@ -64,7 +65,7 @@ function load() {
         }
     }
     
-    if (getURLParameter('useBb').toLowerCase() == "true" && getURLParameter('lat') && getURLParameter('lon')) {
+    if (getURLParameter('useBb') && getURLParameter('useBb').toLowerCase() == "true" && getURLParameter('lat') && getURLParameter('lon')) {
         app.viewModel.useBb(true);
         app.viewModel.bbLat(getURLParameter('lat'));
         app.viewModel.bbLon(getURLParameter('lon'));
@@ -204,16 +205,25 @@ function getRecord(id){
         // type: 'Get',
         url: url,
         data: {
-            'id': rec_id,
-            // 'id': '%7B' + rec_id + '%7D',
+            //'id': rec_id.toUpperCase(),
+            'id': '{' + rec_id.toUpperCase() + '}',
             'f':'pjson'
         },
-        dataType: 'text',  
+        dataType: 'json',  
         // jsonp: false,
         // crossDomain: true,
         // jsonpCallback: "callback",
-        success: function(val){
-            alert(val);
+        success: function(raw_response){
+            //alert(response);
+            var response = raw_response.records[0];
+            app.viewModel.record_id(response.id);
+            app.viewModel.record_title(response.title);
+            app.viewModel.record_abstract(response.summary);
+            //app.viewModel.record_originator(response.origin);
+            app.viewModel.record_updated(response.updated);
+            app.viewModel.record_bbox(response.bbox);
+            //app.viewModel.record_source(response.source);
+            showBbox();
         }
     });
 }
