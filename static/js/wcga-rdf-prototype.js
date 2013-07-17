@@ -64,7 +64,7 @@ function load() {
         }
     }
     
-    if (getURLParameter('useBb').toLowerCase() == "true" && getURLParameter('lat') && getURLParameter('lon')) {
+    if (getURLParameter('useBb') && getURLParameter('useBb').toLowerCase() == "true" && getURLParameter('lat') && getURLParameter('lon')) {
         app.viewModel.useBb(true);
         app.viewModel.bbLat(getURLParameter('lat'));
         app.viewModel.bbLon(getURLParameter('lon'));
@@ -201,7 +201,7 @@ function getRecord(id){
     var rec_id = id.slice(0,8) + '-' + id.slice(8,12) + '-' + id.slice(12,16) + '-' + id.slice(16,20) + '-' + id.slice(20);
     var url = gp_url + '/rest/document';
     $.ajax({
-        // type: 'Get',
+        //type: 'GET',
         url: url,
         data: {
             'id': rec_id,
