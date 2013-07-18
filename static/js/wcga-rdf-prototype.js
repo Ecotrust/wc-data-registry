@@ -142,8 +142,10 @@ app.removeKeyword = function(keyword){
 function unwrap(lst){
     var fullList = [];
     var maxDesc = 300;
-    if (lst.id) {
-        fullList.push('<div id = "' + lst.id + '" class="record" onclick="window.location=\'record.html?id=' + lst.id + '\'">');
+    // if (lst.id) {
+        // fullList.push('<div id = "' + lst.id + '" class="record" onclick="window.location=\'record.html?id=' + lst.id + '\'">');
+    if (lst["sys.sync.foreign.id_s"]) {
+        fullList.push('<div id = "' + lst["sys.sync.foreign.id_s"] + '" class="record" onclick="window.location=\'record.html?id=' + lst["sys.sync.foreign.id_s"] + '\'">');
     } else {
         fullList.push('<div class="record">');
     }
@@ -199,30 +201,22 @@ function querySolr(q, fq, fl, wt, callback) {
 }
 
 function getRecord(id){
-    var rec_id = id.slice(0,8) + '-' + id.slice(8,12) + '-' + id.slice(12,16) + '-' + id.slice(16,20) + '-' + id.slice(20);
+    var rec_id = id;
     var url = gp_url + '/rest/document';
     $.ajax({
-        //type: 'GET',
         url: url,
         data: {
-            //'id': rec_id.toUpperCase(),
-            'id': '{' + rec_id.toUpperCase() + '}',
+            'id': rec_id,
             'f':'pjson'
         },
         dataType: 'json',  
-        // jsonp: false,
-        // crossDomain: true,
-        // jsonpCallback: "callback",
         success: function(raw_response){
-            //alert(response);
             var response = raw_response.records[0];
             app.viewModel.record_id(response.id);
             app.viewModel.record_title(response.title);
             app.viewModel.record_abstract(response.summary);
-            //app.viewModel.record_originator(response.origin);
             app.viewModel.record_updated(response.updated);
             app.viewModel.record_bbox(response.bbox);
-            //app.viewModel.record_source(response.source);
             showBbox();
         }
     });
@@ -314,7 +308,7 @@ app.runQuery = function(callback){
     querySolr(
         app.viewModel.q_query(), 
         app.viewModel.fq_query(),
-        'id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt',
+        'id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
         'json',
         callback
     );
