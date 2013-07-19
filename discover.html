@@ -41,13 +41,11 @@
         <SCRIPT src="static/third-party/Knockout/knockout-mapping.js" >
         </SCRIPT>
         <SCRIPT src="static/third-party/bootstrap/js/bootstrap.min.js" ></SCRIPT>
-        <script src="static/third-party/datejs/date.js"></script>
         <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
-        <script src="static/js/record_map.js"></script>
-
+        <script src="static/js/discover_map.js"></script>
 
     </HEAD>
-    <BODY onload="load_record()">
+    <BODY onload="load()">
         <header role="banner">
             <div class="navbar navbar-fixed-top">
                 <div class="navbar-inner">
@@ -61,7 +59,7 @@
                                     <div>
                                         <ul class="nav pull-right">
                                             <li>
-                                                <a href="discover.html">Discover</a>
+                                                <a href="#">Discover</a>
                                             </li>
                                             <li>
                                                 <a href="#">Contribute</a>
@@ -90,86 +88,67 @@
         <div class="container">
             <div class="content" class="row">
                 <div class="row-fluid">
-                    <div class="span9">
-                        <div class="row-fluid">
-                            <div class="span12">
-                                <div class="row-fluid">
-                                    <h3 data-bind="text: record_title"></h3>
-                                </div>
-                                <div class="row-fluid">
-                                    <p data-bind="text: record_abstract"></p>
-                                </div>
-                                <div class="row-fluid">
-                                    <div class="span5">
-
-                                        <div class="row-fluid">
-                                            <div class="span4">
-                                                <!-- Thinking icon courtesy of Dirk Rowe, from The Noun Project: http://thenounproject.com/noun/idea/#icon-No6770 -->
-                                                <img class="record_icon" src="static/img/idea_1.png"/>
-                                            </div>
-                                            <div class="span8">
-                                                <h3>Originator</h3>
-                                            </div>
-                                        </div>
-                                        <div class="row-fluid">
-                                            <div class="span4">
-                                            </div>
-                                            <div class="span8">
-                                                <p data-bind="text: record_originator"></p>
-                                            </div>
-                                        </div>
-
-                                        <div class="row-fluid">
-                                            <div class="span4">
-                                                <!-- Calendar icon courtesy of Nathan Driskell, from The Noun Project: http://thenounproject.com/noun/calendar/#icon-No1194 -->
-                                                <img class="record_icon" src="static/img/calendar.png"/>
-                                            </div>
-                                            <div class="span8">
-                                                <h3>Last Updated</h3>
-                                            </div>
-                                        </div>
-                                        <div class="row-fluid">
-                                            <div class="span4">
-                                            </div>
-                                            <div class="span8">
-                                                <p data-bind="text: record_updated"></p>
-                                            </div>
-                                        </div>
-
-                                        <div class="row-fluid">
-                                            <div class="span4">
-                                                <!-- Distribution site icon courtesy of OCHA AVMU, from The Noun Project: http://thenounproject.com/noun/distribution-site/#icon-No4391 -->
-                                                <img class="record_icon" src="static/img/dist_site.png"/>
-                                            </div>
-                                            <div class="span8">
-                                                <h3>Source</h3>
-                                            </div>
-                                        </div>
-                                        <div class="row-fluid">
-                                            <div class="span4">
-                                            </div>
-                                            <div class="span8">
-                                                <p data-bind="text: record_source"></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="span7">
-
-                                    </div>
-                                </div>      <!-- close details row -->
-                                <div class="row-fluid">
-
-                                </div>      <!-- close information row -->
-                            </div>
-                        </div>
+                    <div class="span12">
+                        <h3>Discover Resources</h3>
                     </div>
+                </div>
+                <div class="row-fluid">
                     <div class="span3">
                         <div class="row-fluid">
                             <div id="map" class="span12 wcga-rdf-content">
                             </div>
                         </div>
+                        <div class="row-fluid">
+                            <div class="span12 wcga-rdf-content" id="keywords">
+                                <h4>Keywords:</h4>
+                                <div id="keywords" data-bind="html: keywordsDisplay">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>    
+                    <div class="span9">
+                        <div class="row-fluid">
+                            <div class="span12 wcga-rdf-content" id="text-search">
+                                <div class="row-fluid search-div">
+                                    <div class="span10">
+                                        <input id="search-bar" data-bind="value: search" placeholder='Free text search. Example - cable*'></input>
+                                    </div>
+                                    <div class="span2">
+                                        <button id="search-button">Search</button>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="span10">
+                                        <p data-bind="visible:numFound"><strong data-bind="text: numFound"></strong> resource(s) found <span data-bind="visible: search">for <span data-bind="text: search"></span></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-fluid" data-bind="visible: numFound() > 0">
+                            <div class="span3 results-display">
+                                <div>
+                                    <p>Showing results <span data-bind="text: startIndex()+1"></span>-<span data-bind="text: startIndex()+displayRows()>numFound()?numFound() : startIndex()+displayRows()"></span></p>
+                                </div>
+                            </div>
+                            <div class="span9">
+                                <div class="paginator" data-bind="html: recordPaginator">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row-fluid">
+                            <div class="span12">
+                                <div data-bind="text: q_query">
+                                </div>
+                            </div>
+                        </div> --> 
+                        <div class="row-fluid">
+                            <div class="span12 wcga-rdf-content" id="ajax1">
+                                <dl class="my-new-list dl-horizontal" data-bind="html: resultsDisplay">
+                                </dl>
+                            </div>
+                        </div>
+                    </div>      <!-- close span9 -->
+                </div>          <!-- close content row -->
                 <hr>
                 <footer>
                     <div class="row">
@@ -183,12 +162,8 @@
                         </div>
                         <div class="span4 footer-center social">
                             <h5>
-                                <a data-bind="attr: { href: api_addr }" target="_blank">
+                                <a href="#">
                                     API Access
-                                </a>
-                                &nbsp;
-                                <a data-bind="attr: { href: api_addr() + '&f=pjson' }" target="_blank">
-                                    JSON
                                 </a>
                             </h5>
                         </div>
@@ -207,7 +182,7 @@
                 </footer>
             </div>
         </div>
-        <script src="static/js/record.js"></script>
+        <script src="static/js/discover.js"></script>
         <SCRIPT src="static/js/ko-bindings.js" ></SCRIPT>
     </BODY>
 </HTML>

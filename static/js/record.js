@@ -21,6 +21,12 @@ app.viewModel = new viewModel();
 ko.applyBindings(app.viewModel);
 window.location.hash.replace('#', '');
 
+$(document).ready(function(){
+    $(".navbar-title").on('click', function(e){
+        window.location = 'index.html';
+    });
+});
+
 function load_record() {
     init();
 

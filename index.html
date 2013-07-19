@@ -44,7 +44,6 @@
         <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
         <script src="static/js/map.js"></script>
 
-
     </HEAD>
     <BODY onload="load()">
         <header role="banner">
@@ -60,7 +59,7 @@
                                     <div>
                                         <ul class="nav pull-right">
                                             <li>
-                                                <a href="#">Discover</a>
+                                                <a href="discover.html">Discover</a>
                                             </li>
                                             <li>
                                                 <a href="#">Contribute</a>
@@ -88,67 +87,39 @@
         </header>
         <div class="container">
             <div class="content" class="row">
-                <div class="row-fluid">
+                <div class="row-fluid">         <!-- row 1 -->
+                    <div class="span5">
+                        <hr/>
+                        <p><b>Discover and contribute valuable data resources to inform marine and coastal planning, policy development and resource management on the Pacific Coast</b></p>
+                        <a href="#"><b>Learn more</b></a>
+                        <hr/>
+                    </div>
+                    <div class="span7 wcga-rdf-content">
+                        <h3>Carousel</h3>
+                    </div>
+                </div>                      
+                <div class="row-fluid">         <!-- row 2 -->
                     <div class="span12">
-                        <h3>Discover Resources</h3>
+                        <p><span data-bind="text: totalRecordsCount"></span> registered resources</p>
                     </div>
                 </div>
-                <div class="row-fluid">
-                    <div class="span3">
+                <div class="row-fluid">         <!-- row 3 -->
+                    <div class="span4 wcga-rdf-content">
+                    </div>
+                    <div class="span4 wcga-rdf-content">
+                    </div>
+                    <div class="span4 wcga-rdf-content">
                         <div class="row-fluid">
                             <div id="map" class="span12 wcga-rdf-content">
                             </div>
                         </div>
-                        <div class="row-fluid">
-                            <div class="span12 wcga-rdf-content" id="keywords">
-                                <h4>Keywords:</h4>
-                                <div id="keywords" data-bind="html: keywordsDisplay">
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <div class="span9">
-                        <div class="row-fluid">
-                            <div class="span12 wcga-rdf-content" id="text-search">
-                                <div class="row-fluid search-div">
-                                    <div class="span10">
-                                        <input id="search-bar" data-bind="value: search" placeholder='Free text search. Example - cable*'></input>
-                                    </div>
-                                    <div class="span2">
-                                        <button id="search-button">Search</button>
-                                    </div>
-                                </div>
-                                <div class="row-fluid">
-                                    <div class="span10">
-                                        <p data-bind="visible:numFound"><strong data-bind="text: numFound"></strong> resource(s) found <span data-bind="visible: search">for <span data-bind="text: search"></span></span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row-fluid" data-bind="visible: numFound() > 0">
-                            <div class="span3 results-display">
-                                <div>
-                                    <p>Showing results <span data-bind="text: startIndex()+1"></span>-<span data-bind="text: startIndex()+displayRows()>numFound()?numFound() : startIndex()+displayRows()"></span></p>
-                                </div>
-                            </div>
-                            <div class="span9">
-                                <div class="paginator" data-bind="html: recordPaginator">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <div class="row-fluid">
-                            <div class="span12">
-                                <div data-bind="text: q_query">
-                                </div>
-                            </div>
-                        </div> --> 
-                        <div class="row-fluid">
-                            <div class="span12 wcga-rdf-content" id="ajax1">
-                                <dl class="my-new-list dl-horizontal" data-bind="html: resultsDisplay">
-                                </dl>
-                            </div>
-                        </div>
-                    </div>      <!-- close span9 -->
+                </div>
+                <div class="row-fluid">         <!-- row 4 -->
+                    <div class="span6 wcga-rdf-content">
+                    </div>
+                    <div class="span6 wcga-rdf-content">
+                    </div>
                 </div>          <!-- close content row -->
                 <hr>
                 <footer>

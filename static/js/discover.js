@@ -196,7 +196,6 @@ $(document).ready(function(){
     $(".navbar-title").on('click', function(e){
         window.location = 'index.html';
     });
-
 });
 
 app.runQuery = function(callback){
