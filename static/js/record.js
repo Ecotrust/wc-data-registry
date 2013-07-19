@@ -71,7 +71,7 @@ function getRecord(id){
             app.viewModel.record_id(response.id);
             app.viewModel.record_title(response.title);
             app.viewModel.record_abstract(response.summary);
-            app.viewModel.record_updated(response.updated);
+            app.viewModel.record_updated(Date.parse(response.updated).toString("M/d/yyyy hh:mm tt"));
             app.viewModel.record_bbox(response.bbox);
             showBbox();
         }
