@@ -33,18 +33,6 @@ function viewModel() {
     self.useBb.subscribe(function(val){
         app.runQuery(app.defaultQueryCallback);
     });
-
-    //RECORD PAGE
-    self.record_id = ko.observable("");
-    self.record_title = ko.observable("");
-    self.record_abstract = ko.observable("");
-    self.record_originator = ko.observable("");
-    self.record_updated = ko.observable("");
-    self.record_source = ko.observable("");
-    self.record_bbox = ko.observable();
-
-
-
 }
 
 app.viewModel = new viewModel();
@@ -93,15 +81,6 @@ function load() {
 
 }
 
-function load_record() {
-    init();
-
-    if (getURLParameter('id')) {
-        app.viewModel.record_id(getURLParameter('id'));
-        getRecord(app.viewModel.record_id());
-    }
-}
-
 app.updateKeywords = function() {
     html = "<div class=\"row-fluid\"><div class=\"span12\" id =\"keyword-html\">";
 
@@ -136,7 +115,6 @@ app.removeKeyword = function(keyword){
     app.viewModel.pageIndex(0);
     app.updateKeywords();
     app.runQuery(app.defaultQueryCallback);
-
 }
 
 function unwrap(lst){
@@ -200,28 +178,6 @@ function querySolr(q, fq, fl, wt, callback) {
     });
 }
 
-function getRecord(id){
-    var rec_id = id;
-    var url = gp_url + '/rest/document';
-    $.ajax({
-        url: url,
-        data: {
-            'id': rec_id,
-            'f':'pjson'
-        },
-        dataType: 'json',  
-        success: function(raw_response){
-            var response = raw_response.records[0];
-            app.viewModel.record_id(response.id);
-            app.viewModel.record_title(response.title);
-            app.viewModel.record_abstract(response.summary);
-            app.viewModel.record_updated(response.updated);
-            app.viewModel.record_bbox(response.bbox);
-            showBbox();
-        }
-    });
-}
-
 app.submit = function () {
     app.viewModel.pageIndex(0);
     app.viewModel.startIndex(0);
@@ -229,35 +185,6 @@ app.submit = function () {
 }
 
 $(document).ready(function(){
-
-    var formatDate = function(date_obj, limit){
-        if (date_obj != '*') {
-            var year = date_obj.getFullYear().toString();
-            var month = date_obj.getMonth() + 1;
-            if (month < 10) {
-                month = "0" + month.toString();
-            } else {
-                month = month.toString();
-            }
-            var day = date_obj.getDate();
-            if (day < 10) {
-                day = "0" + day.toString();
-            } else {
-                day = day.toString();
-            }
-            var stamp = "";
-            if (limit == 'to') {
-                stamp = "T12:59:59.9Z";
-            } else {
-                stamp = "T00:00:00.0Z";
-            }
-
-            return year + "-" + month + "-" + day + stamp;
-        } else {
-            return date_obj;
-        }
-    };
-    
     $("button").click(app.submit);
     $("#search-bar").on('keypress', function(e){
         if (e.keyCode == 13){

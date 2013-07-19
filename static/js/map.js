@@ -106,12 +106,3 @@ function clearMarkers() {
     app.viewModel.useBb(false);
     clearControl._container.hidden = true;
 }
-
-function showBbox() {
-    var p1 = new L.LatLng(app.viewModel.record_bbox()[0], app.viewModel.record_bbox()[1]);
-    var p2 = new L.LatLng(app.viewModel.record_bbox()[0], app.viewModel.record_bbox()[3]);
-    var p3 = new L.LatLng(app.viewModel.record_bbox()[2], app.viewModel.record_bbox()[3]);
-    var p4 = new L.LatLng(app.viewModel.record_bbox()[2], app.viewModel.record_bbox()[1]);
-    var bbox = new L.Polygon([p1, p2, p3, p4]);
-    map.addLayer(bbox);
-}
