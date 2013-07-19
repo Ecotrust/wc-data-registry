@@ -89,14 +89,12 @@
         <div class="container">
             <div class="content" class="row">
                 <div class="row-fluid">
-                    <div class="span12">
-                        <h3 data-bind="text: record_title"></h3>
-                    </div>
-                </div>
-                <div class="row-fluid">
                     <div class="span9">
                         <div class="row-fluid">
-                            <div class="span12 wcga-rdf-content">
+                            <div class="span12">
+                                <div class="row-fluid">
+                                    <h3 data-bind="text: record_title"></h3>
+                                </div>
                                 <div class="row-fluid">
                                     <p data-bind="text: record_abstract"></p>
                                 </div>
@@ -105,7 +103,8 @@
 
                                         <div class="row-fluid">
                                             <div class="span4">
-                                                <p>img</p>
+                                                <!-- Thinking icon courtesy of Dirk Rowe, from The Noun Project: http://thenounproject.com/noun/idea/#icon-No6770 -->
+                                                <img class="record_icon" src="static/img/idea_1.png"/>
                                             </div>
                                             <div class="span8">
                                                 <h3>Originator</h3>
@@ -121,7 +120,8 @@
 
                                         <div class="row-fluid">
                                             <div class="span4">
-                                                <p>img</p>
+                                                <!-- Calendar icon courtesy of Nathan Driskell, from The Noun Project: http://thenounproject.com/noun/calendar/#icon-No1194 -->
+                                                <img class="record_icon" src="static/img/calendar.png"/>
                                             </div>
                                             <div class="span8">
                                                 <h3>Last Updated</h3>
@@ -137,7 +137,8 @@
 
                                         <div class="row-fluid">
                                             <div class="span4">
-                                                <p>img</p>
+                                                <!-- Distribution site icon courtesy of OCHA AVMU, from The Noun Project: http://thenounproject.com/noun/distribution-site/#icon-No4391 -->
+                                                <img class="record_icon" src="static/img/dist_site.png"/>
                                             </div>
                                             <div class="span8">
                                                 <h3>Source</h3>
@@ -181,8 +182,12 @@
                         </div>
                         <div class="span4 footer-center social">
                             <h5>
-                                <a href="#">
+                                <a data-bind="attr: { href: api_addr }" target="_blank">
                                     API Access
+                                </a>
+                                &nbsp;
+                                <a data-bind="attr: { href: api_addr() + '&f=pjson' }" target="_blank">
+                                    JSON
                                 </a>
                             </h5>
                         </div>

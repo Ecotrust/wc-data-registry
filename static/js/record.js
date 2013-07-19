@@ -14,6 +14,7 @@ function viewModel() {
     self.record_updated = ko.observable("");
     self.record_source = ko.observable("");
     self.record_bbox = ko.observable();
+    self.api_addr = ko.observable("");
 }
 
 app.viewModel = new viewModel();
@@ -25,6 +26,7 @@ function load_record() {
 
     if (getURLParameter('id')) {
         app.viewModel.record_id(getURLParameter('id'));
+        app.viewModel.api_addr(gp_url + "/rest/document?id=" + app.viewModel.record_id());
         getRecord(app.viewModel.record_id());
     }
 }

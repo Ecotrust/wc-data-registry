@@ -200,3 +200,8 @@ hr {
 #results-box {
     margin: -25px 10px 5px 10px;
 }
+
+.record_icon {
+    max-width: 40px;
+    float: right;
+}
