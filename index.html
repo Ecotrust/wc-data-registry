@@ -88,14 +88,16 @@
         <div class="container">
             <div class="content" class="row">
                 <div class="row-fluid">         <!-- row 1 -->
-                    <div class="span5">
+                    <div class="span4">
                         <hr/>
-                        <p><b>Discover and contribute valuable data resources to inform marine and coastal planning, policy development and resource management on the Pacific Coast</b></p>
-                        <a href="#"><b>Learn more</b></a>
+                        <div class="home-carousel-blurb">
+                            <p>Discover and contribute valuable data resources to inform marine and coastal planning, policy development and resource management on the Pacific Coast</p>
+                            <div align="center"><a href="#">Learn more</a></div>
+                        </div>
                         <hr/>
                     </div>
-                    <div class="span7 wcga-rdf-content">
-                        <h3>Carousel</h3>
+                    <div class="span8 wcga-rdf-content" style="background: #AAA;">
+                        <h3 style="height: 130px; margin: 20px auto auto 25px; width: 80%;">Carousel</h3>    <!-- style is just for the placeholder -->
                     </div>
                 </div>                      
                 <div class="row-fluid">         <!-- row 2 -->
@@ -104,11 +106,55 @@
                     </div>
                 </div>
                 <div class="row-fluid">         <!-- row 3 -->
-                    <div class="span4 wcga-rdf-content">
+                    <div class="span4">             <!-- search box -->
+                        <div class="row-fluid">
+                            <div class="span12 home-search-head">
+                                &nbsp;
+                            </div>
+                        </div>
+                        <div class="row-fluid search-div">
+                            <div class="span1">&nbsp;</div>
+                            <div class="span8">
+                                <input id="search-bar" data-bind="value: search" placeholder='Free text search. Example - cable*'></input>
+                            </div>
+                            <div class="span3">
+                                <button id="search-button">Search</button>
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span3">
+                                &nbsp;
+                            </div>
+                            <div class="span6">
+                                <div align="center" class="home-search-blurb">
+                                    <div>Learn how to use our</div>
+                                    <div>data discovery tool</div>
+                                    <button>Guided Tour</button>
+                                </div>
+                            </div>
+                            <div class="span3">
+                                &nbsp;
+                            </div>
+                        </div>
                     </div>
-                    <div class="span4 wcga-rdf-content">
+                    <div class="span4">             <!-- category box -->
+                        <div class="row-fluid">
+                            <div class="span12 home-search-head">
+                                <p>Browse by Category</p>
+                            </div>
+                        </div>
+                        <div class="row-fluid wcga-rdf-content">
+                            <div class="span12" style="height: 178px;">
+                                &nbsp;
+                            </div>
+                        </div>
                     </div>
-                    <div class="span4 wcga-rdf-content">
+                    <div class="span4">    <!-- location box -->
+                        <div class="row-fluid">
+                            <div class="span12 home-search-head">
+                                <p>Browse by Location</p>
+                            </div>
+                        </div>
                         <div class="row-fluid">
                             <div id="map" class="span12 wcga-rdf-content">
                             </div>
@@ -117,8 +163,10 @@
                 </div>
                 <div class="row-fluid">         <!-- row 4 -->
                     <div class="span6 wcga-rdf-content">
+                        <h3>Contributors</h3>
                     </div>
                     <div class="span6 wcga-rdf-content">
+                        <h3>Data Priorities</h3>
                     </div>
                 </div>          <!-- close content row -->
                 <hr>

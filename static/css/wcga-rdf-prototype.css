@@ -98,6 +98,30 @@ h6 { font-weight: normal; }
     width: 170px !important;
 }
 
+.home-carousel-blurb {
+    text-align: justify;
+    margin: 0 auto !important;
+    width: 90% !important;
+}
+
+.home-search-blurb {
+    width: 145px; 
+    margin-top: 25px;
+}
+
+.home-search-blurb button {
+    margin-top: 10px;
+}
+
+.home-search-head {
+    height: 25px;
+}
+
+.home-search-head p{
+    margin-top: 5%;
+    margin-bottom:0;
+}
+
 .search-div {
     margin-top: 10px;
 }
