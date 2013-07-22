@@ -122,6 +122,17 @@ h6 { font-weight: normal; }
     margin-bottom:0;
 }
 
+#home-num-found {
+    font-size: 1.5em;
+    color: #888888;
+    margin-right: 5px;
+}
+
+#home-registered-text {
+    margin: 30px auto 0 0;
+    font-size: 1.3em;
+}
+
 .search-div {
     margin-top: 10px;
 }
