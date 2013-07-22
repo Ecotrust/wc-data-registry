@@ -35,7 +35,7 @@ app.submit = function () {
 }
 
 $(document).ready(function(){
-    $("button").click(app.submit);
+    $("#search-button").click(app.submit);
     $("#search-bar").on('keypress', function(e){
         if (e.keyCode == 13){
             e.preventDefault();
