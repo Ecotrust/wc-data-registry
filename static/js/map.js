@@ -82,7 +82,7 @@ function updateMap(e) {
     app.viewModel.useBb(true);
     map.addLayer(marker);
     clearControl._container.hidden = false;
-    app.runQuery(app.defaultQueryCallback);
+    app.querySolr(app.submit);
 }
 
 function init() {
