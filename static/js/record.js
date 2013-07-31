@@ -32,66 +32,52 @@ function load_record() {
 
     if (getURLParameter('id')) {
         app.viewModel.record_id(getURLParameter('id'));
-        app.viewModel.api_addr(gp_url + "/rest/document?id=" + app.viewModel.record_id());
-        getRecord(app.viewModel.record_id());
+        // app.viewModel.api_addr(gp_url + "/rest/document?id=" + app.viewModel.record_id());
+        getSolrRecord(app.viewModel.record_id());
+        getGPRecord(app.viewModel.record_id());
+        app.viewModel.api_addr(solr_url + "q=id:" + app.viewModel.record_id().replace(/\W/g, '').toLowerCase() + "&wt=json&indent=true");
     }
 }
 
-function querySolr(q, fq, fl, wt, callback) {
-    var mincount = 1;
-    //Cannot figure out how to search multiple facets with jquery ajax syntax. Using for loop instead.
+function getSolrRecord(id){
+    var rec_id = id;
     var url = solr_url;
-    for (var i = 0; i<facets.length; i++) {
-        url = url + 'facet.field=' + facets[i] + '&facet.mincount=' + mincount + '&';
-    }
-
     $.ajax({
         url: url,
         data: {
-            'start': app.viewModel.startIndex(),
-            'rows': app.viewModel.displayRows(),
-            'wt':wt, 
-            'q':q, 
-            'fq': fq,
-            'fl':fl,
-            'facet':true
+            'q': "id:" + rec_id.replace(/\W/g, '').toLowerCase(),
+            'wt':'json'
         },
-        dataType: 'jsonp',
+        dataType: 'jsonp',  
         jsonp: 'json.wrf',
-        success: callback
+        success: function(raw_response){
+            var response = raw_response.response.docs[0];
+            app.viewModel.record_id(response.id);
+            app.viewModel.record_title(response.title);
+            app.viewModel.record_abstract(response.description);
+            // app.viewModel.record_updated(Date.parseExact(response["sys.src.item.lastmodified_tdt"].slice(0,-5).replace("T", " "), "yyyy-mm-dd HH:mm:ss").toString("M/d/yyyy hh:mm tt"));
+                // The tenths, hundredths, etc... of a second mess with datejs. If we call both Solr & GP then GP is easier to parse.
+        }
     });
 }
 
-function getRecord(id){
+function getGPRecord(id){
     var rec_id = id;
     var url = gp_url + '/rest/document';
     $.ajax({
         url: url,
         data: {
             'id': rec_id,
-            'f':'pjson'
+            'f': 'pjson'
         },
-        dataType: 'json',  
+        dataType: 'json',
         success: function(raw_response){
             var response = raw_response.records[0];
-            app.viewModel.record_id(response.id);
-            app.viewModel.record_title(response.title);
-            app.viewModel.record_abstract(response.summary);
             app.viewModel.record_updated(Date.parse(response.updated).toString("M/d/yyyy hh:mm tt"));
             app.viewModel.record_bbox(response.bbox);
             showBbox();
         }
     });
-}
-
-//FROM: http://stackoverflow.com/a/679937
-function isEmpty(obj) {
-    for(var prop in obj) {
-        if(obj.hasOwnProperty(prop))
-            return false;
-    }
-
-    return true;
 }
 
 //FROM: http://stackoverflow.com/a/8764051
