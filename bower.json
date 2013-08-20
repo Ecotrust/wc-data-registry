@@ -21,7 +21,8 @@
     "underscore": "1.5.1",
     "angular-sanitize": "1.0.7",
     "angular-resource": "1.0.7",
-    "angular-cookies": "1.0.7"
+    "angular-cookies": "1.0.7",
+    "bootstrap": "2.3.2"
   },
   "devDependencies": {
   }

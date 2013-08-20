@@ -1,0 +1,25 @@
+---
+---
+
+@blue: #0070cf;
+@red: #ff3817;
+@green1: #baba27;
+@green2: #9ec73d;
+@lightGrey: #a6a6a6;
+@darkGrey: #4d4d4f;
+@nearlyBlack: #332e1f;
+
+
+.box-shadow(@style, @c) when (iscolor(@c)) {
+  box-shadow:         @style @c;
+  -webkit-box-shadow: @style @c;
+  -moz-box-shadow:    @style @c;
+}
+.box-shadow(@style, @alpha: 50%) when (isnumber(@alpha)) {
+  .box-shadow(@style, rgba(0, 0, 0, @alpha));
+}
+.box { 
+  color: saturate(@blue, 5%);
+  border-color: lighten(@blue, 30%);
+  div { .box-shadow(0 0 5px, 30%) }
+}
