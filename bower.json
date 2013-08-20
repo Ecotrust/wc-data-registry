@@ -1,0 +1,28 @@
+{
+  "name": "wc-data-registry",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Ecotrust/wc-data-registry",
+  "authors": [
+    "Tim Glaser <tim.glaser@ecotrust.org>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "site_raw/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "2.0.3",
+    "angular": "1.0.7",
+    "json3": "3.2.5",
+    "es5-shim": "2.1.0",
+    "underscore": "1.5.1",
+    "angular-sanitize": "1.0.7",
+    "angular-resource": "1.0.7",
+    "angular-cookies": "1.0.7"
+  },
+  "devDependencies": {
+  }
+}
