@@ -1,5 +1,11 @@
-node_modules
-dist
-.tmp
-.sass-cache
-app/bower_components
+_site/*
+_site_generated/*
+site_raw/bower_components/*
+
+Thumbs.db
+.DS_Store
+
+*~
+.rbenv-version
+.rvmrc
+
