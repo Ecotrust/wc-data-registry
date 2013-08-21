@@ -4,12 +4,8 @@ title: Home
 permalink: /
 ---
 
-<div id="home">
-
-  <h1>Blog Posts</h1>
-  <ul class="posts">
-    {% for page in site.pages %}
-      <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-    {% endfor %}
-  </ul>
+<div id="home" ng-controller="HomeCtrl">
+	{% raw %}
+	{{ homeContent }}
+	{% endraw %}
 </div>

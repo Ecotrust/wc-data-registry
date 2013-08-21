@@ -22,7 +22,8 @@
     "angular-resource": "1.0.7",
     "angular-cookies": "1.0.7",
     "bootstrap": "2.3.2",
-    "font-awesome": "3.2.1"
+    "font-awesome": "3.2.1",
+    "respond": "1.2.0"
   },
   "devDependencies": {
   }

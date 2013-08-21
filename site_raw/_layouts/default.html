@@ -9,19 +9,25 @@
     <title>West Coast Ocean Data Portal | {{ page.title }}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <!--[if lt IE 8]>
+      <link rel="stylesheet" href="/assets/css/ie7.css">
+    <![endif]-->
   </head>
-  <body ng-app="wcDataRegistryApp">
+  <body id="ng-app" ng-app>
     <!--[if lt IE 7]>
       <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
     <![endif]-->
 
     <!--[if lt IE 9]>
-      <script src="bower_components/es5-shim/es5-shim.js"></script>
-      <script src="bower_components/json3/lib/json3.min.js"></script>
+      <script src="/assets/js/ie8.js"></script>
     <![endif]-->
 
-    <div class="container" ng-view></div>
+    <div class="container">
+
+      {{ content }}
+
+    </div>
 
     <script>
       var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
@@ -29,6 +35,6 @@
       g.src='//www.google-analytics.com/ga.js';
       s.parentNode.insertBefore(g,s)}(document,'script'));
     </script>
-    <script src="js/all.js"></script>
-</body>
+    <script src="/assets/js/all.js"></script>
+  </body>
 </html>
