@@ -1,6 +1,3 @@
----
----
-
 @blue: #0070cf;
 @red: #ff3817;
 @green1: #baba27;
@@ -18,7 +15,7 @@
 .box-shadow(@style, @alpha: 50%) when (isnumber(@alpha)) {
   .box-shadow(@style, rgba(0, 0, 0, @alpha));
 }
-.box { 
+.box {
   color: saturate(@blue, 5%);
   border-color: lighten(@blue, 30%);
   div { .box-shadow(0 0 5px, 30%) }

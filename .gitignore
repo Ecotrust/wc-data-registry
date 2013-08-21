@@ -1,6 +1,6 @@
 _site/*
 _site_generated/*
-site_raw/bower_components/*
+site_raw/_includes/bower_components/*
 
 Thumbs.db
 .DS_Store
