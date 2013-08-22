@@ -1,16 +1,16 @@
 <header class="container">
 	<div class="row">
-		<div class="span5">
+		<div class="span4">
 			<a href="/"><img class="svg svg-link" src="/assets/img/WCODP_web_logo-15.svg"></a>
 		</div>
-		<div class="span7">
+		<div class="span8">
 			<div class="clearfix">
 				<span class="pull-right description subdued">A project of the West Coast Governors Alliance on Ocean Health</span>
 			</div>
 			<div class="top-nav">
 				<ul class="unstyled inline">
 					{% for link in site.links %}
-						{% if link == page.active %}    
+						{% if link == page.active %}
 						<li class="active">
 						{% else %}
 						<li>

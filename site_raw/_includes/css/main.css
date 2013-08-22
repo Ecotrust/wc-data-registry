@@ -63,6 +63,7 @@ header .description {
 .top-nav {
   border-top: #a6a6a6 2px solid;
   border-bottom: #a6a6a6 2px solid;
+  margin-left: 20px;
 }
 .top-nav ul {
   margin-top: 18px;
@@ -71,7 +72,7 @@ header .description {
   position: relative;
 }
 .top-nav li {
-  margin-left: 50px;
+  margin-left: 70px;
 }
 .top-nav li:first-of-type {
   margin-left: 0;
@@ -90,6 +91,7 @@ header .description {
  * f o o t e r
  */
 footer {
+  margin-top: 30px;
   border-top: #4d4d4f 1px solid;
   padding-top: 30px;
   font-size: 12px;
