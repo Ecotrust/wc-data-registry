@@ -10,7 +10,7 @@
  * Begin site scripts
  */
 {% include js/controllers/HomeCtrl.js %}
-{% include js/controllers/SearchCtrl.js %}
+{% include js/controllers/DiscoverCtrl.js %}
 
 /*
  * End site scripts

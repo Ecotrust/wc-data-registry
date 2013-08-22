@@ -1,6 +1,8 @@
 source: site_raw
 destination: _site_generated
 
+links: ["discover", "connect", "inform", "about"]
+
 name: West Coast Ocean Data Portal
 markdown: redcarpet
 pygments: true

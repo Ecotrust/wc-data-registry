@@ -1,3 +1,9 @@
+
+
+//
+//  V A R I A B L E S
+//
+
 @blue: #0070cf;
 @red: #ff3817;
 @green1: #baba27;
@@ -5,6 +11,140 @@
 @lightGrey: #a6a6a6;
 @darkGrey: #4d4d4f;
 @nearlyBlack: #332e1f;
+
+@smallestFont: 11px;
+
+
+
+//
+//  M I X I N S
+//
+
+.fontface(@generalName, @derivativeName, @weight, @style) {
+        font-family: '@{generalName}';
+        src: url('../fonts/@{generalName}/@{derivativeName}-webfont.eot');
+        src: url('../fonts/@{generalName}/@{derivativeName}-webfont.eot?#iefix') format('embedded-opentype'),
+             url('../fonts/@{generalName}/@{derivativeName}-webfont.woff') format('woff'),
+             url('../fonts/@{generalName}/@{derivativeName}-webfont.ttf') format('truetype'),
+             url('../fonts/@{generalName}/@{derivativeName}-webfont.svg#@{derivativeName}') format('svg');
+        font-weight: @weight;
+        font-style: @style;
+}
+
+.use-sans-serif-font() {
+    font-family: OpenSans, "Courier New", sans-serif;
+}
+
+.use-monospaced-font() {
+    font-family: PtMono, "Courier New", Courier, monospace;
+}
+
+
+
+//
+//  S T Y L E S H E E T
+//
+
+@font-face {
+        .fontface('OpenSans', 'OpenSans-Italic', 'normal', 'italic');
+        }
+
+@font-face {
+        .fontface('OpenSans', 'OpenSans-Bold', 'bold', 'normal');
+        }
+
+@font-face {
+        .fontface('OpenSans', 'OpenSans-Regular', 'normal', 'normal');
+        }
+
+@font-face {
+        .fontface('PtMono', 'PtMono-Bold', 'bold', 'normal');
+        }
+
+@font-face {
+        .fontface('PtMono', 'PtMono-Regular', 'normal', 'normal');
+        }
+
+* {
+  .use-monospaced-font();
+  font-style: normal;
+  font-weight: normal;
+}
+
+p {
+  .use-sans-serif-font();
+  font-style: normal;
+  font-weight: normal;
+}
+
+.subdued {
+  color: @lightGrey;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a.subdued:hover {
+  color: @darkGrey;
+}
+
+
+/*
+ * h e a d e r
+ */
+header .description {
+  font-size: @smallestFont;
+  margin-top: 42px;
+  margin-bottom: 6px;
+}
+
+.top-nav {
+	border-top: @lightGrey 2px solid;
+	border-bottom: @lightGrey 2px solid;
+}
+
+.top-nav ul {
+  margin-top: 18px;
+  margin-bottom: 18px;
+  font-size: 17px;
+  position: relative;
+}
+
+.top-nav li {
+  margin-left: 50px;
+}
+
+.top-nav li:first-of-type {
+  margin-left: 0;
+}
+
+.top-nav a {
+  color: @nearlyBlack;
+  text-transform: uppercase;
+}
+
+.top-nav a:hover {
+  color: @nearlyBlack;
+}
+
+.top-nav li.active {
+  text-decoration: underline;
+}
+
+
+/*
+ * f o o t e r
+ */
+footer {
+  border-top: @darkGrey 1px solid;
+  padding-top: 30px;
+  font-size: 12px;
+}
+footer a, footer a:hover {
+  color: @green1;
+}
+
 
 
 .box-shadow(@style, @c) when (iscolor(@c)) {
