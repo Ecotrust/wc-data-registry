@@ -1,7 +1,6 @@
-'use strict';
 
-var HomeCtrl = ['$scope', '$http', function($scope, $http) { 
+angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', function($scope, $http) { 
 
 	$scope.homeContent = "home content";
 
-}];
+}]);

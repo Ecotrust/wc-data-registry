@@ -18,6 +18,9 @@
 /**
  * Begin site scripts
  */
+angular.module('wcodpApp', []);
+{% include js/directives/Filters.js %}
+{% include js/directives/Results.js %}
 {% include js/controllers/HomeCtrl.js %}
 {% include js/controllers/DiscoverCtrl.js %}
 /*
