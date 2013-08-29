@@ -1,17 +1,24 @@
 
 <div>
 
-	<!-- P A G I N A T I O N -->	
 	<div class="result-controls clearfix">
 		<div class="pull-right">
+			<!-- P A G I N A T I O N -->	
 			<span class="pagination">
 				PAGE
 				<a class="subdued" href="">1</a>
 				<a class="subdued active" href="">2</a>
 				<a class="subdued" href="">3</a>
 			</span>
-			<span>
-				<a class="subdued" href="">SHOW <i class="icon-angle-down"></i></a>
+
+			<!-- R O W S   P E R   P A G E  -->	
+			<span class="dropdown">
+				<a class="subdued dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">SHOW <i class="icon-angle-down"></i></a>
+				<ul class="dropdown-menu">
+					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 5">5 per page</a></li>
+					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 15">15 per page</a></li>
+					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 50">50 per page</a></li>
+				</ul>
 			</span>
 			<span>
 				<a class="subdued" href="">ORDER BY <i class="icon-angle-down"></i></a>

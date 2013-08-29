@@ -10,10 +10,10 @@ function() {
         scope: {
             data: "=",
             numFound: "=",
-            filterValues: "="
+            filterValues: "=",
+            resultsPerPage: "="
         },
         link: function postLink(scope, element, attrs) {
-
             scope.rootElement = element;
 
             scope.result_clicked = function($event) {

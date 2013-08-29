@@ -4,15 +4,19 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.filterValues = {};
 	$scope.resultsData = {};
 	$scope.numFound = 0;
+	$scope.resultsPerPage = 5;
+	$scope.startIndex = 0;
 
 	$scope.onLoad = function () {
 		// Populate filter values from parameters in the URL.
 		var initialFilterValues = {
 			searchText: $location.search().text,
 		};
-		//$timeout(function() { 
 		$scope.filterValues = initialFilterValues;
-		//}, 1000);
+
+		$scope.$watch('resultsPerPage', function (newValue) {
+			$scope.runQuery($scope.filterValues);
+		});
 	};
 
 	$scope.runQuery = function (filterVals) {
@@ -33,7 +37,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		// Build query string
 		query = query + $.param({
 			'start': 0,
-			'rows': 5,
+			'rows': $scope.resultsPerPage,
 			'wt': 'json', 
 			'q': $scope.getSearchTextForQuery() + $scope.getKeywords(filterValues),
 			'fq': '',
