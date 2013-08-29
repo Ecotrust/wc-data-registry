@@ -3,8 +3,7 @@
 /**
  * Begin dependencies scripts
  */
-{% include bower_components/jquery/jquery.min.js %}
-{% include bower_components/angular/angular.js %}
+{% include bower_components/underscore/underscore-min.js %}
 
 
 {% include bower_components/bootstrap/js/bootstrap-transition.js %}

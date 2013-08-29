@@ -10,17 +10,34 @@ active: discover
 	<div class="row">
 		
 		<div filters 
-			on-query-finished="runQuery()" 
-			filter-selections="filterSelections"
+			on-filters-changed="runQuery(filterVals)"
+			initial-filter-values="filterValues"
 			class="span4" 
 			id="filters">
 		</div>
 
 		<div results
+			ng-show="numFound > 0"
 			data="resultsData"
-			filter-selections="filterSelections"
+			num-found="numFound"
+			filter-values="filterValues"
 			class="span8"
 			id="results">
+		</div>
+
+		<div ng-hide="numFound > 0"
+			ng-animate="'animate'"
+			class="span8"
+			id="discover-landing">
+			<p>
+				Welcome to the Data Portal. <span class="highlight">250</span> registered resources are available through the portal.
+			</p>
+			<p>
+				Search the resources by entering your own terms into the search bar <i class="icon-search"></i> or by using the filtering tools provided to browse. You can filter by any combination of <i class="icon-map-marker"></i> location, <i class="icon-th"></i> category, <i class="icon-tags"></i> tag and <i class="icon-file-alt"></i> format.
+			</p>
+			<p>
+				<i class="icon-eye-open blue"></i>&nbsp;&nbsp;Looking for more information? Take our guided tour of the data portal.
+			</p>
 		</div>
 
 	</div>

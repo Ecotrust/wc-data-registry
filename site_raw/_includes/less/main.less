@@ -111,7 +111,7 @@
   font-weight: normal;
 }
 
-p {
+p, p span {
   .use-sans-serif-font();
   font-style: normal;
   font-weight: normal;
@@ -298,17 +298,21 @@ p.results-summary strong {
 }
 
 .result {
+  display: block;
   position: relative;
   margin-left: @topNavLeftMargin;
   padding-top: 13px;
   padding-bottom: 10px;
   border-top: @resultBorderStyle;
 }
+.result:hover {
+  cursor: pointer;
+  background-color: fadeout(@blue, 95%);
+}
 
 .result-info {
   width: 75%;
   float: left;
-  //padding-right: 20px;
 }
 
 .result-links {
@@ -413,3 +417,52 @@ p.results-summary strong {
   margin-bottom: 50px;
 }
 
+/*
+ * d i s c o v e r   l a n d i n g
+ */
+#discover-landing {
+  margin-top: 44px;
+}
+
+#discover-landing p {
+  margin-left: @topNavLeftMargin;
+  margin-bottom: 20px;
+  font-weight: 200;
+  font-size: 26px;
+  line-height: 42px;
+  color: @nearlyBlack;
+}
+
+#discover-landing p .highlight {
+  .use-monospaced-font();
+  color: @green1;
+  font-weight: 700;
+}
+#discover-landing p i {
+  color: @green1;  
+}
+#discover-landing p i.blue {
+  color: @blue;
+}
+
+// fade animation
+.animate-enter, 
+.animate-leave { 
+    -webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    -o-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+    position: relative;
+    display: block;
+} 
+ 
+.animate-leave.animate-leave-active,
+.animate-enter {
+    opacity: 0;
+}        
+ 
+.animate-enter.animate-enter-active,
+.animate-leave {
+    opacity: 1;
+}

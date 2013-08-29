@@ -1,6 +1,6 @@
 
 <div>
-	
+
 	<!-- P A G I N A T I O N -->	
 	<div class="result-controls clearfix">
 		<div class="pull-right">
@@ -20,42 +20,32 @@
 	</div>
 
 	<!-- R E S U L T S -->
-	<p class="results-summary"><strong>78</strong> results found for <strong>location, category A, category B, tag A</strong> & <strong>tag B.</strong></p>
+	<p class="results-summary">
+		<span ng-hide="filterValues.location">
+			<strong>{{numFound}}</strong> results found.
+		</span>
+		<span ng-show="filterValues.location">
+			<strong>{{numFound}}</strong> results found for <strong>location.</strong>
+		</span>
+	</p>
 	
-	<div class="result clearfix result-closed">
+	<div
+		ng-click="result_clicked($event)"
+		class="result clearfix result-closed" 
+		ng-animate="'animate'"
+		ng-repeat="result in data">
 		<a class="result-close-link" href=""><i class="icon-remove-sign"></i></a>
 		<div class="result-info">
 			<div class="result-title">
-				resource title one second line as needed
+				{{result.title[0]}}
 			</div>
 			<p class="result-description">
-				Description of item goes here. Description of item goes here. "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-			</p>				
+				{{result.description}}
+			</p>
 		</div>
 		<div class="result-links">
 			<div class="subdued date-label">UPDATED</div>
-			<div class='date'>11/24/12</div>
-			<ul class="unstyled links">
-				<li><a href="">JSON</a><i class="icon-info-sign"></i></li>
-				<li><a href="">CSV</a><i class="icon-info-sign"></i></li>
-				<li><a href="">KML</a><i class="icon-info-sign"></i></li>
-			</ul>
-		</div>
-	</div>
-
-	<div class="result clearfix result-opened">
-		<a class="result-close-link" href=""><i class="icon-remove-sign"></i></a>
-		<div class="result-info">
-			<div class="result-title">
-				resource title one second line as needed
-			</div>
-			<p class="result-description">
-				Description of item goes here. Description of item goes here. "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-			</p>				
-		</div>
-		<div class="result-links">
-			<div class="subdued date-label">UPDATED</div>
-			<div class='date'>11/24/12</div>
+			<div class='date'>{{ result["sys.src.item.lastmodified_tdt"] | date:'shortDate' }}</div>
 			<ul class="unstyled links">
 				<li><a href="">JSON</a><i class="icon-info-sign"></i></li>
 				<li><a href="">CSV</a><i class="icon-info-sign"></i></li>
@@ -78,27 +68,6 @@
 				<dt>state</dt>
 				<dd>active</dd>
 			</dl>						
-		</div>
-	</div>
-
-	<div class="result clearfix result-closed">
-		<a class="result-close-link" href=""><i class="icon-remove-sign"></i></a>
-		<div class="result-info">
-			<div class="result-title">
-				resource title one second line as needed
-			</div>
-			<p class="result-description">
-				Description of item goes here. Description of item goes here. "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-			</p>				
-		</div>
-		<div class="result-links">
-			<div class="subdued date-label">UPDATED</div>
-			<div class='date'>11/24/12</div>
-			<ul class="unstyled links">
-				<li><a href="">JSON</a><i class="icon-info-sign"></i></li>
-				<li><a href="">CSV</a><i class="icon-info-sign"></i></li>
-				<li><a href="">KML</a><i class="icon-info-sign"></i></li>
-			</ul>
 		</div>
 	</div>
 

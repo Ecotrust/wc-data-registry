@@ -72,7 +72,8 @@ input {
   font-style: normal;
   font-weight: normal;
 }
-p {
+p,
+p span {
   font-family: OpenSans, sans-serif;
   font-style: normal;
   font-weight: normal;
@@ -237,11 +238,16 @@ p.results-summary strong {
   color: #0070cf;
 }
 .result {
+  display: block;
   position: relative;
   margin-left: 20px;
   padding-top: 13px;
   padding-bottom: 10px;
   border-top: 1px dashed #4d4d4f;
+}
+.result:hover {
+  cursor: pointer;
+  background-color: rgba(0, 112, 207, 0.050000000000000044);
 }
 .result-info {
   width: 75%;
@@ -337,4 +343,47 @@ p.results-summary strong {
 }
 .result-opened .result-description {
   margin-bottom: 50px;
+}
+/*
+ * d i s c o v e r   l a n d i n g
+ */
+#discover-landing {
+  margin-top: 44px;
+}
+#discover-landing p {
+  margin-left: 20px;
+  margin-bottom: 20px;
+  font-weight: 200;
+  font-size: 26px;
+  line-height: 42px;
+  color: #332e1f;
+}
+#discover-landing p .highlight {
+  font-family: PtMono, "Courier New", Courier, monospace;
+  color: #baba27;
+  font-weight: 700;
+}
+#discover-landing p i {
+  color: #baba27;
+}
+#discover-landing p i.blue {
+  color: #0070cf;
+}
+.animate-enter,
+.animate-leave {
+  -webkit-transition: 400ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  -moz-transition: 400ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  -ms-transition: 400ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  -o-transition: 400ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  transition: 400ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  position: relative;
+  display: block;
+}
+.animate-leave.animate-leave-active,
+.animate-enter {
+  opacity: 0;
+}
+.animate-enter.animate-enter-active,
+.animate-leave {
+  opacity: 1;
 }
