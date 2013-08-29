@@ -77,6 +77,8 @@ p span {
   font-family: OpenSans, sans-serif;
   font-style: normal;
   font-weight: normal;
+  word-wrap: break-word;
+  /* IE 5+ */
 }
 .subdued {
   color: #a6a6a6;

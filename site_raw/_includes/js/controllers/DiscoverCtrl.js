@@ -37,7 +37,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 			'wt': 'json', 
 			'q': $scope.getSearchTextForQuery() + $scope.getKeywords(filterValues),
 			'fq': '',
-			'fl': 'id, title, description, originator, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
+			'fl': 'id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
 			'facet': true
 		});
 
