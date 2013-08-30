@@ -20,7 +20,7 @@
 // this is shared with items in the search results
 @topNavLeftMargin: 20px;
 
-@resultBorderStyle: 1px dashed @darkGrey;
+@resultBorderStyle: 1px dashed @lightGrey;
 
 //
 //  M I X I N S
@@ -209,6 +209,13 @@ footer a, footer a:hover {
   margin-left: 20px;
   font-size: @smallestFontSize;
 }
+.pagination a,
+.pagination span, {
+  float: left;
+  margin-right: 8px;
+  margin-top: 5px;
+  line-height: 11px;
+}
 .pagination a.active {
   border-bottom: @blue 2px solid;
 }
@@ -313,6 +320,11 @@ p.results-summary strong {
   padding-bottom: 10px;
   border-top: @resultBorderStyle;
 }
+
+.result:last-child {
+  border-bottom: @resultBorderStyle;
+}
+
 .result:hover {
   cursor: pointer;
   background-color: fadeout(@blue, 95%);
@@ -423,6 +435,11 @@ p.results-summary strong {
 }
 .result-opened .result-description {
   margin-bottom: 50px;
+}
+
+.results-end {
+  font-size: @smallestFontSize;
+  margin-top: 20px;
 }
 
 /*

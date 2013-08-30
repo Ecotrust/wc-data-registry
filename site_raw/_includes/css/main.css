@@ -147,6 +147,13 @@ footer a:hover {
   margin-left: 20px;
   font-size: 11px;
 }
+.pagination a,
+.pagination span {
+  float: left;
+  margin-right: 8px;
+  margin-top: 5px;
+  line-height: 11px;
+}
 .pagination a.active {
   border-bottom: #0070cf 2px solid;
 }
@@ -245,7 +252,10 @@ p.results-summary strong {
   margin-left: 20px;
   padding-top: 13px;
   padding-bottom: 10px;
-  border-top: 1px dashed #4d4d4f;
+  border-top: 1px dashed #a6a6a6;
+}
+.result:last-child {
+  border-bottom: 1px dashed #a6a6a6;
 }
 .result:hover {
   cursor: pointer;
@@ -258,7 +268,7 @@ p.results-summary strong {
 .result-links {
   width: 20%;
   float: right;
-  border-left: 1px dashed #4d4d4f;
+  border-left: 1px dashed #a6a6a6;
   padding-left: 3%;
 }
 .result-info > .result-title {
@@ -345,6 +355,10 @@ p.results-summary strong {
 }
 .result-opened .result-description {
   margin-bottom: 50px;
+}
+.results-end {
+  font-size: 11px;
+  margin-top: 20px;
 }
 /*
  * d i s c o v e r   l a n d i n g

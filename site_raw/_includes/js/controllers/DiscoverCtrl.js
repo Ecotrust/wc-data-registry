@@ -6,6 +6,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.numFound = 0;
 	$scope.resultsPerPage = 5;
 	$scope.startIndex = 0;
+	$scope.pageIndex = 1;
 
 	$scope.onLoad = function () {
 		// Populate filter values from parameters in the URL.
@@ -15,11 +16,17 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		$scope.filterValues = initialFilterValues;
 
 		$scope.$watch('resultsPerPage', function (newValue) {
-			$scope.runQuery($scope.filterValues);
+			$scope.runQuery($scope.filterValues, true);
 		});
+		$scope.watchPageIndex();
 	};
 
-	$scope.runQuery = function (filterVals) {
+	$scope.runQuery = function (filterVals, resetPagination) {
+		if (resetPagination) {
+			$scope.unwatchPageIndex();
+			$scope.pageIndex = 1;
+			$scope.watchPageIndex();
+		}
 		$scope.filterValues = filterVals;
 		$scope.querySolr($scope.filterValues, $scope.solrSuccess, $scope.solrFail);
 	};
@@ -36,7 +43,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 
 		// Build query string
 		query = query + $.param({
-			'start': 0,
+			'start': ($scope.pageIndex - 1) * $scope.resultsPerPage,
 			'rows': $scope.resultsPerPage,
 			'wt': 'json', 
 			'q': $scope.getSearchTextForQuery() + $scope.getKeywords(filterValues),
@@ -104,6 +111,18 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		// } else {
 		// 	app.viewModel.fq_query("");
 		// }		
+	};
+
+	$scope.watchPageIndex = function () {
+		$scope.unwatchPageIndex_internal = $scope.$watch('pageIndex', function (newValue) {
+			$scope.runQuery($scope.filterValues, false);
+		});		
+	};
+
+	$scope.unwatchPageIndex = function () {
+		if ($scope.unwatchPageIndex_internal) {
+			$scope.unwatchPageIndex_internal();
+		}
 	};
 
 	$scope.onLoad();
