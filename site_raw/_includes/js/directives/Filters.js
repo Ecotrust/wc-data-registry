@@ -11,6 +11,10 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
             initialFilterValues: "="
         },
         link: function postLink(scope, element, attrs) {
+            scope.isLocationCollapsed = true;
+            scope.isCategoryCollapsed = true;
+            scope.isTagsCollapsed = true;
+            scope.isFormatsCollapsed = true;
 
             scope.init = function () {
                 // Set initial filter values.
@@ -27,10 +31,10 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
             scope.runningTimeout = false;
             scope.initialWatchSkipped = false;
             scope.$watch('searchText', function (newValue) {
-                if (!scope.initialWatchSkipped) {
-                    scope.initialWatchSkipped = true;
-                    return;
-                }
+                //if (!scope.initialWatchSkipped) {
+                //    scope.initialWatchSkipped = true;
+                //    return;
+                //}
                 if (scope.runningTimeout) {
                     $timeout.cancel(scope.runningTimeout);
                     scope.runningTimeout = false;

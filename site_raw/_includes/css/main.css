@@ -78,13 +78,14 @@ p span {
   font-style: normal;
   font-weight: normal;
   word-wrap: break-word;
-  /* IE 5+ */
 }
 .subdued {
   color: #a6a6a6;
 }
-a:hover {
+a:hover,
+a:focus {
   text-decoration: none;
+  outline: none;
 }
 a.subdued:hover {
   color: #4d4d4f;
@@ -92,7 +93,7 @@ a.subdued:hover {
 /*
  * h e a d e r
  */
-header .description {
+.header .description {
   font-size: 11px;
   margin-top: 42px;
   margin-bottom: 6px;
@@ -111,7 +112,7 @@ header .description {
 .top-nav li {
   margin-left: 70px;
 }
-.top-nav li:first-of-type {
+.top-nav li:first-child {
   margin-left: 0;
 }
 .top-nav a {
@@ -127,14 +128,15 @@ header .description {
 /*
  * f o o t e r
  */
-footer {
+.footer {
   margin-top: 30px;
+  margin-bottom: 30px;
   border-top: #4d4d4f 1px solid;
   padding-top: 30px;
   font-size: 12px;
 }
-footer a,
-footer a:hover {
+.footer a,
+.footer a:hover {
   color: #baba27;
 }
 /*

@@ -115,22 +115,16 @@ p, p span {
   .use-sans-serif-font();
   font-style: normal;
   font-weight: normal;
-  //white-space: pre;           /* CSS 2.0 */
-  //white-space: pre-wrap;      /* CSS 2.1 */
-  //white-space: pre-line;      /* CSS 3.0 */
-  //white-space: -pre-wrap;     /* Opera 4-6 */
-  //white-space: -o-pre-wrap;   /* Opera 7 */
-  //white-space: -moz-pre-wrap; /* Mozilla */
-  //white-space: -hp-pre-wrap;  /* HP Printers */
-  word-wrap: break-word;      /* IE 5+ */  
+  word-wrap: break-word;
 }
 
 .subdued {
   color: @lightGrey;
 }
 
-a:hover {
+a:hover, a:focus {
   text-decoration: none;
+  outline: none;
 }
 
 a.subdued:hover {
@@ -142,7 +136,7 @@ a.subdued:hover {
  * h e a d e r
  */
 
-header .description {
+.header .description {
   font-size: @smallestFontSize;
   margin-top: 42px;
   margin-bottom: 6px;
@@ -165,7 +159,7 @@ header .description {
   margin-left: 70px;
 }
 
-.top-nav li:first-of-type {
+.top-nav li:first-child {
   margin-left: 0;
 }
 
@@ -187,13 +181,14 @@ header .description {
  * f o o t e r
  */
 
-footer {
+.footer {
   margin-top: 30px;
+  margin-bottom: 30px;
   border-top: @darkGrey 1px solid;
   padding-top: 30px;
   font-size: 12px;
 }
-footer a, footer a:hover {
+.footer a, .footer a:hover {
   color: @green1;
 }
 

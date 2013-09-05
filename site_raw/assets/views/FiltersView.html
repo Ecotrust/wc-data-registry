@@ -7,26 +7,26 @@
 	</div>
 
 	<!-- location filter -->
-	<a class="filter-group-toggle first" href="javascript:void(0)" data-toggle="collapse" data-target="#location-filter">
+	<a class="filter-group-toggle first" href="javascript:void(0)" ng-click="isLocationCollapsed = !isLocationCollapsed">
 		<div class="filter-group-label">
 			<i class="icon-map-marker subdued"></i>
 			Location 
 			<i class="icon-angle-right pull-right"></i>
 		</div>
 	</a>
-	<div id="location-filter" class="collapse filter-group-container">
+	<div collapse="isLocationCollapsed" id="location-filter" class="filter-group-container">
 		placeholder for a map
 	</div>
 
 	<!-- categories filter -->
-	<a class="filter-group-toggle" href="javascript:void(0)" data-toggle="collapse" data-target="#categories-filter">
+	<a class="filter-group-toggle" href="javascript:void(0)" ng-click="isCategoryCollapsed = !isCategoryCollapsed">
 		<div class="filter-group-label">
 			<i class="icon-th subdued"></i>
 			Categories
 			<i class="icon-angle-right pull-right"></i>
 		</div>
 	</a>
-	<div id="categories-filter" class="collapse filter-group-container">
+	<div collapse="isCategoryCollapsed" id="categories-filter" class="filter-group-container">
 		<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
 		<ul class="unstyled filter-options">
 			<li><i class="icon-check"></i>Human Use <strong>00</strong></li>
@@ -36,14 +36,14 @@
 	</div>
 
 	<!-- tags filter -->
-	<a class="filter-group-toggle" href="javascript:void(0)" data-toggle="collapse" data-target="#tags-filter">
+	<a class="filter-group-toggle" href="javascript:void(0)" ng-click="isTagsCollapsed = !isTagsCollapsed">
 		<div class="filter-group-label">
 			<i class="icon-tags subdued"></i>
 			Tags
 			<i class="icon-angle-right pull-right"></i>
 		</div>
 	</a>
-	<div id="tags-filter" class="collapse filter-group-container">
+	<div collapse="isTagsCollapsed" id="tags-filter" class="filter-group-container">
 		<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
 		<ul class="unstyled filter-options">
 			<li><i class="icon-check"></i>Climate Change <strong>00</strong></li>
@@ -59,14 +59,14 @@
 
 
 	<!-- formats filter -->
-	<a class="filter-group-toggle" href="javascript:void(0)" data-toggle="collapse" data-target="#formats-filter">
+	<a class="filter-group-toggle" href="javascript:void(0)" ng-click="isFormatsCollapsed = !isFormatsCollapsed">
 		<div class="filter-group-label">
 			<i class="icon-file-alt subdued"></i>
 			Formats
 			<i class="icon-angle-right pull-right"></i>
 		</div>
 	</a>
-	<div id="formats-filter" class="collapse filter-group-container">
+	<div collapse="isFormatsCollapsed" id="formats-filter" class="filter-group-container">
 		<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
 		<ul class="unstyled filter-options">
 			<li><i class="icon-check-empty"></i>JSON <strong>00</strong></li>

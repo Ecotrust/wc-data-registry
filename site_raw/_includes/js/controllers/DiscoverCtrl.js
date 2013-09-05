@@ -1,6 +1,6 @@
 
 angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$location', '$timeout', function($scope, $http, $location, $timeout) { 
-	$scope.solrUrl = 'http://localhost:8082/solr/collection1/select?';
+	$scope.solrUrl = '/solr/collection1/select?';
 	$scope.filterValues = {};
 	$scope.resultsData = {};
 	$scope.numFound = 0;
@@ -28,41 +28,41 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 			$scope.watchPageIndex();
 		}
 		$scope.filterValues = filterVals;
-		$scope.querySolr($scope.filterValues, $scope.solrSuccess, $scope.solrFail);
+		$scope.querySolr($scope.filterValues);
 	};
 
-	$scope.querySolr = function (filterValues, successCallback, failCallback) {
-		var query = "";
+	$scope.querySolr = function (filterValues) {
+		var queryConfig = {},
+			facetFields = [], 
+			facetMinCounts = [],
+			facets = ['keywords'],
+			mincount = 1;
 			
-		// Facet summary
-		var facets = ['keywords'];
-		var mincount = 1;
-		for (var i = 0; i<facets.length; i++) {
-			query = query + 'facet.field=' + facets[i] + '&facet.mincount=' + mincount + '&';
-		}
-
-		// Build query string
-		query = query + $.param({
+		// Prep query string params.
+		_.each(facets, function (value) {
+			facetFields.push(value);
+			facetMinCounts.push(mincount);
+		});
+		queryConfig.params = {
 			'start': ($scope.pageIndex - 1) * $scope.resultsPerPage,
 			'rows': $scope.resultsPerPage,
 			'wt': 'json', 
 			'q': $scope.getSearchTextForQuery() + $scope.getKeywords(filterValues),
 			'fq': '',
 			'fl': 'id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
-			'facet': true
-		});
+			'facet': true,
+			'facet.field': facetFields,
+			'facet.mincount': facetMinCounts
+		};
 
-		var url = $scope.solrUrl + query;
-
-		$http.get(url).success(function (data, status, headers, config) {
-			console.log('^_^  Solr Success: ' + query);
+		// Execute query.
+		$http.get($scope.solrUrl, queryConfig).success(function (data, status, headers, config) {
 			$location
 				.search('text', $scope.getSearchText())
 				.replace();
 			$scope.resultsData = data.response.docs;
 			$scope.numFound = data.response.numFound;
 		}).error(function (data, status, headers, config) {
-			console.log(' >_<  Solr Fail');
 			$scope.resultsData = {};
 			$scope.numFound = 0;
 		});

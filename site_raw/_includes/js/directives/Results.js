@@ -1,6 +1,5 @@
 
-angular.module('wcodpApp').directive('results', 
-function() {
+angular.module('wcodpApp').directive('results', [function() {
 
     return {
         templateUrl: '/assets/views/ResultsView.html',
@@ -18,11 +17,14 @@ function() {
             scope.rootElement = element;
             scope.maxNumShown = 5;
 
-            scope.result_clicked = function($event) {
-                // Make all results non-active.
-                $(scope.rootElement).find('result').removeClass('result-opened').addClass('result-closed');
-                // Make just the clicked item active.
-                $($event.currentTarget).toggleClass('result-closed').toggleClass('result-opened');
+            scope.resultClicked = function($event) {
+                var closed = angular.element($event.currentTarget).hasClass('result-closed');
+                // Close all results.
+                scope.rootElement.find('.result').removeClass('result-opened').addClass('result-closed');
+                // Open the clicked result if it was previously closed.
+                if (closed) {
+                    angular.element($event.currentTarget).removeClass('result-closed').addClass('result-opened');
+                } 
             };
 
             scope.numPages = function () {
@@ -60,4 +62,4 @@ function() {
 
         }
     };
-});
+}]);

@@ -3,3 +3,13 @@
 {% include css/bootstrap.css %}
 {% include css/main.css %}
 
+.lt-ie9 .result:hover,
+.lt-ie9 .result-opened {
+	background-color: #f2f7fc;
+/* Not using IE alpha trick due to clear type getting disabled.
+  background: none;
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#0C0070CF,endColorstr=#0C0070CF);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#0C0070CF,endColorstr=#0C0070CF);
+  zoom: 1;*/
+}
+
