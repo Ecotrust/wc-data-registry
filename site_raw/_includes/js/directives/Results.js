@@ -19,12 +19,27 @@ angular.module('wcodpApp').directive('results', [function() {
 
             scope.resultClicked = function($event) {
                 var closed = angular.element($event.currentTarget).hasClass('result-closed');
-                // Close all results.
-                scope.rootElement.find('.result').removeClass('result-opened').addClass('result-closed');
-                // Open the clicked result if it was previously closed.
                 if (closed) {
-                    angular.element($event.currentTarget).removeClass('result-closed').addClass('result-opened');
-                } 
+                    // Close all results.
+                    scope.rootElement.find('.result')
+                        .removeClass('result-opened')
+                        .addClass('result-closed');
+                    // Open the clicked result.
+                    angular.element($event.currentTarget)
+                        .removeClass('result-closed')
+                        .addClass('result-opened');
+                }
+            };
+
+            scope.resultCloseClicked = function ($event) {
+                angular.element($event.currentTarget).parent()
+                    .removeClass('result-opened')
+                    .addClass('result-closed');
+                // Prevent bubbling event to the result.
+                if ($event.stopPropagation) $event.stopPropagation();
+                if ($event.preventDefault) $event.preventDefault();
+                $event.cancelBubble = true;
+                $event.returnValue = false;
             };
 
             scope.numPages = function () {

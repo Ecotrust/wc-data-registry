@@ -320,11 +320,6 @@ p.results-summary strong {
   border-bottom: @resultBorderStyle;
 }
 
-.result:hover {
-  cursor: pointer;
-  background-color: fadeout(@blue, 95%);
-}
-
 .result-info {
   width: 75%;
   float: left;
@@ -408,6 +403,15 @@ p.results-summary strong {
 
 .result-close-link:hover {
   color: @darkGrey;
+}
+
+.result-closed:hover,
+.result-opened {
+  background-color: fadeout(@blue, 95%);
+}
+
+.result-closed:hover {
+  cursor: pointer;  
 }
 
 .result-opened {

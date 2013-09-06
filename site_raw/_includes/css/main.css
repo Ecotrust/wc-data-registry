@@ -259,10 +259,6 @@ p.results-summary strong {
 .result:last-child {
   border-bottom: 1px dashed #a6a6a6;
 }
-.result:hover {
-  cursor: pointer;
-  background-color: rgba(0, 112, 207, 0.050000000000000044);
-}
 .result-info {
   width: 75%;
   float: left;
@@ -336,6 +332,13 @@ p.results-summary strong {
 }
 .result-close-link:hover {
   color: #4d4d4f;
+}
+.result-closed:hover,
+.result-opened {
+  background-color: rgba(0, 112, 207, 0.050000000000000044);
+}
+.result-closed:hover {
+  cursor: pointer;
 }
 .result-opened {
   background-color: rgba(0, 112, 207, 0.050000000000000044);
