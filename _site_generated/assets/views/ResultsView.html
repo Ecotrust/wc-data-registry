@@ -1,0 +1,103 @@
+
+<div>
+
+	<div class="result-controls clearfix">
+		<div class="pull-right">
+
+			<!-- P A G I N A T I O N -->	
+			<span class="pagination" ng-show="numPages() > 1">
+				<span>PAGE</span>
+
+				<a href="javascript:void(0)" 
+					class="subdued" 
+					ng-show="numPages() > maxNumShown && pageIndex > 1" 
+					ng-click="pageIndex = pageIndex - 1">
+					&laquo;
+				</a>
+				
+				<a href="javascript:void(0)" 
+					class="subdued" 
+					ng-repeat="pi in pageIndexes()" 
+					ng-class="{active: isCurrentPage(pi)}"
+					ng-click="setPageIndex(pi)">
+					{{pi}}
+				</a>
+
+				<a href="javascript:void(0)" 
+					class="subdued" 
+					ng-show="numPages() > maxNumShown && pageIndex < numPages()" 
+					ng-click="pageIndex = pageIndex + 1">
+					&raquo;
+				</a>
+			</span>
+
+			<!-- R O W S   P E R   P A G E  -->	
+			<span class="dropdown">
+				<a class="subdued dropdown-toggle" href="javascript:void(0)">SHOW <i class="icon-angle-down"></i></a>
+				<ul class="dropdown-menu">
+					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 5">5 per page</a></li>
+					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 15">15 per page</a></li>
+					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 50">50 per page</a></li>
+				</ul>
+			</span>
+			<span>
+				<a class="subdued" href="">ORDER BY <i class="icon-angle-down"></i></a>
+			</span>			
+		</div>
+	</div>
+
+	<!-- R E S U L T S -->
+	<p class="results-summary">
+		<span ng-hide="filterValues.location">
+			<strong>{{numFound}}</strong> results found.
+		</span>
+		<span ng-show="filterValues.location">
+			<strong>{{numFound}}</strong> results found for <strong>location.</strong>
+		</span>
+	</p>
+	
+	<div class="results-list">
+		<div class="result clearfix result-closed" ng-click="$parent.resultClicked($event)" ng-repeat="result in data">
+			<a class="result-close-link" href="javascript:void(0)" ng-click="$parent.resultCloseClicked($event)"><i class="icon-remove-sign"></i></a>
+			<div class="result-info">
+				<div class="result-title">
+					{{result.title[0]}}
+				</div>
+				<p class="result-description">
+					{{result.description}}
+				</p>
+			</div>
+			<div class="result-links">
+				<div class="subdued date-label">UPDATED</div>
+				<div class='date'>{{ result["sys.src.item.lastmodified_tdt"] | date:'shortDate' }}</div>
+				<ul class="unstyled links">
+					<li><a href="">JSON</a><i class="icon-info-sign"></i></li>
+					<li><a href="">CSV</a><i class="icon-info-sign"></i></li>
+					<li><a href="">KML</a><i class="icon-info-sign"></i></li>
+				</ul>
+			</div>
+			<div class="result-details clearfix">
+				<div class="result-map">
+					map placeholder
+				</div>
+				<dl class="result-metadata">
+					<dt>originator</dt>
+					<dd>wcga marine debris, act</dd>
+					<dt>source</dt>
+					<dd>wcga marine debris</dd>
+					<dt>author</dt>
+					<dd>name</dd>
+					<dt>maintainer</dt>
+					<dd>name</dd>
+					<dt>state</dt>
+					<dd>active</dd>
+				</dl>						
+			</div>
+		</div>	
+	</div>
+
+	<div class="results-end subdued pull-right" ng-show="showingLastPage()">
+		END
+	</div>
+
+</div>

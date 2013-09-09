@@ -1,0 +1,95 @@
+<!doctype html>
+<html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="wcodpApp">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>West Coast Ocean Data Portal | Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <!--[if lt IE 8]>
+      <link rel="stylesheet" href="/assets/css/ie7.css">
+    <![endif]-->
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+    <!--[if lt IE 9]>
+      <script src="/assets/js/ie8.js"></script>
+    <![endif]-->
+
+    <div class="header container">
+	<div class="row">
+		<div class="span4">
+			<a href="/"><img src="/assets/img/WCODP_web_logo.png"></a>
+		</div>
+		<div class="span8">
+			<div class="clearfix">
+				<span class="pull-right description subdued">A project of the West Coast Governors Alliance on Ocean Health</span>
+			</div>
+			<div class="top-nav">
+				<ul class="unstyled inline">
+					
+						
+						<li>
+						
+							<a href="/discover">discover</a>
+						</li>
+					
+						
+						<li>
+						
+							<a href="/connect">connect</a>
+						</li>
+					
+						
+						<li>
+						
+							<a href="/inform">inform</a>
+						</li>
+					
+						
+						<li>
+						
+							<a href="/about">about</a>
+						</li>
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+    <div id="home" ng-controller="HomeCtrl">
+	<h1>Home</h1>
+	
+	<p>{{ homeContent }}</p>
+	
+</div>
+
+    <div class="footer container">
+	<div class="row">
+		<div class="span12">
+			<a href="mailto:info@westcoastoceans.org">INFO at WESTCOASTOCEANS.ORG</a>
+			<span class="pull-right"><a class="subdued" href="/">API ACCESS</a></span>
+		</div>
+	</div>
+</div>
+
+    <script src="/assets/js/all.js"></script>
+
+    <!-- <script>
+      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src='//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script> -->
+  </body>
+</html>

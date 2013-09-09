@@ -1,5 +1,4 @@
 _site/*
-_site_generated/*
 site_raw/_includes/bower_components/*
 
 Thumbs.db
