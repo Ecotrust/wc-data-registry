@@ -36,7 +36,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                                         { lat: 40.44694705960048, lng: -120.76171875 },
                                         { lat: 45.44694705960048, lng: -130.76171875 },
                                         { lat: 50.44694705960048, lng: -140.76171875 }
-                                    ],
+                                    ]
                                 }
                             }
 

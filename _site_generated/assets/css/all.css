@@ -6430,6 +6430,67 @@ small {
   color: #baba27;
 }
 /*
+ *  h o m e
+ */
+#home {
+  max-width: 960px;
+}
+/* widths */
+.home-item.w1 {
+  width: 31%;
+}
+.home-item.w2 {
+  width: 64%;
+}
+/* colors */
+.home-item.green1 {
+  background-color: #baba27;
+}
+.home-item.green2 {
+  background-color: #9ec73d;
+}
+.home-item.red {
+  background-color: #ff3817;
+}
+.home-item.blue {
+  background-color: #0070cf;
+}
+.home-item.lightGrey {
+  background-color: #a6a6a6;
+}
+.home-item-cntr {
+  padding: 10px 15px 15px 15px;
+}
+.home-item-cntr.welcome {
+  padding: 20px 30px 30px 30px;
+}
+.home-item-cntr.search {
+  padding: 40px 20px 20px 20px;
+}
+.home-item-cntr.search .giantText {
+  font-size: 50px;
+  line-height: 55px;
+  color: #332e1f;
+  font-weight: bold;
+}
+.home-item-cntr.search p {
+  font-weight: 200;
+  margin-bottom: 20px;
+}
+.home-item p {
+  color: white;
+}
+.home-item p.big {
+  font-size: 32px;
+  line-height: 50px;
+}
+.home-item-label {
+  margin-bottom: 10px;
+}
+.home-item-label > .pull-left {
+  border-bottom: 1px solid #332e1f;
+}
+/*
  * p a g i n a t i o n
  */
 .result-controls {
