@@ -30291,7 +30291,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                     scope.notifyFiltersChanged = function () {
                         scope.onFiltersChanged({ filterVals: { 
                                 searchText: scope.searchText,
-                                center: scope.filteredLocation,
+                                location: scope.filteredLocation,
                                 categories: [],
                                 tags: [],
                                 formats: []
@@ -30301,7 +30301,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                     scope.clearLocationFilter = function () {
                         scope.filteredLocation = null;
                         scope.filteredBoundingBox = null;
-                        scope.center = angular.copy(defaultCenter);
+                        scope.location = angular.copy(defaultCenter);
                         scope.notifyFiltersChanged();
                     };
 
@@ -31815,7 +31815,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 			'rows': $scope.resultsPerPage,
 			'wt': 'json', 
 			'q': $scope.getSearchTextForQuery() + $scope.getKeywords(filterValues),
-			'fq': $scope.getBoundingBoxQuery(filterValues.center),
+			'fq': $scope.getBoundingBoxQuery(filterValues.location),
 			//'fl': 'contact.organizations_ss, id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
 			'fl': '',
 			'facet': true,
@@ -31827,6 +31827,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		$http.get($scope.solrUrl, queryConfig).success(function (data, status, headers, config) {
 			$location
 				.search('text', $scope.getSearchText())
+				//.search('location', $scope.)
 				.replace();
 			$scope.resultsData = data.response.docs;
 			$scope.numFound = data.response.numFound;
@@ -31845,8 +31846,12 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 
 	$scope.getSearchTextForQuery = function () {
 		var q = "{!lucene q.op=AND df=text}",
-			val = $scope.getSearchText();
-		q = val.length > 0 ? q + val + " " : "* "; //q + "* ";
+			val = $scope.getSearchText(),
+			applyingOtherFilters = false;
+
+		applyingOtherFilters = $scope.filterValues.location != null;
+
+		q = val.length > 0 ? q + val + " " : applyingOtherFilters ? "* " : " "; //q + "* ";
 		return q;
 	};
 

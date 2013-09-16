@@ -93,7 +93,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                     scope.notifyFiltersChanged = function () {
                         scope.onFiltersChanged({ filterVals: { 
                                 searchText: scope.searchText,
-                                center: scope.filteredLocation,
+                                location: scope.filteredLocation,
                                 categories: [],
                                 tags: [],
                                 formats: []
@@ -103,7 +103,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                     scope.clearLocationFilter = function () {
                         scope.filteredLocation = null;
                         scope.filteredBoundingBox = null;
-                        scope.center = angular.copy(defaultCenter);
+                        scope.location = angular.copy(defaultCenter);
                         scope.notifyFiltersChanged();
                     };
 
