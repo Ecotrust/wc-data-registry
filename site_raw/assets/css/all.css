@@ -1,6 +1,6 @@
 ---
 ---
-{% include css/bootstrap.css %}
+{% include css/thirdparty/bootstrap/bootstrap.css %}
 {% include css/main.css %}
 
 .lt-ie9 .result:hover,

@@ -6377,6 +6377,9 @@ a:focus {
 a.subdued:hover {
   color: #4d4d4f;
 }
+small {
+  font-size: 11px;
+}
 /*
  * h e a d e r
  */
@@ -6477,6 +6480,9 @@ a.subdued:hover {
   right: 7px;
   top: 2px;
 }
+.leaflet-directive {
+  height: 180px;
+}
 /* collapsible filter groups */
 a.filter-group-toggle {
   display: table-cell;
@@ -6516,6 +6522,14 @@ ul.filter-options li {
 }
 ul.filter-options li > i {
   margin-right: 18px;
+}
+#location-filter {
+  padding-left: 0;
+  padding-right: 0;
+}
+#location-filter p {
+  text-align: center;
+  margin-bottom: 0;
 }
 /*
  * r e s u l t s

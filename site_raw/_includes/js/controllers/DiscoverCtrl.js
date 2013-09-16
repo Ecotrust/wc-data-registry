@@ -7,6 +7,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.resultsPerPage = 5;
 	$scope.startIndex = 0;
 	$scope.pageIndex = 1;
+	$scope.location = null;
 
 	$scope.onLoad = function () {
 		// Populate filter values from parameters in the URL.
@@ -48,8 +49,9 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 			'rows': $scope.resultsPerPage,
 			'wt': 'json', 
 			'q': $scope.getSearchTextForQuery() + $scope.getKeywords(filterValues),
-			'fq': '',
-			'fl': 'id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
+			'fq': $scope.getBoundingBoxQuery(filterValues.center),
+			//'fl': 'contact.organizations_ss, id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
+			'fl': '',
 			'facet': true,
 			'facet.field': facetFields,
 			'facet.mincount': facetMinCounts
@@ -78,7 +80,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.getSearchTextForQuery = function () {
 		var q = "{!lucene q.op=AND df=text}",
 			val = $scope.getSearchText();
-		q = val.length > 0 ? q + val + " " : ""; //q + "* ";
+		q = val.length > 0 ? q + val + " " : "* "; //q + "* ";
 		return q;
 	};
 
@@ -104,13 +106,12 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		// }
 	};
 
-	$scope.getBoundingBox = function () {
-		return '';
-		// if (app.viewModel.useBb() && app.viewModel.bbLat() != "" && app.viewModel.bbLon() != "") {
-		// 	app.viewModel.fq_query("{!bbox pt=" + app.viewModel.bbLat() + "," + app.viewModel.bbLon() + " sfield=envelope_geo d=0.001} ");
-		// } else {
-		// 	app.viewModel.fq_query("");
-		// }		
+	$scope.getBoundingBoxQuery = function (centerPoint) {
+		if (centerPoint && centerPoint.lat && centerPoint.lng) {
+			return "{!bbox pt=" + centerPoint.lat + "," + centerPoint.lng + " sfield=envelope_geo d=0.001} ";
+		} else {
+			return "";
+		}
 	};
 
 	$scope.watchPageIndex = function () {
