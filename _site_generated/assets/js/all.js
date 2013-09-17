@@ -30218,10 +30218,10 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
         compile: function compile(tElement, tAttrs, transclude) {
             return {
                 pre: function preLink(scope, element, attrs, controller) { 
+                    // Some prelink setup is necessary for the location filter.
                     angular.extend(scope, {
                         center: angular.copy(defaultCenter)
                     });
-
                     angular.extend(scope, {
                         defaults: {
                             //tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
@@ -30247,7 +30247,57 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                     scope.isLocationCollapsed = true;
                     scope.isCategoryCollapsed = true;
                     scope.isTagsCollapsed = true;
-                    scope.isFormatsCollapsed = true;
+
+                    scope.init = function () {
+                        // Set initial filter values.
+                        if (_.isUndefined(scope.initialFilterValues)) {
+                            return;
+                        }
+                        scope.searchText = scope.initialFilterValues.searchText;
+                        if (_.isString(scope.searchText) && scope.searchText.length > 0) {
+                            scope.notifyFiltersChanged();    
+                        }
+                    };
+
+                    scope.notifyFiltersChanged = function () {
+                        if (console) {
+                            console.log('Filters Changed -- notifying');
+                        }
+                        scope.onFiltersChanged({ filterVals: { 
+                                searchText: scope.searchText,
+                                location: scope.filteredLocation,
+                                categories: [],
+                                tags: [],
+                                formats: []
+                            }});                
+                    };
+
+
+                    //
+                    //  T e x t   F i l t e r
+                    //
+                    scope.runningTimeout = false;
+                    scope.initialWatchSkipped = false;
+
+                    scope.$watch('searchText', function (newValue) {
+                        //if (!scope.initialWatchSkipped) {
+                        //    scope.initialWatchSkipped = true;
+                        //    return;
+                        //}
+                        if (scope.runningTimeout) {
+                            $timeout.cancel(scope.runningTimeout);
+                            scope.runningTimeout = false;
+                        }
+                        scope.runningTimeout = $timeout(function() { 
+                            scope.notifyFiltersChanged();
+                        }, 300);
+                    });
+
+
+
+                    //
+                    //  L o c a t i o n   F i l t e r
+                    //
                     scope.filteredLocation = null;
                     scope.filteredBoundingBox = null;
 
@@ -30276,44 +30326,6 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                             scope.clickTimerRunning = null;
                         }
                     });
-
-                    scope.init = function () {
-                        // Set initial filter values.
-                        if (_.isUndefined(scope.initialFilterValues)) {
-                            return;
-                        }
-                        scope.searchText = scope.initialFilterValues.searchText;
-                        if (_.isString(scope.searchText) && scope.searchText.length > 0) {
-                            scope.notifyFiltersChanged();    
-                        }
-                    };
-
-                    // Watch the search text box value.
-                    scope.runningTimeout = false;
-                    scope.initialWatchSkipped = false;
-                    scope.$watch('searchText', function (newValue) {
-                        //if (!scope.initialWatchSkipped) {
-                        //    scope.initialWatchSkipped = true;
-                        //    return;
-                        //}
-                        if (scope.runningTimeout) {
-                            $timeout.cancel(scope.runningTimeout);
-                            scope.runningTimeout = false;
-                        }
-                        scope.runningTimeout = $timeout(function() { 
-                            scope.notifyFiltersChanged();
-                        }, 300);
-                    });
-
-                    scope.notifyFiltersChanged = function () {
-                        scope.onFiltersChanged({ filterVals: { 
-                                searchText: scope.searchText,
-                                location: scope.filteredLocation,
-                                categories: [],
-                                tags: [],
-                                formats: []
-                            }});                
-                    };
 
                     scope.clearLocationFilter = function () {
                         scope.filteredLocation = null;
@@ -31815,10 +31827,12 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.filterValues = {};
 	$scope.resultsData = {};
 	$scope.numFound = 0;
-	$scope.resultsPerPage = 5;
 	$scope.startIndex = 0;
-	$scope.pageIndex = 1;
 	$scope.location = null;
+	$scope.pageIndex = 1;
+	$scope.pageIndexWatchInitialized = false;
+	$scope.resultsPerPage = 5;
+	$scope.resultsPerPageWatchInitialized = false;
 
 	$scope.onLoad = function () {
 		// Populate filter values from parameters in the URL.
@@ -31826,10 +31840,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 			searchText: $location.search().text,
 		};
 		$scope.filterValues = initialFilterValues;
-
-		$scope.$watch('resultsPerPage', function (newValue) {
-			$scope.runQuery($scope.filterValues, true);
-		});
+		$scope.watchResultsPerPage();
 		$scope.watchPageIndex();
 	};
 
@@ -31869,6 +31880,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		};
 
 		// Execute query.
+		if (console) { console.log("Querying Solr"); }
 		$http.get($scope.solrUrl, queryConfig).success(function (data, status, headers, config) {
 			$location
 				.search('text', $scope.getSearchText())
@@ -31879,6 +31891,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		}).error(function (data, status, headers, config) {
 			$scope.resultsData = {};
 			$scope.numFound = 0;
+			if (console) {console.log("Error querying Solr:" + data.error.msg || "no info available"); }
 		});
 	};
 
@@ -31931,16 +31944,45 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	};
 
 	$scope.watchPageIndex = function () {
+		$scope.unwatchPageIndex();
 		$scope.unwatchPageIndex_internal = $scope.$watch('pageIndex', function (newValue) {
-			$scope.runQuery($scope.filterValues, false);
-		});		
+			if ($scope.pageIndexWatchInitialized) {
+				if (console) { console.log('pageIndex changed to: ' + newValue); }
+				$scope.runQuery($scope.filterValues, false);
+			} else {
+				// Doing this to avoid duplicate queries to the server.
+				$timeout(function () { $scope.pageIndexWatchInitialized = true; }, 1);
+			}
+		});
 	};
 
 	$scope.unwatchPageIndex = function () {
 		if ($scope.unwatchPageIndex_internal) {
 			$scope.unwatchPageIndex_internal();
+			$scope.pageIndexWatchInitialized = false;
 		}
 	};
+
+	$scope.watchResultsPerPage = function () {
+		$scope.unwatchResultsPerPage();
+		$scope.unwatchResultsPerPage_internal = $scope.$watch('resultsPerPage', function (newValue) {
+			if ($scope.resultsPerPageWatchInitialized) {
+				if (console) {console.log('resultsPerPage changed to: ' + newValue); }
+				$scope.runQuery($scope.filterValues, true);
+			} else {
+				// Doing this to avoid duplicate queries to the server.
+				$timeout(function () { $scope.resultsPerPageWatchInitialized = true; }, 1);
+			}
+		});
+	};
+
+	$scope.unwatchResultsPerPage = function () {
+		if ($scope.unwatchResultsPerPage_internal) {
+			$scope.unwatchResultsPerPage_internal();
+			$scope.resultsPerPageWatchInitialized = false;
+		}
+	};
+
 
 	$scope.onLoad();
 }]);

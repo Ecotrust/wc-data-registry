@@ -20,10 +20,10 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
         compile: function compile(tElement, tAttrs, transclude) {
             return {
                 pre: function preLink(scope, element, attrs, controller) { 
+                    // Some prelink setup is necessary for the location filter.
                     angular.extend(scope, {
                         center: angular.copy(defaultCenter)
                     });
-
                     angular.extend(scope, {
                         defaults: {
                             //tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
@@ -49,7 +49,57 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                     scope.isLocationCollapsed = true;
                     scope.isCategoryCollapsed = true;
                     scope.isTagsCollapsed = true;
-                    scope.isFormatsCollapsed = true;
+
+                    scope.init = function () {
+                        // Set initial filter values.
+                        if (_.isUndefined(scope.initialFilterValues)) {
+                            return;
+                        }
+                        scope.searchText = scope.initialFilterValues.searchText;
+                        if (_.isString(scope.searchText) && scope.searchText.length > 0) {
+                            scope.notifyFiltersChanged();    
+                        }
+                    };
+
+                    scope.notifyFiltersChanged = function () {
+                        if (console) {
+                            console.log('Filters Changed -- notifying');
+                        }
+                        scope.onFiltersChanged({ filterVals: { 
+                                searchText: scope.searchText,
+                                location: scope.filteredLocation,
+                                categories: [],
+                                tags: [],
+                                formats: []
+                            }});                
+                    };
+
+
+                    //
+                    //  T e x t   F i l t e r
+                    //
+                    scope.runningTimeout = false;
+                    scope.initialWatchSkipped = false;
+
+                    scope.$watch('searchText', function (newValue) {
+                        //if (!scope.initialWatchSkipped) {
+                        //    scope.initialWatchSkipped = true;
+                        //    return;
+                        //}
+                        if (scope.runningTimeout) {
+                            $timeout.cancel(scope.runningTimeout);
+                            scope.runningTimeout = false;
+                        }
+                        scope.runningTimeout = $timeout(function() { 
+                            scope.notifyFiltersChanged();
+                        }, 300);
+                    });
+
+
+
+                    //
+                    //  L o c a t i o n   F i l t e r
+                    //
                     scope.filteredLocation = null;
                     scope.filteredBoundingBox = null;
 
@@ -78,44 +128,6 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                             scope.clickTimerRunning = null;
                         }
                     });
-
-                    scope.init = function () {
-                        // Set initial filter values.
-                        if (_.isUndefined(scope.initialFilterValues)) {
-                            return;
-                        }
-                        scope.searchText = scope.initialFilterValues.searchText;
-                        if (_.isString(scope.searchText) && scope.searchText.length > 0) {
-                            scope.notifyFiltersChanged();    
-                        }
-                    };
-
-                    // Watch the search text box value.
-                    scope.runningTimeout = false;
-                    scope.initialWatchSkipped = false;
-                    scope.$watch('searchText', function (newValue) {
-                        //if (!scope.initialWatchSkipped) {
-                        //    scope.initialWatchSkipped = true;
-                        //    return;
-                        //}
-                        if (scope.runningTimeout) {
-                            $timeout.cancel(scope.runningTimeout);
-                            scope.runningTimeout = false;
-                        }
-                        scope.runningTimeout = $timeout(function() { 
-                            scope.notifyFiltersChanged();
-                        }, 300);
-                    });
-
-                    scope.notifyFiltersChanged = function () {
-                        scope.onFiltersChanged({ filterVals: { 
-                                searchText: scope.searchText,
-                                location: scope.filteredLocation,
-                                categories: [],
-                                tags: [],
-                                formats: []
-                            }});                
-                    };
 
                     scope.clearLocationFilter = function () {
                         scope.filteredLocation = null;

@@ -4,10 +4,12 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.filterValues = {};
 	$scope.resultsData = {};
 	$scope.numFound = 0;
-	$scope.resultsPerPage = 5;
 	$scope.startIndex = 0;
-	$scope.pageIndex = 1;
 	$scope.location = null;
+	$scope.pageIndex = 1;
+	$scope.pageIndexWatchInitialized = false;
+	$scope.resultsPerPage = 5;
+	$scope.resultsPerPageWatchInitialized = false;
 
 	$scope.onLoad = function () {
 		// Populate filter values from parameters in the URL.
@@ -15,10 +17,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 			searchText: $location.search().text,
 		};
 		$scope.filterValues = initialFilterValues;
-
-		$scope.$watch('resultsPerPage', function (newValue) {
-			$scope.runQuery($scope.filterValues, true);
-		});
+		$scope.watchResultsPerPage();
 		$scope.watchPageIndex();
 	};
 
@@ -58,6 +57,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		};
 
 		// Execute query.
+		if (console) { console.log("Querying Solr"); }
 		$http.get($scope.solrUrl, queryConfig).success(function (data, status, headers, config) {
 			$location
 				.search('text', $scope.getSearchText())
@@ -68,6 +68,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		}).error(function (data, status, headers, config) {
 			$scope.resultsData = {};
 			$scope.numFound = 0;
+			if (console) {console.log("Error querying Solr:" + data.error.msg || "no info available"); }
 		});
 	};
 
@@ -120,16 +121,45 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	};
 
 	$scope.watchPageIndex = function () {
+		$scope.unwatchPageIndex();
 		$scope.unwatchPageIndex_internal = $scope.$watch('pageIndex', function (newValue) {
-			$scope.runQuery($scope.filterValues, false);
-		});		
+			if ($scope.pageIndexWatchInitialized) {
+				if (console) { console.log('pageIndex changed to: ' + newValue); }
+				$scope.runQuery($scope.filterValues, false);
+			} else {
+				// Doing this to avoid duplicate queries to the server.
+				$timeout(function () { $scope.pageIndexWatchInitialized = true; }, 1);
+			}
+		});
 	};
 
 	$scope.unwatchPageIndex = function () {
 		if ($scope.unwatchPageIndex_internal) {
 			$scope.unwatchPageIndex_internal();
+			$scope.pageIndexWatchInitialized = false;
 		}
 	};
+
+	$scope.watchResultsPerPage = function () {
+		$scope.unwatchResultsPerPage();
+		$scope.unwatchResultsPerPage_internal = $scope.$watch('resultsPerPage', function (newValue) {
+			if ($scope.resultsPerPageWatchInitialized) {
+				if (console) {console.log('resultsPerPage changed to: ' + newValue); }
+				$scope.runQuery($scope.filterValues, true);
+			} else {
+				// Doing this to avoid duplicate queries to the server.
+				$timeout(function () { $scope.resultsPerPageWatchInitialized = true; }, 1);
+			}
+		});
+	};
+
+	$scope.unwatchResultsPerPage = function () {
+		if ($scope.unwatchResultsPerPage_internal) {
+			$scope.unwatchResultsPerPage_internal();
+			$scope.resultsPerPageWatchInitialized = false;
+		}
+	};
+
 
 	$scope.onLoad();
 }]);
