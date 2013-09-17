@@ -85,9 +85,12 @@ angular.module('wcodpApp').directive('results', [function() {
 
                 // Search text filter
                 if (_.isString(searchText)) {
-                    summaryItems.push('"' + scope.trim(searchText) + '"');
+                    searchText = scope.trim(searchText);
+                    if (searchText.length > 0) {
+                        summaryItems.push('"' + scope.trim(searchText) + '"');
+                    }
                 }
-                
+
                 // Location filter
                 if (scope.filterValues.location) {
                     summaryItems.push("current location");

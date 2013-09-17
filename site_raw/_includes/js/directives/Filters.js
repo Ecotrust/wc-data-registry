@@ -28,6 +28,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                         defaults: {
                             //tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
                             maxZoom: 8,
+                            //doubleClickZoom: false,
                             paths: {
                                 p1: {
                                     color: '#008000',
@@ -53,12 +54,28 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                     scope.filteredBoundingBox = null;
 
                     scope.$on('leafletDirectiveMap.click', function(event, args){
-                        // Location filter map was clicked.
-                        if (args && args.leafletEvent && args.leafletEvent.latlng) {
-                            scope.center = { lat: args.leafletEvent.latlng.lat, lng: args.leafletEvent.latlng.lng, zoom: event.currentScope.center.zoom };
-                            scope.filteredLocation = angular.copy(args.leafletEvent.latlng);
-                            scope.filteredBoundingBox = 
-                            scope.notifyFiltersChanged();
+                        // Location filter map was clicked. But avoid acting on double clicks.
+                        var currentZoom = event.currentScope.center.zoom;
+                        if (!scope.clickTimerRunning) {
+                            scope.clickTimerRunning = $timeout(function() { 
+                                scope.clickTimerRunning = null;
+                                // Act on single click.
+                                if (args && args.leafletEvent && args.leafletEvent.latlng) {
+                                    if (console) console.log('center set');
+                                    scope.center = { lat: args.leafletEvent.latlng.lat, lng: args.leafletEvent.latlng.lng, zoom: currentZoom }; 
+                                    scope.filteredLocation = angular.copy(args.leafletEvent.latlng);
+                                    //scope.filteredBoundingBox = 
+                                    scope.notifyFiltersChanged();
+                                }
+                            }, 200);
+                        }
+                    });
+
+                    scope.$on('leafletDirectiveMap.dblclick', function(event, args){
+                        if (scope.clickTimerRunning) {
+                            // Cancel a previous single click.
+                            $timeout.cancel(scope.clickTimerRunning);
+                            scope.clickTimerRunning = null;
                         }
                     });
 
