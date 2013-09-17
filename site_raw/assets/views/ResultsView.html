@@ -47,15 +47,13 @@
 	</div>
 
 	<!-- R E S U L T S -->
-	<p class="results-summary">
-		<span ng-hide="filterValues.location">
-			<strong>{{numFound}}</strong> results found.
-		</span>
-		<span ng-show="filterValues.location">
-			<strong>{{numFound}}</strong> results found for <strong>location.</strong>
-		</span>
+	<p class="results-summary" ng-show="getResultsSummaryItems().length > 1"> 
+		<strong>{{numFound}}</strong> results found for <strong>{{ getResultsSummaryItems().splice(0, getResultsSummaryItems().length - 1).join(', ') }}</strong> & <strong> {{ getResultsSummaryItems().splice(getResultsSummaryItems().length - 1, 1).join('') }}</strong>.
 	</p>
-	
+	<p class="results-summary" ng-show="getResultsSummaryItems().length == 1"> 
+		<strong>{{numFound}}</strong> results found for <strong>{{ getResultsSummaryItems().join('') }}</strong>.
+	</p>
+
 	<div class="results-list">
 		<div class="result clearfix result-closed" ng-click="$parent.resultClicked($event)" ng-repeat="result in data">
 			<a class="result-close-link" href="javascript:void(0)" ng-click="$parent.resultCloseClicked($event)"><i class="icon-remove-sign"></i></a>

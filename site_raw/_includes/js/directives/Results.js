@@ -75,6 +75,31 @@ angular.module('wcodpApp').directive('results', [function() {
                 return indexes;
             };
 
+            /**
+             * @return {array of strings} String representations of the filters 
+             * in use for display in the results summary.
+             */
+            scope.getResultsSummaryItems = function () {
+                var summaryItems = [],
+                    searchText = scope.filterValues.searchText;
+
+                // Search text filter
+                if (_.isString(searchText)) {
+                    summaryItems.push('"' + scope.trim(searchText) + '"');
+                }
+                
+                // Location filter
+                if (scope.filterValues.location) {
+                    summaryItems.push("current location");
+                }
+
+                return summaryItems;
+            };
+
+            scope.trim = function (val) {
+                if (val == null) return '';
+                return String(val).replace(new RegExp('\^\\s+|\\s+$', 'g'), '');
+            };
         }
     };
 }]);
