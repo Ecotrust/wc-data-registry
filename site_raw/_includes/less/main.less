@@ -303,7 +303,12 @@ small {
   top: 2px;
 }
 
-.leaflet-directive { height: 180px; }
+.leaflet-directive { 
+  height: 180px; 
+}
+.leaflet-map-pane:hover { 
+  cursor: pointer; //url(http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-icon.png),default;
+}
 
 /* collapsible filter groups */
 a.filter-group-toggle {
@@ -333,6 +338,9 @@ a.filter-group-toggle:first-of-type {
   display: block;
   font-size: 12px;
 }
+#location-filter .select-all-link {
+  display: inline;
+}
 ul.filter-options {
   margin-bottom: 30px;
 }
@@ -350,9 +358,14 @@ ul.filter-options li > i {
   padding-left: 0;
   padding-right: 0;
 }
-#location-filter p {
+#location-filter p.directions {
   text-align: center;
   margin-bottom: 0;
+}
+#location-filter p.attribution {
+  font-size: @smallestFontSize;
+  margin: 0 10px 0 10px;
+  line-height: @smallestFontSize + 3;
 }
 
 

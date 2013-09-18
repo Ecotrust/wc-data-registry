@@ -15,8 +15,23 @@
 		</div>
 	</a>
 	<div collapse="isLocationCollapsed" id="location-filter" class="filter-group-container">
-		<p><small><a href="javascript:void(0)" ng-click="clearLocationFilter()">SELECT ALL</a></small><small class="subdued">&nbsp;|&nbsp;Click map to select</small></p>
-		<div leaflet defaults="defaults" center="center" paths="paths" class="leaflet-directive"></div>
+	
+		<p ng-show="filteredLocation" class="directions">
+			<a class="select-all-link" href="javascript:void(0)" ng-click="clearLocationFilter()">SELECT ALL</a><small class="subdued">&nbsp;|&nbsp;Click map to select</small>
+		</p>
+		<p ng-hide="filteredLocation" class="directions">
+			<small class="subdued">Click map to select</small>
+		</p>
+		
+		<div leaflet defaults="mapOptions" center="center" markers="markers" paths="paths" class="leaflet-directive"></div>
+
+		<p class="attribution subdued">
+			Map data CC-BY-SA by <a href="http://www.opendatacommons.org/licenses/odbl">OpenStreeMap</a>
+		</p>
+		<p class="attribution subdued">
+			Tiles by <a href="http://www.mapquest.com/">MapQuest</a>
+		</p>
+	
 	</div>
 
 	<!-- categories filter -->

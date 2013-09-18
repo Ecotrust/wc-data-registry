@@ -257,6 +257,9 @@ small {
 .leaflet-directive {
   height: 180px;
 }
+.leaflet-map-pane:hover {
+  cursor: pointer;
+}
 /* collapsible filter groups */
 a.filter-group-toggle {
   display: table-cell;
@@ -285,6 +288,9 @@ a.filter-group-toggle:first-of-type {
   display: block;
   font-size: 12px;
 }
+#location-filter .select-all-link {
+  display: inline;
+}
 ul.filter-options {
   margin-bottom: 30px;
 }
@@ -301,9 +307,14 @@ ul.filter-options li > i {
   padding-left: 0;
   padding-right: 0;
 }
-#location-filter p {
+#location-filter p.directions {
   text-align: center;
   margin-bottom: 0;
+}
+#location-filter p.attribution {
+  font-size: 11px;
+  margin: 0 10px 0 10px;
+  line-height: 14px;
 }
 /*
  * r e s u l t s

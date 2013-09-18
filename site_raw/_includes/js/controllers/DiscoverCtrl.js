@@ -68,7 +68,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		}).error(function (data, status, headers, config) {
 			$scope.resultsData = {};
 			$scope.numFound = 0;
-			if (console) {console.log("Error querying Solr:" + data.error.msg || "no info available"); }
+			//if (console) {console.log("Error querying Solr:" + data.error.msg || "no info available"); }
 		});
 	};
 

@@ -10,7 +10,7 @@ leafletDirective.directive('leaflet', [
         scrollWheelZoom: true,
         tileLayer: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         tileLayerOptions: {
-            attribution: ''//&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         },
         icon: {
             url: 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-icon.png',
@@ -784,8 +784,10 @@ leafletDirective.directive('leaflet', [
             function setupMainMarker() {
                 var main_marker;
                 if (!$scope.marker) {
+                    if (console) console.log('MARKER EMPTY');
                     return;
                 }
+                if (console) console.log('MARKER !!NOT!! EMPTY');
                 main_marker = createMarker('marker', $scope.marker, map);
                 $scope.leaflet.marker = !!attrs.testing ? main_marker : str_inspect_hint;
                 main_marker.on('click', function(e) {
