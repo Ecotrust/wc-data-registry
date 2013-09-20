@@ -69,7 +69,9 @@
 				<div class="subdued date-label">UPDATED</div>
 				<div class='date'>{{ result["sys.src.item.lastmodified_tdt"] | date:'shortDate' }}</div>
 				<ul class="unstyled links">
-					<li><a href="">JSON</a><i class="icon-info-sign"></i></li>
+					<li><a target="_blank" href="/geoportal/rest/document?id={{ result['sys.src.item.uri_s'] }}&f=pjson">JSON</a><i class="icon-info-sign"></i></li>
+					<li><a target="_blank" href="/geoportal/rest/document?id={{ result['sys.src.item.uri_s'] }}">METADATA XML</a><i class="icon-info-sign"></i></li>
+
 					<li><a href="">CSV</a><i class="icon-info-sign"></i></li>
 					<li><a href="">KML</a><i class="icon-info-sign"></i></li>
 				</ul>
