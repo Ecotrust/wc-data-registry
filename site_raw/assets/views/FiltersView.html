@@ -6,13 +6,15 @@
 		<i class="icon-search"></i>
 	</div>
 
+
 	<!-- location filter -->
 	<a class="filter-group-toggle first" href="javascript:void(0)" ng-click="isLocationCollapsed = !isLocationCollapsed">
 		<div class="filter-group-label">
 			<i class="icon-map-marker subdued"></i>
 			Location 
-			<i class="icon-angle-right pull-right"></i>
-		</div>
+			<i ng-show="isLocationCollapsed" class="icon-angle-right pull-right"></i>
+			<i ng-hide="isLocationCollapsed" class="icon-angle-down pull-right"></i>
+		</div>		
 	</a>
 	<div collapse="isLocationCollapsed" id="location-filter" class="filter-group-container">
 	
@@ -39,7 +41,8 @@
 		<div class="filter-group-label">
 			<i class="icon-th subdued"></i>
 			Categories
-			<i class="icon-angle-right pull-right"></i>
+			<i ng-show="isCategoryCollapsed" class="icon-angle-right pull-right"></i>
+			<i ng-hide="isCategoryCollapsed" class="icon-angle-down pull-right"></i>
 		</div>
 	</a>
 	<div collapse="isCategoryCollapsed" id="categories-filter" class="filter-group-container">
@@ -56,7 +59,8 @@
 		<div class="filter-group-label">
 			<i class="icon-tags subdued"></i>
 			Issues
-			<i class="icon-angle-right pull-right"></i>
+			<i ng-show="isTagsCollapsed" class="icon-angle-right pull-right"></i>
+			<i ng-hide="isTagsCollapsed" class="icon-angle-down pull-right"></i>
 		</div>
 	</a>
 	<div collapse="isTagsCollapsed" id="tags-filter" class="filter-group-container">
@@ -65,7 +69,7 @@
 			<li><i class="icon-check-empty"></i>Climate Change <strong>00</strong></li>
 			<li><i class="icon-check-empty"></i>Marine Debris <strong>00</strong></li>
 			<li><i class="icon-check-empty"></i>Renewable Energy <strong>00</strong></li>
-			<li><i class="icon-check-empty">Sea Level Rise</i> <strong>00</strong></li>
+			<li><i class="icon-check-empty"></i>Sea Level Rise <strong>00</strong></li>
 		</ul>
 	</div>
 
@@ -75,7 +79,8 @@
 		<div class="filter-group-label">
 			<i class="icon-file-alt subdued"></i>
 			Formats
-			<i class="icon-angle-right pull-right"></i>
+			<i ng-show="isFormatsCollapsed" class="icon-angle-right pull-right"></i>
+			<i ng-hide="isFormatsCollapsed" class="icon-angle-down pull-right"></i>
 		</div>
 	</a>
 	<div collapse="isFormatsCollapsed" id="formats-filter" class="filter-group-container">
