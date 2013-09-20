@@ -1,5 +1,5 @@
 
-angular.module('wcodpApp', []).factory('solr', ['$http', function($http) {
+angular.module('wcodpApp').factory('solr', ['$http', function($http) {
 
     var solrUrl = '/solr/collection1/select?';
 

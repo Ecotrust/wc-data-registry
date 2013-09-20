@@ -30197,7 +30197,7 @@ angular.module("template/typeahead/typeahead.html", []).run(["$templateCache", f
  */
 angular.module('wcodpApp', ['ui.bootstrap', 'leaflet-directive']);
 
-angular.module('wcodpApp', []).factory('solr', ['$http', function($http) {
+angular.module('wcodpApp').factory('solr', ['$http', function($http) {
 
     var solrUrl = '/solr/collection1/select?';
 
