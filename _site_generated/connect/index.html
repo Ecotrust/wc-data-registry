@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>West Coast Ocean Data Portal | Discover</title>
+    <title>West Coast Ocean Data Portal | Connect</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="/assets/css/all.css">
@@ -35,14 +35,14 @@
 				<ul class="unstyled inline">
 					
 						
-						<li class="active discover">
-							<img src="/assets/img/icons/menu_caret.png">
+						<li>
 						
 							<a href="/discover">discover</a>
 						</li>
 					
 						
-						<li>
+						<li class="active connect">
+							<img src="/assets/img/icons/menu_caret.png">
 						
 							<a href="/connect">connect</a>
 						</li>
@@ -66,39 +66,11 @@
 </div>
 
 
-    <div class="container" id="discover" ng-controller="DiscoverCtrl">
+    <div class="container" id="connect" ng-controller="ConnectCtrl">
 
 	<div class="row">
 		
-		<div filters 
-			on-filters-changed="runQuery(filterVals, true)"
-			initial-filter-values="filterValues"
-			class="span4" 
-			id="filters">
-		</div>
-
-		<div results
-			ng-show="numFound > 0"
-			data="resultsData"
-			num-found="numFound"
-			page-index="pageIndex"
-			results-per-page="resultsPerPage"
-			filter-values="filterValues"
-			class="span8"
-			id="results">
-		</div>
-
-		<div ng-hide="numFound > 0"
-			ng-animate="'animate'"
-			class="span8"
-			id="discover-landing">
-			<p>
-				Welcome to the Data Portal. <span class="highlight">250</span> registered resources are available through the portal.
-			</p>
-			<p>
-				Search the resources by entering your own terms into the search bar <i class="icon-search"></i> or by using the filtering tools provided to browse. You can filter by any combination of <i class="icon-map-marker"></i> location, <i class="icon-th"></i> category and <i class="icon-tags"></i> issue.
-			</p>
-		</div>
+		<h3>Connect</h3>
 
 	</div>
 </div>

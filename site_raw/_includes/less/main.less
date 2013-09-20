@@ -168,17 +168,24 @@ small {
   margin-left: 0;
 }
 
-.top-nav a {
-  color: @nearlyBlack;
-  .uppercase;
-}
-
-.top-nav a:hover {
-  color: @nearlyBlack;
-}
+.top-nav a { color: @nearlyBlack; .uppercase; }
+/* when hovering over a nav item, desaturate all others */
+.top-nav ul:hover a { color: @grey; }
+.top-nav ul a:hover { color: @nearlyBlack; }
 
 .top-nav li.active {
-  text-decoration: underline;
+  position: relative;
+}
+.top-nav li.active img {
+  position: absolute;
+  top: 22px;
+  left: 30px;
+}
+.top-nav li.active.about img {
+  left: 20px;
+}
+.top-nav li.active.inform img {
+  left: 25px;
 }
 
 

@@ -30207,8 +30207,8 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
 
     var localIcons = {
         whiteMarker: L.icon({
-            iconUrl: 'http://leafletjs.com/docs/images/leaf-green.png',
-            shadowUrl: 'http://leafletjs.com/docs/images/leaf-shadow.png',
+            iconUrl: 'http://localhost:8082/assets/img/icons/map_marker_wht.png', //TODO: this isn't working so far, absolute or relative
+            //shadowUrl: 'http://leafletjs.com/docs/images/leaf-shadow.png',
             iconSize:     [38, 95],
             shadowSize:   [50, 64],
             iconAnchor:   [22, 94],
