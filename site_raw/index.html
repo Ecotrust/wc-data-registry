@@ -5,7 +5,7 @@ permalink: /
 active: home
 ---
 
-
+{% raw %}
 <div class="container" id="home" ng-controller="HomeCtrl">
 	<div class="row">
 		<div class="home-item green1 w2 clearfix">
@@ -18,7 +18,7 @@ active: home
 		</div>
 		<div class="home-item red w1">
 			<div class="home-item-cntr search">
-				<div class="giantText">250</div>
+				<div class="giantText">{{ recordCount }}</div>
 				<p>registered resources</p>
 				<input type="text" placeholder="SEARCH">
 			</div>
@@ -42,3 +42,4 @@ active: home
 		</div>
 	</div>
 </div>
+{% endraw %}

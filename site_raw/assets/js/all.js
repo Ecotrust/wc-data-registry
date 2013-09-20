@@ -17,6 +17,7 @@
  * Begin site scripts
  */
 angular.module('wcodpApp', ['ui.bootstrap', 'leaflet-directive']);
+{% include js/services/Solr.js %}
 {% include js/directives/Filters.js %}
 {% include js/directives/Results.js %}
 {% include js/directives/Leaflet.js %}

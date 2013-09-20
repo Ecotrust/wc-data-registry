@@ -1,5 +1,5 @@
 
-angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$location', '$timeout', function($scope, $http, $location, $timeout) { 
+angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$location', '$timeout', 'solr', function($scope, $http, $location, $timeout, solr) { 
 	$scope.solrUrl = '/solr/collection1/select?';
 	$scope.filterValues = {};
 	$scope.resultsData = {};
@@ -19,6 +19,10 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		$scope.filterValues = initialFilterValues;
 		$scope.watchResultsPerPage();
 		$scope.watchPageIndex();
+
+		solr.getRecordCount(function (count) {
+			$scope.recordCount = count;
+		});
 	};
 
 	$scope.runQuery = function (filterVals, resetPagination) {
@@ -161,5 +165,5 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	};
 
 
-	$scope.onLoad();
+	$scope.onLoad();	
 }]);
