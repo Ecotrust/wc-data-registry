@@ -81,7 +81,10 @@
 				<div class="giantText">{{ recordCount }}</div>
 				<p>registered resources</p>
 				<form ng-submit="search()">
-					<input type="text" placeholder="SEARCH" ng-model="searchText">
+					<div id="search-filter">
+						<input type="text" placeholder="SEARCH" ng-model="searchText">
+						<img src="/assets/img/icons/black_search.png" ng-click="search()">
+					</div>
 				</form>				
 			</div>
 		</div>

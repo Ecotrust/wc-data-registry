@@ -6288,15 +6288,6 @@ a.badge:focus {
 .uppercase {
   text-transform: uppercase;
 }
-.box {
-  color: #0070cf;
-  border-color: #69baff;
-}
-.box div {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
 @font-face {
   font-family: 'OpenSans';
   src: url('../fonts/OpenSans/OpenSans-LightItalic-webfont.eot');
@@ -6533,6 +6524,12 @@ small {
 }
 #search-filter {
   border: #ff3817 1px solid;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  background-color: white;
   position: relative;
   margin-bottom: 15px;
 }
@@ -6545,16 +6542,15 @@ small {
   box-shadow: none rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: none rgba(0, 0, 0, 0.5);
   -moz-box-shadow: none rgba(0, 0, 0, 0.5);
+  margin-top: 2px;
   margin-bottom: 0;
-  width: 85%;
+  width: 80%;
   font-size: 12px;
 }
-#search-filter .icon-search {
-  margin-right: 10px;
-  margin-top: 5px;
+#search-filter img {
   position: absolute;
-  right: 7px;
-  top: 2px;
+  right: 10px;
+  top: 3px;
 }
 .leaflet-directive {
   height: 180px;
@@ -6564,8 +6560,7 @@ small {
 }
 /* collapsible filter groups */
 a.filter-group-toggle {
-  display: table-cell;
-  vertical-align: middle;
+  display: block;
   background-color: #eee;
   color: #332e1f;
   width: inherit;
@@ -6586,6 +6581,15 @@ a.filter-group-toggle:first-of-type {
   padding-left: 22px;
   padding-right: 22px;
 }
+#filters a.filter-group-toggle.desaturated {
+  background-color: red;
+  color: red;
+}
+/*.filter-group-toggle-inner {
+  display: table-cell;
+  vertical-align: middle;  
+  width: inherit;
+}*/
 .filter-group-container .select-all-link {
   display: block;
   font-size: 12px;
@@ -6797,7 +6801,7 @@ p.results-summary strong {
   opacity: 1;
 }
 
-
+ 
 .lt-ie9 .result:hover,
 .lt-ie9 .result-opened {
 	background-color: #f2f7fc;

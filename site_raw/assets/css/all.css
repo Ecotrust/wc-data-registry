@@ -2,7 +2,7 @@
 ---
 {% include css/thirdparty/bootstrap/bootstrap.css %}
 {% include css/main.css %}
-
+ 
 .lt-ie9 .result:hover,
 .lt-ie9 .result-opened {
 	background-color: #f2f7fc;

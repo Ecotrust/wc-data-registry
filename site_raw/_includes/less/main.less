@@ -64,12 +64,14 @@
 .box-shadow(@style, @alpha: 50%) when (isnumber(@alpha)) {
   .box-shadow(@style, rgba(0, 0, 0, @alpha));
 }
-.box {
-  color: saturate(@blue, 5%);
-  border-color: lighten(@blue, 30%);
-  div { .box-shadow(0 0 5px, 30%) }
-}
 
+.rounded-corners (@radius: 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -ms-border-radius: @radius;
+  -o-border-radius: @radius;
+  border-radius: @radius;
+}
 
 //
 //  S T Y L E S H E E T
@@ -291,6 +293,8 @@ small {
 
 #search-filter {
   border: @red 1px solid;
+  .rounded-corners(3px);
+  background-color: white;
   position: relative;
   margin-bottom: 15px;
 }
@@ -298,17 +302,16 @@ small {
   border: none;
   outline: none;
   .box-shadow(none);
+  margin-top: 2px;
   margin-bottom: 0;
-  width: 85%;
+  width: 80%;
   font-size: 12px;
 }
-#search-filter .icon-search {
-  margin-right: 10px;
-  margin-top: 5px;
+#search-filter img {
   position: absolute;
-  right: 7px;
-  top: 2px;
-}
+  right: 10px;
+  top: 3px;
+ }
 
 .leaflet-directive { 
   height: 180px; 
