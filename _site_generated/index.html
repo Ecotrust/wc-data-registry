@@ -80,7 +80,9 @@
 			<div class="home-item-cntr search">
 				<div class="giantText">{{ recordCount }}</div>
 				<p>registered resources</p>
-				<input type="text" placeholder="SEARCH">
+				<form ng-submit="search()">
+					<input type="text" placeholder="SEARCH" ng-model="searchText">
+				</form>				
 			</div>
 		</div>
 		<div class="home-item blue w1">

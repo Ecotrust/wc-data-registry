@@ -88,6 +88,14 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                         if (_.isString(scope.searchText) && scope.searchText.length > 0) {
                             scope.notifyFiltersChanged();    
                         }
+                        $('.filter-group-toggle').hover(function (event) {
+                            $('.filter-group-toggle').addClass('desaturated');
+                            $(this).removeClass('desaturated');
+                            console.log('in');
+                        }, function (event) {
+                            $('.filter-group-toggle').removeClass('desaturated');
+                            console.log('out');
+                        });
                     };
 
                     scope.notifyFiltersChanged = function () {

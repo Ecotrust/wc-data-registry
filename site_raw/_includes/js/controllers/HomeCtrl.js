@@ -1,5 +1,5 @@
 
-angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', 'solr', function($scope, $http, solr) { 
+angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window', 'solr', function($scope, $http, $window, solr) { 
 
 	// Initialize Packery
 	var $container = $('#home');
@@ -9,8 +9,14 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', 'solr', fu
 	});
 
 	// Get record count.
+	$scope.recordCount = -1;
 	solr.getRecordCount(function (count) {
 		$scope.recordCount = count;
 	});
+
+
+	$scope.search = function () {
+		$window.location.href = '/discover#?text='+$scope.searchText;
+	};
 
 }]);

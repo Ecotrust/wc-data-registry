@@ -30396,6 +30396,14 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                         if (_.isString(scope.searchText) && scope.searchText.length > 0) {
                             scope.notifyFiltersChanged();    
                         }
+                        $('.filter-group-toggle').hover(function (event) {
+                            $('.filter-group-toggle').addClass('desaturated');
+                            $(this).removeClass('desaturated');
+                            console.log('in');
+                        }, function (event) {
+                            $('.filter-group-toggle').removeClass('desaturated');
+                            console.log('out');
+                        });
                     };
 
                     scope.notifyFiltersChanged = function () {
@@ -31972,7 +31980,7 @@ leafletDirective.directive('leaflet', [
     };
 }]);
 
-angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', 'solr', function($scope, $http, solr) { 
+angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window', 'solr', function($scope, $http, $window, solr) { 
 
 	// Initialize Packery
 	var $container = $('#home');
@@ -31982,9 +31990,15 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', 'solr', fu
 	});
 
 	// Get record count.
+	$scope.recordCount = -1;
 	solr.getRecordCount(function (count) {
 		$scope.recordCount = count;
 	});
+
+
+	$scope.search = function () {
+		$window.location.href = '/discover#?text='+$scope.searchText;
+	};
 
 }]);
 

@@ -319,8 +319,7 @@ small {
 
 /* collapsible filter groups */
 a.filter-group-toggle {
-  display: table-cell;
-  vertical-align: middle;
+  display: block;
   background-color: #eee;
   color: @nearlyBlack;
   width: inherit;
@@ -341,6 +340,16 @@ a.filter-group-toggle:first-of-type {
   padding-left: 22px;
   padding-right: 22px;
 }
+#filters a.filter-group-toggle.desaturated {
+  background-color: red;
+  color: red;
+}
+/*.filter-group-toggle-inner {
+  display: table-cell;
+  vertical-align: middle;  
+  width: inherit;
+}*/
+
 .filter-group-container .select-all-link {
   display: block;
   font-size: 12px;
