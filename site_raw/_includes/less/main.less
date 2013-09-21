@@ -322,15 +322,16 @@ small {
 
 /* collapsible filter groups */
 a.filter-group-toggle {
-  display: block;
-  background-color: #eee;
+  display: table-cell;
+  vertical-align: middle;  
+  background-color: #F4F2F1;
   color: @nearlyBlack;
   width: inherit;
   height: 70px;
   font-size: 22px;
   padding-left: 22px;
   padding-right: 22px;
-  border-top: #ddd 1px solid;
+  border-top: #8FB6CC 1px solid;
 }
 a.filter-group-toggle:first-of-type {
   border-top: none;
@@ -339,19 +340,20 @@ a.filter-group-toggle:first-of-type {
   font-size: 20px;
 }
 .filter-group-container {
-  background-color: #eee; 
+  background-color: #F4F2F1; 
   padding-left: 22px;
   padding-right: 22px;
 }
-#filters a.filter-group-toggle.desaturated {
-  background-color: red;
-  color: red;
+/* desaturate non-hovered items */
+#filters a.filter-group-toggle.desaturated,
+.filter-group-container.desaturated {
+  background-color: fadeout(#F4F2F1, 50%);
+  color: fadeout(@nearlyBlack, 50%);
+  border-top-color: fadeout(#8FB6CC, 50%);
 }
-/*.filter-group-toggle-inner {
-  display: table-cell;
-  vertical-align: middle;  
-  width: inherit;
-}*/
+#filters a.filter-group-toggle.desaturated i[class^="icon"] {
+  color: fadeout(#a6a6a6, 50%);
+}
 
 .filter-group-container .select-all-link {
   display: block;

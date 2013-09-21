@@ -30396,12 +30396,17 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                         if (_.isString(scope.searchText) && scope.searchText.length > 0) {
                             scope.notifyFiltersChanged();    
                         }
-                        $('.filter-group-toggle').hover(function (event) {
-                            $('.filter-group-toggle').addClass('desaturated');
+                        $('.filter-group-toggle, .filter-group-container').hover(function (event) {
+                            $('.filter-group-toggle, .filter-group-container').addClass('desaturated');
                             $(this).removeClass('desaturated');
+                            if ($(this).hasClass('filter-group-toggle')) {
+                                $(this).next().removeClass('desaturated');
+                            } else {
+                                $(this).prev().removeClass('desaturated');
+                            }
                             console.log('in');
                         }, function (event) {
-                            $('.filter-group-toggle').removeClass('desaturated');
+                            $('.filter-group-toggle, .filter-group-container').removeClass('desaturated');
                             console.log('out');
                         });
                     };
