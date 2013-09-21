@@ -1,6 +1,5 @@
 
 angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$location', '$timeout', 'solr', function($scope, $http, $location, $timeout, solr) { 
-	$scope.solrUrl = '/solr/collection1/select?';
 	$scope.filterValues = {};
 	$scope.resultsData = {};
 	$scope.numFound = 0;
@@ -15,6 +14,10 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		// Populate filter values from parameters in the URL.
 		var initialFilterValues = {
 			searchText: $location.search().text,
+			location: {
+				lat: $location.search().lat,
+				lng: $location.search().lng
+			}
 		};
 		$scope.filterValues = initialFilterValues;
 		$scope.watchResultsPerPage();
@@ -25,6 +28,43 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		});
 	};
 
+	$scope.onSolrSuccess = function (data) {
+		$scope.updateUrl(data.filterValues);
+		// Fill UI with results.
+		$scope.resultsData = data.response.docs;
+		$scope.numFound = data.response.numFound;
+		if (console) console.log('Solr Success');
+	};
+
+	$scope.onSolrError = function (data) {
+		$scope.updateUrl(data.filterValues);
+		$scope.resultsData = {};
+		$scope.numFound = 0;
+		if (console) {console.log("Error querying Solr:" + data.error.msg || "no info available"); }
+	};
+
+	/**
+	 * Udates URL without a reload. Does not create a new entry in browser 
+	 * history.
+	 * @param  {object} filterValues Values used in query.
+	 */
+	$scope.updateUrl = function (filterValues) {
+		var vals = filterValues;
+		if (vals.searchText) {
+			$location.search('text', vals.searchText);
+		} else {
+			$location.search('text', null); // clear
+		}
+
+		if (vals.location && vals.location.lat && vals.location.lng) {
+			$location
+				.search('lat', vals.location.lat)
+				.search('lng', vals.location.lng);
+		} else {
+			$location.search('lat', null).search('lng', null); // clear
+		}
+	};
+
 	$scope.runQuery = function (filterVals, resetPagination) {
 		if (resetPagination) {
 			$scope.unwatchPageIndex();
@@ -32,96 +72,11 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 			$scope.watchPageIndex();
 		}
 		$scope.filterValues = filterVals;
-		$scope.querySolr($scope.filterValues);
-	};
-
-	$scope.querySolr = function (filterValues) {
-		var queryConfig = {},
-			facetFields = [], 
-			facetMinCounts = [],
-			facets = ['keywords'],
-			mincount = 1;
-			
-		// Prep query string params.
-		_.each(facets, function (value) {
-			facetFields.push(value);
-			facetMinCounts.push(mincount);
-		});
-		queryConfig.params = {
-			'start': ($scope.pageIndex - 1) * $scope.resultsPerPage,
-			'rows': $scope.resultsPerPage,
-			'wt': 'json', 
-			'q': $scope.getSearchTextForQuery() + $scope.getKeywords(filterValues),
-			'fq': $scope.getBoundingBoxQuery(filterValues.location),
-			//'fl': 'contact.organizations_ss, id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
-			'fl': '',
-			'facet': true,
-			'facet.field': facetFields,
-			'facet.mincount': facetMinCounts
-		};
-
-		// Execute query.
-		if (console) { console.log("Querying Solr"); }
-		$http.get($scope.solrUrl, queryConfig).success(function (data, status, headers, config) {
-			$location
-				.search('text', $scope.getSearchText())
-				//.search('location', $scope.)
-				.replace();
-			$scope.resultsData = data.response.docs;
-			$scope.numFound = data.response.numFound;
-		}).error(function (data, status, headers, config) {
-			$scope.resultsData = {};
-			$scope.numFound = 0;
-			//if (console) {console.log("Error querying Solr:" + data.error.msg || "no info available"); }
-		});
-	};
-
-	$scope.getSearchText = function () {
-		if ($scope.filterValues.searchText && _.isString($scope.filterValues.searchText)) {
-			return $scope.filterValues.searchText;
-		}
-		return "";
-	};
-
-	$scope.getSearchTextForQuery = function () {
-		var q = "{!lucene q.op=AND df=text}",
-			val = $scope.getSearchText(),
-			applyingOtherFilters = false;
-
-		applyingOtherFilters = $scope.filterValues.location != null;
-
-		q = val.length > 0 ? q + val + " " : applyingOtherFilters ? "* " : " "; //q + "* ";
-		return q;
-	};
-
-	$scope.getKeywords = function () {
-		return '';
-		// if (!isEmpty(app.viewModel.keywords())) {
-
-		// 	var keywords = '(';
-		// 	var count = 0;
-		// 	$.each(app.viewModel.keywords(), function(key, val){
-		// 		if (count > 0) {
-		// 			keywords = keywords + ' AND ';
-		// 		}
-		// 		keywords = keywords + key;
-		// 		count++;
-		// 	});
-
-		// 	keywords = keywords + ')';
-
-		// 	if (keywords.length > 0) {
-		// 	   app.viewModel.q_query(app.viewModel.q_query() + "keywords: " + keywords + " "); 
-		// 	}
-		// }
-	};
-
-	$scope.getBoundingBoxQuery = function (centerPoint) {
-		if (centerPoint && centerPoint.lat && centerPoint.lng) {
-			return "{!bbox pt=" + centerPoint.lat + "," + centerPoint.lng + " sfield=envelope_geo d=0.001} ";
-		} else {
-			return "";
-		}
+		solr.querySolr($scope.filterValues, 
+			$scope.resultsPerPage, 
+			$scope.pageIndex, 
+			$scope.onSolrSuccess, 
+			$scope.onSolrError);
 	};
 
 	$scope.watchPageIndex = function () {

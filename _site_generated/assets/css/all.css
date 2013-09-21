@@ -6551,6 +6551,7 @@ small {
   position: absolute;
   right: 10px;
   top: 3px;
+  cursor: pointer;
 }
 .leaflet-directive {
   height: 180px;

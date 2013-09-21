@@ -93,12 +93,14 @@ angular.module('wcodpApp').factory('solr', ['$http', function($http) {
             };
 
             // Execute query.
-            if (console) { console.log("Querying Solr (SERVICE)"); }
+            if (console) { console.log("Querying Solr"); }
             $http.get(solrUrl, queryConfig).success(function (data, status, headers, config) {
+                data.filterValues = filterValues;
                 if (successCallback) {
                     successCallback(data);
                 }
             }).error(function (data, status, headers, config) {
+                data.filterValues = filterValues;
                 if (errorCallback) {
                     errorCallback(data);
                 }

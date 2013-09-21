@@ -14,7 +14,7 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window',
 		$scope.recordCount = count;
 	});
 
-
+	// Search
 	$scope.search = function () {
 		$window.location.href = '/discover#?text='+$scope.searchText;
 	};

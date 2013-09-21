@@ -704,10 +704,10 @@ leafletDirective.directive('leaflet', [
                             // We have a center
                             if (old_center.lat !== undefined && old_center.lat !== null && typeof old_center.lat === 'number' && old_center.lng !== undefined && old_center.lng !== null &&  typeof old_center.lng === 'number' && old_center.zoom !== undefined && old_center.zoom !== null &&  typeof old_center.zoom === 'number') {
                                 // We also have a correct old center
-                                if (center.lat !== old_center.lat || center.lng !== old_center.lng || center.zoom !== old_center.zoom) {
+                                //if (center.lat !== old_center.lat || center.lng !== old_center.lng || center.zoom !== old_center.zoom) {
                                     // Update if they are different
                                     map.setView([center.lat, center.lng], center.zoom );
-                                }
+                                //}
                             } else {
                                 // We didn't have a correct old center so directly update
                                 map.setView([center.lat, center.lng], center.zoom );
@@ -784,10 +784,8 @@ leafletDirective.directive('leaflet', [
             function setupMainMarker() {
                 var main_marker;
                 if (!$scope.marker) {
-                    if (console) console.log('MARKER EMPTY');
                     return;
                 }
-                if (console) console.log('MARKER !!NOT!! EMPTY');
                 main_marker = createMarker('marker', $scope.marker, map);
                 $scope.leaflet.marker = !!attrs.testing ? main_marker : str_inspect_hint;
                 main_marker.on('click', function(e) {

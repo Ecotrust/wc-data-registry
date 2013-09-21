@@ -30291,12 +30291,14 @@ angular.module('wcodpApp').factory('solr', ['$http', function($http) {
             };
 
             // Execute query.
-            if (console) { console.log("Querying Solr (SERVICE)"); }
+            if (console) { console.log("Querying Solr"); }
             $http.get(solrUrl, queryConfig).success(function (data, status, headers, config) {
+                data.filterValues = filterValues;
                 if (successCallback) {
                     successCallback(data);
                 }
             }).error(function (data, status, headers, config) {
+                data.filterValues = filterValues;
                 if (errorCallback) {
                     errorCallback(data);
                 }
@@ -30386,16 +30388,27 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                     scope.isCategoryCollapsed = true;
                     scope.isTagsCollapsed = true;
 
-
                     scope.init = function () {
-                        // Set initial filter values.
-                        if (_.isUndefined(scope.initialFilterValues)) {
-                            return;
+                        var queryNeeded = false;
+
+                        // Set initial filter values and run initial query if needed.
+                        if (scope.initialFilterValues !== undefined) {
+                            // Text
+                            scope.searchText = scope.initialFilterValues.searchText;
+                            // Location
+                            scope.setFilterLocation(scope.initialFilterValues.location);
+                            scope.isLocationCollapsed = (scope.filteredLocation == null);
+                            // Category
+                            
+                            // Only run initial query if we have valid initial filter values.
+                            queryNeeded = _.isString(scope.searchText) && scope.searchText.length > 0;
+                            queryNeeded = queryNeeded || scope.filteredLocation !== null;
+                            if (queryNeeded) {
+                                scope.notifyFiltersChanged();
+                            }
                         }
-                        scope.searchText = scope.initialFilterValues.searchText;
-                        if (_.isString(scope.searchText) && scope.searchText.length > 0) {
-                            scope.notifyFiltersChanged();    
-                        }
+
+                        // For now, relying on jquery for desaturating non-hovered filter groups.
                         $('.filter-group-toggle, .filter-group-container').hover(function (event) {
                             $('.filter-group-toggle, .filter-group-container').addClass('desaturated');
                             $(this).removeClass('desaturated');
@@ -30404,16 +30417,14 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                             } else {
                                 $(this).prev().removeClass('desaturated');
                             }
-                            console.log('in');
                         }, function (event) {
                             $('.filter-group-toggle, .filter-group-container').removeClass('desaturated');
-                            console.log('out');
                         });
                     };
 
                     scope.notifyFiltersChanged = function () {
                         if (console) {
-                            console.log('Filters Changed -- notifying');
+                            console.log('Calling onFiltersChanged()');
                         }
                         scope.onFiltersChanged({ filterVals: { 
                                 searchText: scope.searchText,
@@ -30453,38 +30464,56 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                     scope.filteredLocation = null;
                     scope.filteredBoundingBox = null;
 
+                    scope.setFilterLocation = function (latlng) {
+                        if (latlng && latlng.lat && latlng.lng) {
+
+                            if (typeof latlng.lat === 'string') {
+                                latlng.lat = parseFloat(latlng.lat);
+                            }
+                            if (typeof latlng.lng === 'string') {
+                                latlng.lng = parseFloat(latlng.lng);
+                            }
+
+                            // Set map center.
+                            scope.center = { 
+                                lat: latlng.lat,
+                                lng: latlng.lng,
+                                zoom: scope.center.zoom 
+                            }; 
+                            // Set marker to center.
+                            scope.markers.mainMarker = {
+                               lat: latlng.lat,
+                               lng: latlng.lng,
+                               //icon: localIcons.whiteMarker,
+                               draggable: false,
+                               focus: false,
+                               title: "Current results include this location."
+                            };
+                            // Set value used for query.
+                            scope.filteredLocation = angular.copy(latlng);
+                        }
+                    };
+
                     scope.$on('leafletDirectiveMap.click', function(event, args){
                         // Location filter map was clicked. But avoid acting on double 
                         // clicks (otherwise map can end up bouncing infinitely between 
                         // two center points).
-                        var currentZoom = event.currentScope.center.zoom;
-                        if (!scope.clickTimerRunning) {
+                        if (scope.clickTimerRunning) {
+                        
+                            // This is a multi click. Cancel acting on a single click.
+                            $timeout.cancel(scope.clickTimerRunning);
+                        
+                        } else {
+
+                            // This is the first click.
                             scope.clickTimerRunning = $timeout(function() { 
                                 scope.clickTimerRunning = null;
-                                
                                 // Act on single click.
                                 if (args && args.leafletEvent && args.leafletEvent.latlng) {
-                                    // Set map center.
-                                    scope.center = { 
-                                        lat: args.leafletEvent.latlng.lat, 
-                                        lng: args.leafletEvent.latlng.lng, 
-                                        zoom: currentZoom 
-                                    }; 
-                                    // Set marker to center.
-                                    scope.markers.mainMarker = {
-                                       lat: scope.center.lat,
-                                       lng: scope.center.lng,
-                                       //icon: localIcons.whiteMarker,
-                                       draggable: false,
-                                       focus: false,
-                                       title: "Current results include this location."
-                                    };
-                                    // Set value used for query.
-                                    scope.filteredLocation = angular.copy(args.leafletEvent.latlng);
+                                    scope.setFilterLocation(args.leafletEvent.latlng);
                                     scope.notifyFiltersChanged();
                                 }
-
-                            }, 200);
+                            }, 200);                        
                         }
                     });
 
@@ -31325,10 +31354,10 @@ leafletDirective.directive('leaflet', [
                             // We have a center
                             if (old_center.lat !== undefined && old_center.lat !== null && typeof old_center.lat === 'number' && old_center.lng !== undefined && old_center.lng !== null &&  typeof old_center.lng === 'number' && old_center.zoom !== undefined && old_center.zoom !== null &&  typeof old_center.zoom === 'number') {
                                 // We also have a correct old center
-                                if (center.lat !== old_center.lat || center.lng !== old_center.lng || center.zoom !== old_center.zoom) {
+                                //if (center.lat !== old_center.lat || center.lng !== old_center.lng || center.zoom !== old_center.zoom) {
                                     // Update if they are different
                                     map.setView([center.lat, center.lng], center.zoom );
-                                }
+                                //}
                             } else {
                                 // We didn't have a correct old center so directly update
                                 map.setView([center.lat, center.lng], center.zoom );
@@ -31405,10 +31434,8 @@ leafletDirective.directive('leaflet', [
             function setupMainMarker() {
                 var main_marker;
                 if (!$scope.marker) {
-                    if (console) console.log('MARKER EMPTY');
                     return;
                 }
-                if (console) console.log('MARKER !!NOT!! EMPTY');
                 main_marker = createMarker('marker', $scope.marker, map);
                 $scope.leaflet.marker = !!attrs.testing ? main_marker : str_inspect_hint;
                 main_marker.on('click', function(e) {
@@ -31999,7 +32026,7 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window',
 		$scope.recordCount = count;
 	});
 
-
+	// Search
 	$scope.search = function () {
 		$window.location.href = '/discover#?text='+$scope.searchText;
 	};
@@ -32007,7 +32034,6 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window',
 }]);
 
 angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$location', '$timeout', 'solr', function($scope, $http, $location, $timeout, solr) { 
-	$scope.solrUrl = '/solr/collection1/select?';
 	$scope.filterValues = {};
 	$scope.resultsData = {};
 	$scope.numFound = 0;
@@ -32022,6 +32048,10 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		// Populate filter values from parameters in the URL.
 		var initialFilterValues = {
 			searchText: $location.search().text,
+			location: {
+				lat: $location.search().lat,
+				lng: $location.search().lng
+			}
 		};
 		$scope.filterValues = initialFilterValues;
 		$scope.watchResultsPerPage();
@@ -32032,6 +32062,43 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		});
 	};
 
+	$scope.onSolrSuccess = function (data) {
+		$scope.updateUrl(data.filterValues);
+		// Fill UI with results.
+		$scope.resultsData = data.response.docs;
+		$scope.numFound = data.response.numFound;
+		if (console) console.log('Solr Success');
+	};
+
+	$scope.onSolrError = function (data) {
+		$scope.updateUrl(data.filterValues);
+		$scope.resultsData = {};
+		$scope.numFound = 0;
+		if (console) {console.log("Error querying Solr:" + data.error.msg || "no info available"); }
+	};
+
+	/**
+	 * Udates URL without a reload. Does not create a new entry in browser 
+	 * history.
+	 * @param  {object} filterValues Values used in query.
+	 */
+	$scope.updateUrl = function (filterValues) {
+		var vals = filterValues;
+		if (vals.searchText) {
+			$location.search('text', vals.searchText);
+		} else {
+			$location.search('text', null); // clear
+		}
+
+		if (vals.location && vals.location.lat && vals.location.lng) {
+			$location
+				.search('lat', vals.location.lat)
+				.search('lng', vals.location.lng);
+		} else {
+			$location.search('lat', null).search('lng', null); // clear
+		}
+	};
+
 	$scope.runQuery = function (filterVals, resetPagination) {
 		if (resetPagination) {
 			$scope.unwatchPageIndex();
@@ -32039,96 +32106,11 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 			$scope.watchPageIndex();
 		}
 		$scope.filterValues = filterVals;
-		$scope.querySolr($scope.filterValues);
-	};
-
-	$scope.querySolr = function (filterValues) {
-		var queryConfig = {},
-			facetFields = [], 
-			facetMinCounts = [],
-			facets = ['keywords'],
-			mincount = 1;
-			
-		// Prep query string params.
-		_.each(facets, function (value) {
-			facetFields.push(value);
-			facetMinCounts.push(mincount);
-		});
-		queryConfig.params = {
-			'start': ($scope.pageIndex - 1) * $scope.resultsPerPage,
-			'rows': $scope.resultsPerPage,
-			'wt': 'json', 
-			'q': $scope.getSearchTextForQuery() + $scope.getKeywords(filterValues),
-			'fq': $scope.getBoundingBoxQuery(filterValues.location),
-			//'fl': 'contact.organizations_ss, id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
-			'fl': '',
-			'facet': true,
-			'facet.field': facetFields,
-			'facet.mincount': facetMinCounts
-		};
-
-		// Execute query.
-		if (console) { console.log("Querying Solr"); }
-		$http.get($scope.solrUrl, queryConfig).success(function (data, status, headers, config) {
-			$location
-				.search('text', $scope.getSearchText())
-				//.search('location', $scope.)
-				.replace();
-			$scope.resultsData = data.response.docs;
-			$scope.numFound = data.response.numFound;
-		}).error(function (data, status, headers, config) {
-			$scope.resultsData = {};
-			$scope.numFound = 0;
-			//if (console) {console.log("Error querying Solr:" + data.error.msg || "no info available"); }
-		});
-	};
-
-	$scope.getSearchText = function () {
-		if ($scope.filterValues.searchText && _.isString($scope.filterValues.searchText)) {
-			return $scope.filterValues.searchText;
-		}
-		return "";
-	};
-
-	$scope.getSearchTextForQuery = function () {
-		var q = "{!lucene q.op=AND df=text}",
-			val = $scope.getSearchText(),
-			applyingOtherFilters = false;
-
-		applyingOtherFilters = $scope.filterValues.location != null;
-
-		q = val.length > 0 ? q + val + " " : applyingOtherFilters ? "* " : " "; //q + "* ";
-		return q;
-	};
-
-	$scope.getKeywords = function () {
-		return '';
-		// if (!isEmpty(app.viewModel.keywords())) {
-
-		// 	var keywords = '(';
-		// 	var count = 0;
-		// 	$.each(app.viewModel.keywords(), function(key, val){
-		// 		if (count > 0) {
-		// 			keywords = keywords + ' AND ';
-		// 		}
-		// 		keywords = keywords + key;
-		// 		count++;
-		// 	});
-
-		// 	keywords = keywords + ')';
-
-		// 	if (keywords.length > 0) {
-		// 	   app.viewModel.q_query(app.viewModel.q_query() + "keywords: " + keywords + " "); 
-		// 	}
-		// }
-	};
-
-	$scope.getBoundingBoxQuery = function (centerPoint) {
-		if (centerPoint && centerPoint.lat && centerPoint.lng) {
-			return "{!bbox pt=" + centerPoint.lat + "," + centerPoint.lng + " sfield=envelope_geo d=0.001} ";
-		} else {
-			return "";
-		}
+		solr.querySolr($scope.filterValues, 
+			$scope.resultsPerPage, 
+			$scope.pageIndex, 
+			$scope.onSolrSuccess, 
+			$scope.onSolrError);
 	};
 
 	$scope.watchPageIndex = function () {

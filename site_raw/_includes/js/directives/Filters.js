@@ -78,16 +78,27 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                     scope.isCategoryCollapsed = true;
                     scope.isTagsCollapsed = true;
 
-
                     scope.init = function () {
-                        // Set initial filter values.
-                        if (_.isUndefined(scope.initialFilterValues)) {
-                            return;
+                        var queryNeeded = false;
+
+                        // Set initial filter values and run initial query if needed.
+                        if (scope.initialFilterValues !== undefined) {
+                            // Text
+                            scope.searchText = scope.initialFilterValues.searchText;
+                            // Location
+                            scope.setFilterLocation(scope.initialFilterValues.location);
+                            scope.isLocationCollapsed = (scope.filteredLocation == null);
+                            // Category
+                            
+                            // Only run initial query if we have valid initial filter values.
+                            queryNeeded = _.isString(scope.searchText) && scope.searchText.length > 0;
+                            queryNeeded = queryNeeded || scope.filteredLocation !== null;
+                            if (queryNeeded) {
+                                scope.notifyFiltersChanged();
+                            }
                         }
-                        scope.searchText = scope.initialFilterValues.searchText;
-                        if (_.isString(scope.searchText) && scope.searchText.length > 0) {
-                            scope.notifyFiltersChanged();    
-                        }
+
+                        // For now, relying on jquery for desaturating non-hovered filter groups.
                         $('.filter-group-toggle, .filter-group-container').hover(function (event) {
                             $('.filter-group-toggle, .filter-group-container').addClass('desaturated');
                             $(this).removeClass('desaturated');
@@ -96,16 +107,14 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                             } else {
                                 $(this).prev().removeClass('desaturated');
                             }
-                            console.log('in');
                         }, function (event) {
                             $('.filter-group-toggle, .filter-group-container').removeClass('desaturated');
-                            console.log('out');
                         });
                     };
 
                     scope.notifyFiltersChanged = function () {
                         if (console) {
-                            console.log('Filters Changed -- notifying');
+                            console.log('Calling onFiltersChanged()');
                         }
                         scope.onFiltersChanged({ filterVals: { 
                                 searchText: scope.searchText,
@@ -145,38 +154,56 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                     scope.filteredLocation = null;
                     scope.filteredBoundingBox = null;
 
+                    scope.setFilterLocation = function (latlng) {
+                        if (latlng && latlng.lat && latlng.lng) {
+
+                            if (typeof latlng.lat === 'string') {
+                                latlng.lat = parseFloat(latlng.lat);
+                            }
+                            if (typeof latlng.lng === 'string') {
+                                latlng.lng = parseFloat(latlng.lng);
+                            }
+
+                            // Set map center.
+                            scope.center = { 
+                                lat: latlng.lat,
+                                lng: latlng.lng,
+                                zoom: scope.center.zoom 
+                            }; 
+                            // Set marker to center.
+                            scope.markers.mainMarker = {
+                               lat: latlng.lat,
+                               lng: latlng.lng,
+                               //icon: localIcons.whiteMarker,
+                               draggable: false,
+                               focus: false,
+                               title: "Current results include this location."
+                            };
+                            // Set value used for query.
+                            scope.filteredLocation = angular.copy(latlng);
+                        }
+                    };
+
                     scope.$on('leafletDirectiveMap.click', function(event, args){
                         // Location filter map was clicked. But avoid acting on double 
                         // clicks (otherwise map can end up bouncing infinitely between 
                         // two center points).
-                        var currentZoom = event.currentScope.center.zoom;
-                        if (!scope.clickTimerRunning) {
+                        if (scope.clickTimerRunning) {
+                        
+                            // This is a multi click. Cancel acting on a single click.
+                            $timeout.cancel(scope.clickTimerRunning);
+                        
+                        } else {
+
+                            // This is the first click.
                             scope.clickTimerRunning = $timeout(function() { 
                                 scope.clickTimerRunning = null;
-                                
                                 // Act on single click.
                                 if (args && args.leafletEvent && args.leafletEvent.latlng) {
-                                    // Set map center.
-                                    scope.center = { 
-                                        lat: args.leafletEvent.latlng.lat, 
-                                        lng: args.leafletEvent.latlng.lng, 
-                                        zoom: currentZoom 
-                                    }; 
-                                    // Set marker to center.
-                                    scope.markers.mainMarker = {
-                                       lat: scope.center.lat,
-                                       lng: scope.center.lng,
-                                       //icon: localIcons.whiteMarker,
-                                       draggable: false,
-                                       focus: false,
-                                       title: "Current results include this location."
-                                    };
-                                    // Set value used for query.
-                                    scope.filteredLocation = angular.copy(args.leafletEvent.latlng);
+                                    scope.setFilterLocation(args.leafletEvent.latlng);
                                     scope.notifyFiltersChanged();
                                 }
-
-                            }, 200);
+                            }, 200);                        
                         }
                     });
 
