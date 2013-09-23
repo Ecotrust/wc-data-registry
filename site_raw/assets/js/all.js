@@ -19,7 +19,8 @@
 angular.module('wcodpApp', ['ui.bootstrap', 'leaflet-directive']);
 {% include js/services/Solr.js %}
 {% include js/directives/Filters.js %}
-{% include js/directives/Results.js %}
+{% include js/directives/ResultsList.js %}
+{% include js/directives/Result.js %}
 {% include js/directives/Leaflet.js %}
 {% include js/controllers/HomeCtrl.js %}
 {% include js/controllers/DiscoverCtrl.js %}

@@ -6593,6 +6593,9 @@ a.filter-group-toggle:first-of-type {
 #filters a.filter-group-toggle.desaturated i[class^="icon"] {
   color: rgba(166, 166, 166, 0.5);
 }
+#filters a.filter-group-toggle:hover {
+  border-top-color: rgba(143, 182, 204, 0.5);
+}
 .filter-group-container .select-all-link {
   display: block;
   font-size: 12px;
