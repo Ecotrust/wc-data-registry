@@ -30197,28 +30197,34 @@ angular.module("template/typeahead/typeahead.html", []).run(["$templateCache", f
  */
 angular.module('wcodpApp', ['ui.bootstrap', 'leaflet-directive']);
 
-angular.module('wcodpApp').factory('solr', ['$http', function($http) {
+angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http, $location) {
 
     var solrUrl = '/solr/collection1/select?';
 
+    function getTextFromUrl() {
+        var txt = $location.search().text;
+        return (txt) ? txt : "";
+    }
 
-    function getSearchText(filterValues) {
-        if (filterValues.searchText && _.isString(filterValues.searchText)) {
-            return filterValues.searchText;
-        }
-        return "";
-    };
+    function getLatLngFromUrl() {
+        var lat = $location.search().lat,
+            lng = $location.search().lng;
+        return (lat && lng) ? {lat: lat, lng: lng} : null;
+    }
 
-    function getSearchTextForQuery(filterValues) {
+    function getTextQuery(filterVals) {
         var q = "{!lucene q.op=AND df=text}",
-            val = getSearchText(filterValues),
-            applyingOtherFilters = false;
+            txt = filterVals.text,
+            applyingOtherFilters = filterVals.latLng !== null;
 
-        applyingOtherFilters = filterValues.location != null;
-
-        q = val.length > 0 ? q + val + " " : applyingOtherFilters ? "* " : " "; //q + "* ";
+        q = txt && txt.length > 0 ? q + txt + " " : applyingOtherFilters ? "* " : " "; //q + "* ";
         return q;
-    };
+    }
+
+    function getBoundingBoxQuery(filterVals) {
+        var ll = filterVals.latLng;
+        return ll && ll.lat && ll.lng ? "{!bbox pt=" + ll.lat + "," + ll.lng + " sfield=envelope_geo d=0.001} " : "";
+    }
 
     function getKeywords() {
         return '';
@@ -30240,32 +30246,31 @@ angular.module('wcodpApp').factory('solr', ['$http', function($http) {
         //     app.viewModel.q_query(app.viewModel.q_query() + "keywords: " + keywords + " "); 
         //  }
         // }
-    };
-
-    function getBoundingBoxQuery(centerPoint) {
-        if (centerPoint && centerPoint.lat && centerPoint.lng) {
-            return "{!bbox pt=" + centerPoint.lat + "," + centerPoint.lng + " sfield=envelope_geo d=0.001} ";
-        } else {
-            return "";
-        }
-    };
-
+    }
 
 
     return {
         
         getRecordCount: function (callback) {
-            if (!callback) {
-                return;
-            }
-            this.querySolr({searchText: '* '}, 5, 1, function (data) {
-                callback(data.response.numFound);
+            this.querySolr({text: '* '}, 1, 1, function (data) {
+                if (callback) { 
+                    callback(data.response.numFound);
+                }
             }, function (data) {
                 if (console) console.log('Failed to get record count.');
             });
         },
 
-        querySolr: function (filterValues, resultsPerPage, pageIndex, successCallback, errorCallback) {
+        getResultsForQueryString: function (resultsPerPage, pageIndex, successCallback, errorCallback) {
+            var filterVals = {
+                    text: getTextFromUrl(),
+                    latLng: getLatLngFromUrl()
+                };
+
+            this.querySolr(filterVals, resultsPerPage, pageIndex, successCallback, errorCallback);
+        },
+
+        querySolr: function (filterVals, resultsPerPage, pageIndex, successCallback, errorCallback) {
             var queryConfig = {},
                 facetFields = [], 
                 facetMinCounts = [],
@@ -30281,8 +30286,8 @@ angular.module('wcodpApp').factory('solr', ['$http', function($http) {
                 'start': (pageIndex - 1) * resultsPerPage,
                 'rows': resultsPerPage,
                 'wt': 'json', 
-                'q': getSearchTextForQuery(filterValues) + getKeywords(filterValues),
-                'fq': getBoundingBoxQuery(filterValues.location),
+                'q': getTextQuery(filterVals) + getKeywords(),
+                'fq': getBoundingBoxQuery(filterVals),
                 //'fl': 'contact.organizations_ss, id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
                 'fl': '',
                 'facet': true,
@@ -30293,12 +30298,10 @@ angular.module('wcodpApp').factory('solr', ['$http', function($http) {
             // Execute query.
             if (console) { console.log("Querying Solr"); }
             $http.get(solrUrl, queryConfig).success(function (data, status, headers, config) {
-                data.filterValues = filterValues;
                 if (successCallback) {
                     successCallback(data);
                 }
             }).error(function (data, status, headers, config) {
-                data.filterValues = filterValues;
                 if (errorCallback) {
                     errorCallback(data);
                 }
@@ -30309,7 +30312,7 @@ angular.module('wcodpApp').factory('solr', ['$http', function($http) {
 
 }]);
 
-angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) {
+angular.module('wcodpApp').directive('filters', ['$timeout', '$location', function($timeout, $location) {
 
     var defaultCenter = {
         lat: 40.44694705960048,
@@ -30336,8 +30339,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
         replace: true,
         transclude: true,
         scope: {
-            onFiltersChanged: "&",
-            initialFilterValues: "="
+
         },
         compile: function compile(tElement, tAttrs, transclude) {
             return {
@@ -30391,24 +30393,18 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                     scope.init = function () {
                         var queryNeeded = false;
 
-                        // Set initial filter values and run initial query if needed.
-                        if (scope.initialFilterValues !== undefined) {
-                            // Text
-                            scope.searchText = scope.initialFilterValues.searchText;
-                            // Location
-                            scope.setFilterLocation(scope.initialFilterValues.location);
-                            scope.isLocationCollapsed = (scope.filteredLocation == null);
-                            // Category
-                            
-                            // Only run initial query if we have valid initial filter values.
-                            queryNeeded = _.isString(scope.searchText) && scope.searchText.length > 0;
-                            queryNeeded = queryNeeded || scope.filteredLocation !== null;
-                            if (queryNeeded) {
-                                scope.notifyFiltersChanged();
-                            }
-                        }
+                        scope.syncUiWithQueryString();
 
-                        // For now, relying on jquery for desaturating non-hovered filter groups.
+                        // Run initial query only if values were provided in 
+                        // the query string.
+                        queryNeeded = _.isString(scope.searchText) && scope.searchText.length > 0;
+                        queryNeeded = queryNeeded || scope.filteredLocation !== null;
+                        if (queryNeeded) {
+                            scope.updateUrlQueryString(false);
+                        }
+                    
+                        // For now, relying on jquery for desaturating 
+                        // non-hovered filter groups.
                         $('.filter-group-toggle, .filter-group-container').hover(function (event) {
                             $('.filter-group-toggle, .filter-group-container').addClass('desaturated');
                             $(this).removeClass('desaturated');
@@ -30422,20 +30418,40 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                         });
                     };
 
-                    scope.notifyFiltersChanged = function () {
-                        if (console) {
-                            console.log('Calling onFiltersChanged()');
-                        }
-                        scope.onFiltersChanged({ filterVals: { 
-                                searchText: scope.searchText,
-                                location: scope.filteredLocation,
-                                categories: [],
-                                tags: [],
-                                formats: []
-                            }});          
-                        // TODO: listen for results recieved to show bounding boxes. scope.filteredBoundingBox = 
-                    };
+                    /** 
+                     * Udates query string in URL with values from the filter
+                     * controls. Other components can watch the query string
+                     * for changes.
+                     */
+                    scope.updateUrlQueryString = function (forceNewQuery) {
+                        var txt = scope.searchText,
+                            ll = scope.filteredLocation,
+                            f;
 
+                        if (txt && typeof txt === 'string' && txt.length > 0) {
+                            $location.search('text', txt);
+                        } else {
+                            $location.search('text', null);
+                        }
+
+                        if (ll && ll.lat && ll.lng) {
+                            $location
+                                .search('lat', ll.lat)
+                                .search('lng', ll.lng);
+                        } else {
+                            $location.search('lat', null).search('lng', null);
+                        }
+
+                        if (forceNewQuery) {
+                            f = parseInt($location.search().f);
+                            if (typeof f === 'number' && !isNaN(f)) {
+                                f++;
+                            } else {
+                                f = 0;
+                            }
+                            $location.search('f', f);
+                        }
+                    };
 
                     //
                     //  T e x t   F i l t e r
@@ -30453,7 +30469,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                             scope.runningTimeout = false;
                         }
                         scope.runningTimeout = $timeout(function() { 
-                            scope.notifyFiltersChanged();
+                            scope.updateUrlQueryString();
                         }, 300);
                     });
 
@@ -30480,6 +30496,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                                 lng: latlng.lng,
                                 zoom: scope.center.zoom 
                             }; 
+
                             // Set marker to center.
                             scope.markers.mainMarker = {
                                lat: latlng.lat,
@@ -30489,19 +30506,28 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                                focus: false,
                                title: "Current results include this location."
                             };
+
                             // Set value used for query.
                             scope.filteredLocation = angular.copy(latlng);
+                        
+                        } else {
+                            // Clear value used for queries.
+                            scope.filteredLocation = null;
+                            // Remove marker from map.
+                            delete scope.markers.mainMarker;
                         }
                     };
 
                     scope.$on('leafletDirectiveMap.click', function(event, args){
-                        // Location filter map was clicked. But avoid acting on double 
-                        // clicks (otherwise map can end up bouncing infinitely between 
-                        // two center points).
+                        // Location filter map was clicked. But avoid acting
+                        // on double clicks (otherwise map can end up 
+                        // bouncing infinitely between two center points).
                         if (scope.clickTimerRunning) {
                         
-                            // This is a multi click. Cancel acting on a single click.
+                            // This is a multi click. Cancel acting on a 
+                            // single click.
                             $timeout.cancel(scope.clickTimerRunning);
+                            scope.clickTimerRunning = null;
                         
                         } else {
 
@@ -30511,9 +30537,9 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                                 // Act on single click.
                                 if (args && args.leafletEvent && args.leafletEvent.latlng) {
                                     scope.setFilterLocation(args.leafletEvent.latlng);
-                                    scope.notifyFiltersChanged();
+                                    scope.updateUrlQueryString();
                                 }
-                            }, 200);                        
+                            }, 200);
                         }
                     });
 
@@ -30530,18 +30556,45 @@ angular.module('wcodpApp').directive('filters', ['$timeout', function($timeout) 
                         scope.filteredBoundingBox = null;
                         delete scope.markers.mainMarker;
                         scope.location = angular.copy(defaultCenter);
-                        scope.notifyFiltersChanged();
+                        scope.updateUrlQueryString();
+                    };
+
+
+                    //
+                    //  Sync UI with query string
+                    //
+                    scope.watchQueryString = function () {
+                        scope.$watch('getQueryString()', function (newValue, oldValue) {
+                            scope.syncUiWithQueryString();
+                        });
+                    };
+
+                    scope.getQueryString = function () {
+                        var qs = "";
+                        _.each($location.search(), function (val) {
+                            qs = qs + val;
+                        });
+                        return qs;
+                    };
+
+                    scope.syncUiWithQueryString = function () {
+                        scope.searchText = $location.search().text;
+                        scope.setFilterLocation({
+                            lat: $location.search().lat,
+                            lng: $location.search().lng
+                        });
+                        scope.isLocationCollapsed = (scope.filteredLocation == null);
                     };
 
                     scope.init();
-
+                    scope.watchQueryString();
                 }
             }
         }
     };
 }]);
 
-angular.module('wcodpApp').directive('results', [function() {
+angular.module('wcodpApp').directive('results', ['$location', function($location) {
 
     return {
         templateUrl: '/assets/views/ResultsView.html',
@@ -30551,7 +30604,6 @@ angular.module('wcodpApp').directive('results', [function() {
         scope: {
             data: "=",
             numFound: "=",
-            filterValues: "=",
             resultsPerPage: "=",
             pageIndex: "="
         },
@@ -30623,7 +30675,9 @@ angular.module('wcodpApp').directive('results', [function() {
              */
             scope.getResultsSummaryItems = function () {
                 var summaryItems = [],
-                    searchText = scope.filterValues.searchText;
+                    searchText = $location.search().text,
+                    lat = $location.search().lat,
+                    lng = $location.search().lng;
 
                 // Search text filter
                 if (_.isString(searchText)) {
@@ -30634,7 +30688,7 @@ angular.module('wcodpApp').directive('results', [function() {
                 }
 
                 // Location filter
-                if (scope.filterValues.location) {
+                if (lat && lng) {
                     summaryItems.push("current location");
                 }
 
@@ -32034,26 +32088,17 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window',
 }]);
 
 angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$location', '$timeout', 'solr', function($scope, $http, $location, $timeout, solr) { 
-	$scope.filterValues = {};
 	$scope.resultsData = {};
 	$scope.numFound = 0;
 	$scope.startIndex = 0;
-	$scope.location = null;
 	$scope.pageIndex = 1;
 	$scope.pageIndexWatchInitialized = false;
 	$scope.resultsPerPage = 5;
 	$scope.resultsPerPageWatchInitialized = false;
+	$scope.queryStringWatchInitialized = false;
 
 	$scope.onLoad = function () {
-		// Populate filter values from parameters in the URL.
-		var initialFilterValues = {
-			searchText: $location.search().text,
-			location: {
-				lat: $location.search().lat,
-				lng: $location.search().lng
-			}
-		};
-		$scope.filterValues = initialFilterValues;
+		$scope.watchQueryString();
 		$scope.watchResultsPerPage();
 		$scope.watchPageIndex();
 
@@ -32062,63 +32107,51 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		});
 	};
 
-	$scope.onSolrSuccess = function (data) {
-		$scope.updateUrl(data.filterValues);
-		// Fill UI with results.
-		$scope.resultsData = data.response.docs;
-		$scope.numFound = data.response.numFound;
-		if (console) console.log('Solr Success');
+	$scope.resetPagination = function () {
+		// Unwatch to avoid causing a new query.
+		$scope.unwatchPageIndex();
+		$scope.pageIndex = 1;
+		$scope.watchPageIndex();
+	};
+		
+	$scope.runQuery = function () {
+
+		var success = function (data) {
+			// Fill UI with results.
+			$scope.resultsData = data.response.docs;
+			$scope.numFound = data.response.numFound;
+		};
+
+		var error = function (data) {
+			$scope.resultsData = {};
+			$scope.numFound = 0;
+			if (console) {console.log("Error querying Solr:" + data.error.msg || "no info available"); }
+		};
+
+		solr.getResultsForQueryString($scope.resultsPerPage, $scope.pageIndex, success, error);
 	};
 
-	$scope.onSolrError = function (data) {
-		$scope.updateUrl(data.filterValues);
-		$scope.resultsData = {};
-		$scope.numFound = 0;
-		if (console) {console.log("Error querying Solr:" + data.error.msg || "no info available"); }
+
+	$scope.getQueryString = function () {
+		var qs = "";
+		_.each($location.search(), function (val) {
+			qs = qs + val;
+		});
+		return qs;
 	};
 
-	/**
-	 * Udates URL without a reload. Does not create a new entry in browser 
-	 * history.
-	 * @param  {object} filterValues Values used in query.
-	 */
-	$scope.updateUrl = function (filterValues) {
-		var vals = filterValues;
-		if (vals.searchText) {
-			$location.search('text', vals.searchText);
-		} else {
-			$location.search('text', null); // clear
-		}
-
-		if (vals.location && vals.location.lat && vals.location.lng) {
-			$location
-				.search('lat', vals.location.lat)
-				.search('lng', vals.location.lng);
-		} else {
-			$location.search('lat', null).search('lng', null); // clear
-		}
-	};
-
-	$scope.runQuery = function (filterVals, resetPagination) {
-		if (resetPagination) {
-			$scope.unwatchPageIndex();
-			$scope.pageIndex = 1;
-			$scope.watchPageIndex();
-		}
-		$scope.filterValues = filterVals;
-		solr.querySolr($scope.filterValues, 
-			$scope.resultsPerPage, 
-			$scope.pageIndex, 
-			$scope.onSolrSuccess, 
-			$scope.onSolrError);
+	$scope.watchQueryString = function () {
+		$scope.$watch('getQueryString()', function (newValue, oldValue) {
+			$scope.resetPagination();					
+			$scope.runQuery();
+		});
 	};
 
 	$scope.watchPageIndex = function () {
 		$scope.unwatchPageIndex();
 		$scope.unwatchPageIndex_internal = $scope.$watch('pageIndex', function (newValue) {
 			if ($scope.pageIndexWatchInitialized) {
-				if (console) { console.log('pageIndex changed to: ' + newValue); }
-				$scope.runQuery($scope.filterValues, false);
+				$scope.runQuery();
 			} else {
 				// Doing this to avoid duplicate queries to the server.
 				$timeout(function () { $scope.pageIndexWatchInitialized = true; }, 1);
@@ -32137,8 +32170,8 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		$scope.unwatchResultsPerPage();
 		$scope.unwatchResultsPerPage_internal = $scope.$watch('resultsPerPage', function (newValue) {
 			if ($scope.resultsPerPageWatchInitialized) {
-				if (console) {console.log('resultsPerPage changed to: ' + newValue); }
-				$scope.runQuery($scope.filterValues, true);
+				$scope.resetPagination();
+				$scope.runQuery();
 			} else {
 				// Doing this to avoid duplicate queries to the server.
 				$timeout(function () { $scope.resultsPerPageWatchInitialized = true; }, 1);

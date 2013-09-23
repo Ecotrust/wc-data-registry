@@ -11,8 +11,6 @@ active: discover
 	<div class="row">
 		
 		<div filters 
-			on-filters-changed="runQuery(filterVals, true)"
-			initial-filter-values="filterValues"
 			class="span4" 
 			id="filters">
 		</div>
@@ -23,7 +21,6 @@ active: discover
 			num-found="numFound"
 			page-index="pageIndex"
 			results-per-page="resultsPerPage"
-			filter-values="filterValues"
 			class="span8"
 			id="results">
 		</div>

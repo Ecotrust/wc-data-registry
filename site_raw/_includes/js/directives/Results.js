@@ -1,5 +1,5 @@
 
-angular.module('wcodpApp').directive('results', [function() {
+angular.module('wcodpApp').directive('results', ['$location', function($location) {
 
     return {
         templateUrl: '/assets/views/ResultsView.html',
@@ -9,7 +9,6 @@ angular.module('wcodpApp').directive('results', [function() {
         scope: {
             data: "=",
             numFound: "=",
-            filterValues: "=",
             resultsPerPage: "=",
             pageIndex: "="
         },
@@ -81,7 +80,9 @@ angular.module('wcodpApp').directive('results', [function() {
              */
             scope.getResultsSummaryItems = function () {
                 var summaryItems = [],
-                    searchText = scope.filterValues.searchText;
+                    searchText = $location.search().text,
+                    lat = $location.search().lat,
+                    lng = $location.search().lng;
 
                 // Search text filter
                 if (_.isString(searchText)) {
@@ -92,7 +93,7 @@ angular.module('wcodpApp').directive('results', [function() {
                 }
 
                 // Location filter
-                if (scope.filterValues.location) {
+                if (lat && lng) {
                     summaryItems.push("current location");
                 }
 
