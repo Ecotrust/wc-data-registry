@@ -30217,7 +30217,7 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
             txt = filterVals.text,
             applyingOtherFilters = filterVals.latLng !== null;
 
-        q = txt && txt.length > 0 ? q + txt + " " : applyingOtherFilters ? "* " : " "; //q + "* ";
+        q = txt && txt.length > 0 ? q + txt + " " : applyingOtherFilters ? "* " : ""; //q + "* ";
         return q;
     }
 
