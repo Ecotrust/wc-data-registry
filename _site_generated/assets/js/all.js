@@ -30877,6 +30877,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
 
                     _.each(allLinks, function (element, index, list) {
                         if (element.type && angular.lowercase(element.type) in scope.allowedLinkTypes) {
+                            element.type = angular.lowercase(element.type);
                             scope.links.push(element);
                         }
                     });
