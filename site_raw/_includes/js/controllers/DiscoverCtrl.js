@@ -8,6 +8,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.resultsPerPage = 5;
 	$scope.resultsPerPageWatchInitialized = false;
 	$scope.queryStringWatchInitialized = false;
+	$scope.filtersAreActive = false;
 
 	$scope.onLoad = function () {
 		$scope.watchQueryString();
@@ -32,17 +33,22 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 			// Fill UI with results.
 			$scope.resultsData = data.response.docs;
 			$scope.numFound = data.response.numFound;
+			$scope.filtersAreActive = $scope.checkFiltersAreActive(data.filterVals);			
 		};
 
 		var error = function (data) {
 			$scope.resultsData = {};
 			$scope.numFound = 0;
+			$scope.filtersAreActive = $scope.checkFiltersAreActive(data.filterVals);
 			if (console) {console.log("Error querying Solr:" + data.error.msg || "no info available"); }
 		};
 
 		solr.getResultsForQueryString($scope.resultsPerPage, $scope.pageIndex, success, error);
 	};
 
+	$scope.checkFiltersAreActive = function (filterVals) {
+		return !!(filterVals && (filterVals.text || filterVals.latLng));
+	};
 
 	$scope.getQueryString = function () {
 		var qs = "";

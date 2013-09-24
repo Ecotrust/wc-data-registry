@@ -100,10 +100,12 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
             // Execute query.
             if (console) { console.log("Querying Solr"); }
             $http.get(solrUrl, queryConfig).success(function (data, status, headers, config) {
+                data.filterVals = filterVals;
                 if (successCallback) {
                     successCallback(data);
                 }
             }).error(function (data, status, headers, config) {
+                data.filterVals = filterVals;
                 if (errorCallback) {
                     errorCallback(data);
                 }

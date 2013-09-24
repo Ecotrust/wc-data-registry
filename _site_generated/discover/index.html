@@ -76,19 +76,19 @@
 			id="filters">
 		</div>
 
-		<div results-list
-			ng-show="numFound > 0"
-			data="resultsData"
-			num-found="numFound"
-			page-index="pageIndex"
-			results-per-page="resultsPerPage"
-			class="span8"
-			id="results-list">
+		<div ng-show="filtersAreActive">
+			<div results-list
+				data="resultsData"
+				num-found="numFound"
+				page-index="pageIndex"
+				results-per-page="resultsPerPage"
+				class="span8"
+				id="results-list">
+			</div>
 		</div>
 
-		<div ng-hide="numFound > 0"
+		<div ng-hide="filtersAreActive"
 			ng-animate="'animate'"
-			ng-show="recordCount > -1"
 			class="span8"
 			id="discover-landing">
 			<p>
