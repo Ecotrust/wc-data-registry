@@ -98,7 +98,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                     } catch (e) {}
 
                     _.each(allLinks, function (element, index, list) {
-                        if (element.type && element.type in scope.allowedLinkTypes) {
+                        if (element.type && angular.lowercase(element.type) in scope.allowedLinkTypes) {
                             scope.links.push(element);
                         }
                     });
