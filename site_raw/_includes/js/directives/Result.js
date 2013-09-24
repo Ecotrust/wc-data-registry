@@ -51,6 +51,12 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                 $event.returnValue = false;
             };
 
+            scope.linkClicked = function ($event) {
+                // Prevent bubbling event to the result.
+                if ($event.stopPropagation) $event.stopPropagation();
+                $event.cancelBubble = true;
+            };
+
             scope.populateMetadataFields = function (id) {
                 var mUrl = scope.metadataXmlUrl(id);
                 // Get XML and retrieve only specific values from it

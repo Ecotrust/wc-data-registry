@@ -14,9 +14,9 @@
 		<div class='date'>{{ resultData["sys.src.item.lastmodified_tdt"] | date:'shortDate' }}</div>
 		<ul class="unstyled links">
 			
-			<li><a target="_blank" href="{{ metadataXmlUrl(resultData['sys.src.item.uri_s']) }}">METADATA XML</a><i class="icon-info-sign"></i></li>
+			<li><a target="_blank" ng-click="linkClicked($event)" href="{{ metadataXmlUrl(resultData['sys.src.item.uri_s']) }}">METADATA XML</a><i class="icon-info-sign"></i></li>
 			
-			<li><a target="_blank" href="{{ jsonUrl(resultData['sys.src.item.uri_s']) }}">JSON</a><i class="icon-info-sign"></i></li>
+			<li><a target="_blank" ng-click="linkClicked($event)" href="{{ jsonUrl(resultData['sys.src.item.uri_s']) }}">JSON</a><i class="icon-info-sign"></i></li>
 
 			<!-- <li><a href="">CSV</a><i class="icon-info-sign"></i></li>
 			<li><a href="">KML</a><i class="icon-info-sign"></i></li> -->
@@ -30,7 +30,7 @@
 			<dt ng-show="metadata.datePublished">date published</dt>
 			<dd ng-show="metadata.datePublished">{{metadata.datePublished}}</dd>
 			<dt ng-show="metadata.creator">creator</dt>
-			<dd ng-show="metadata.creator">{{metadata.creator}}</dd>
+			<dd ng-show="metadata.creator">{{metadata.creator}}</dd> 
 			<dt ng-show="metadata.publisher">publisher</dt>
 			<dd ng-show="metadata.publisher">{{metadata.publisher}}</dd>
 			<dt ng-show="metadata.contactName || metadata.contactEmail">contact</dt>
