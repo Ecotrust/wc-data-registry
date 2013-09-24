@@ -9,6 +9,14 @@
 {% include js/third-party/packery.pkgd.min.js %}
 {% include bower_components/underscore/underscore-min.js %}
 
+
+/* jQuery plugin to aid in namespaced elements in xml */
+$.fn.filterNode = function(name) {
+	  return this.find('*').filter(function() {
+	    return this.nodeName === name;
+	  });
+	};
+
 /*
  * End dependencies scripts
  **/
@@ -18,6 +26,7 @@
  */
 angular.module('wcodpApp', ['ui.bootstrap', 'leaflet-directive']);
 {% include js/services/Solr.js %}
+{% include js/services/Metadata.js %}
 {% include js/directives/Filters.js %}
 {% include js/directives/ResultsList.js %}
 {% include js/directives/Result.js %}

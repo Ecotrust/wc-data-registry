@@ -27,16 +27,18 @@
 			map placeholder
 		</div>
 		<dl class="result-metadata">
-			<dt>originator</dt>
-			<dd>originator</dd>
-			<dt>source</dt>
-			<dd>source</dd>
-			<dt>author</dt>
-			<dd>name</dd>
-			<dt>contact</dt>
-			<dd>{{ resultData["contact.organizations_ss"][0] }}</dd>
-			<dt>state</dt>
-			<dd>active</dd>
+			<dt ng-show="metadata.datePublished">date published</dt>
+			<dd ng-show="metadata.datePublished">{{metadata.datePublished}}</dd>
+			<dt ng-show="metadata.creator">creator</dt>
+			<dd ng-show="metadata.creator">{{metadata.creator}}</dd>
+			<dt ng-show="metadata.publisher">publisher</dt>
+			<dd ng-show="metadata.publisher">{{metadata.publisher}}</dd>
+			<dt ng-show="metadata.contactName || metadata.contactEmail">contact</dt>
+			<dd ng-show="metadata.contactName">{{metadata.contactName}}</dd>
+			<!-- <dt ng-show="metadata.contactEmail">contact email</dt> -->
+			<dd ng-show="metadata.contactEmail">{{metadata.contactEmail}}</dd>
+			<dt ng-show="metadata.constraints">constraints</dt>
+			<dd ng-show="metadata.constraints">{{metadata.constraints}}</dd>
 		</dl>
 	</div>
 </div>

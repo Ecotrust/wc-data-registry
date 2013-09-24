@@ -1,5 +1,5 @@
 
-angular.module('wcodpApp').directive('result', ['$http', '$location', function($http, $location) {
+angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata', function($http, $location, metadata) {
 
     return {
         templateUrl: '/assets/views/ResultView.html',
@@ -10,15 +10,25 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', function($
             resultData: "="
         },
         link: function postLink(scope, element, attrs) {
+            
             scope.rootElement = element;
-            scope.maxNumShown = 5;
+            
+            scope.metadata = {
+                datePublished: '--',
+                creator: '--',
+                publisher: '--',
+                contactName: '--',
+                contactEmail: '--',
+                constraints: '--'
+            };
 
             scope.resultClicked = function($event) {
                 var closed = angular.element($event.currentTarget).hasClass('result-closed'),
                     id = angular.element($event.currentTarget).attr('id');
                 if (closed) {
                     // Close all results.
-                    scope.rootElement.find('.result')
+                    angular.element($event.currentTarget)
+                        .parent().find('.result')
                         .removeClass('result-opened')
                         .addClass('result-closed');
                     // Open the clicked result.
@@ -26,7 +36,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', function($
                         .removeClass('result-closed')
                         .addClass('result-opened');
                     // Populate metadata fields
-                    scope.populateMetadataFields(element, id);
+                    scope.populateMetadataFields(id);
                 }
             };
 
@@ -41,17 +51,16 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', function($
                 $event.returnValue = false;
             };
 
-            scope.populateMetadataFields = function (element, id) {
+            scope.populateMetadataFields = function (id) {
                 var mUrl = scope.metadataXmlUrl(id);
                 // Get XML and retrieve only specific values from it
-                $http.get(mUrl).success(function (xml) {
-                    //scope.date = metadata.get('data', xml);
-                    // ... create a Result directive
-                    // ... create a Metadata service
-                }).error(function (data) {
-                    if (console) console.log('Error getting metadata XML.');
-
-                });                
+                metadata.getXml(mUrl, function (xml) {
+                    scope.$apply(function () {
+                        _.each(scope.metadata, function (val, key) {
+                            scope.metadata[key] = metadata.get(key, xml);
+                        });
+                    });
+                });
             };
 
             scope.metadataXmlUrl = function (id) {
