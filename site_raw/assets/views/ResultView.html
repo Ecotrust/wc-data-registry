@@ -13,13 +13,16 @@
 		<div class="subdued date-label">UPDATED</div>
 		<div class='date'>{{ resultData["sys.src.item.lastmodified_tdt"] | date:'shortDate' }}</div>
 		<ul class="unstyled links">
-			
-			<li><a target="_blank" ng-click="linkClicked($event)" href="{{ metadataXmlUrl(resultData['sys.src.item.uri_s']) }}">METADATA XML</a><i class="icon-info-sign"></i></li>
-			
-			<li><a target="_blank" ng-click="linkClicked($event)" href="{{ jsonUrl(resultData['sys.src.item.uri_s']) }}">JSON</a><i class="icon-info-sign"></i></li>
 
-			<!-- <li><a href="">CSV</a><i class="icon-info-sign"></i></li>
-			<li><a href="">KML</a><i class="icon-info-sign"></i></li> -->
+			<li ng-repeat="link in links">
+				<a target="_blank" ng-click="linkClicked($event)" href="{{ link.href }}">{{ allowedLinkTypes[link.type].label }}</a>
+				<i class="icon-info-sign"></i>
+			</li>
+			
+			
+			<li><a target="_blank" ng-click="linkClicked($event)" href="{{ metadataXmlUrl() }}">METADATA XML</a><i class="icon-info-sign"></i></li>
+			<li><a target="_blank" ng-click="linkClicked($event)" href="{{ jsonUrl() }}">JSON</a><i class="icon-info-sign"></i></li> 
+			
 		</ul>
 	</div>
 	<div class="result-details clearfix">
@@ -27,16 +30,20 @@
 			map placeholder
 		</div>
 		<dl class="result-metadata">
+			
 			<dt ng-show="metadata.datePublished">date published</dt>
 			<dd ng-show="metadata.datePublished">{{metadata.datePublished}}</dd>
+			
 			<dt ng-show="metadata.creator">creator</dt>
 			<dd ng-show="metadata.creator">{{metadata.creator}}</dd> 
+			
 			<dt ng-show="metadata.publisher">publisher</dt>
 			<dd ng-show="metadata.publisher">{{metadata.publisher}}</dd>
+			
 			<dt ng-show="metadata.contactName || metadata.contactEmail">contact</dt>
 			<dd ng-show="metadata.contactName">{{metadata.contactName}}</dd>
-			<!-- <dt ng-show="metadata.contactEmail">contact email</dt> -->
 			<dd ng-show="metadata.contactEmail">{{metadata.contactEmail}}</dd>
+			
 			<dt ng-show="metadata.constraints">constraints</dt>
 			<dd ng-show="metadata.constraints">{{metadata.constraints}}</dd>
 		</dl>

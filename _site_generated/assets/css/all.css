@@ -6689,6 +6689,7 @@ p.results-summary strong {
 .result-links .links {
   margin-top: 20px;
   margin-bottom: 10px;
+  text-transform: uppercase;
 }
 .result-links .links a {
   margin-right: 8px;

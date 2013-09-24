@@ -12,7 +12,9 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
         link: function postLink(scope, element, attrs) {
             
             scope.rootElement = element;
-            
+
+            scope.links = [];
+
             scope.metadata = {
                 datePublished: '--',
                 creator: '--',
@@ -20,6 +22,15 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                 contactName: '--',
                 contactEmail: '--',
                 constraints: '--'
+            };
+
+            scope.allowedLinkTypes = {
+                xml: { label: 'XML' },
+                csv: { label: 'CSV' },
+                zip: { label: 'ZIP' },
+                html: { label: 'HTML' },
+                excel: { label: 'Excel' },
+                open: { label: 'Esri REST' }
             };
 
             scope.resultClicked = function($event) {
@@ -69,14 +80,35 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                 });
             };
 
-            scope.metadataXmlUrl = function (id) {
-                return '/geoportal/rest/document?id=' + id;
+            scope.metadataXmlUrl = function () {
+                return '/geoportal/rest/document?id=' + scope.resultData['sys.src.item.uri_s'];
             };
 
-            scope.jsonUrl = function (id) {
-                return scope.metadataXmlUrl(id) + '&f=pjson';
+            scope.jsonUrl = function () {
+                return scope.metadataXmlUrl() + '&f=pjson';
             };
 
+            scope.getLinks = function () {
+                $http.get(scope.jsonUrl()).success(function (data) {
+                    var allLinks = [];
+                    scope.links = [];
+
+                    try {
+                        allLinks = data.records[0].links;
+                    } catch (e) {}
+
+                    _.each(allLinks, function (element, index, list) {
+                        if (element.type && element.type in scope.allowedLinkTypes) {
+                            scope.links.push(element);
+                        }
+                    });
+
+                }).error(function (data) {
+                    if (console) { console.log('Error getting result links.'); }  
+                });
+            };
+
+            scope.getLinks();
         }
     };
 }]);

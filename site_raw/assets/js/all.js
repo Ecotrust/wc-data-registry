@@ -8,15 +8,6 @@
 {% include js/third-party/ui-bootstrap-tpls-0.5.0.js %}
 {% include js/third-party/packery.pkgd.min.js %}
 {% include bower_components/underscore/underscore-min.js %}
-
-
-/* jQuery plugin to aid in namespaced elements in xml */
-$.fn.filterNode = function(name) {
-	  return this.find('*').filter(function() {
-	    return this.nodeName === name;
-	  });
-	};
-
 /*
  * End dependencies scripts
  **/
