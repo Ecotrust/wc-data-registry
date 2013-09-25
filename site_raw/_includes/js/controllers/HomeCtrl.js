@@ -27,7 +27,7 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window',
 
 	// Search
 	$scope.search = function () {
-		$window.location.href = '/discover#?text='+$scope.searchText;
+		$window.location.href = '/discover/#?text='+$scope.searchText;
 	};
 
 	$scope.goTo = function (path) {

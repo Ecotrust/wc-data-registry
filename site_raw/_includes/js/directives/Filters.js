@@ -311,9 +311,18 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
 
                             // Hide mobile filters modal.
                             scope.showingMobileFiltersModal = false;
-                            setTimeout(function () {
-                              window.scrollTo(0, 1);
-                            }, 100);                        
+                            
+                            // Remove focus from search text box 
+                            // (mobile keyboard stays open otherwise)
+                            $('#search-filter input').blur();
+
+                            // Scroll to top.
+                            if (scope.mobileMode) {
+                                setTimeout(function () {
+                                  window.scrollTo(0, 1);
+                                }, 100);
+                            }
+
                         }, 1);
                     };
 
