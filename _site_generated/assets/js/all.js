@@ -30418,7 +30418,51 @@ angular.module('wcodpApp').factory('metadata', [function() {
 
 }]);
 
-angular.module('wcodpApp').directive('filters', ['$timeout', '$location', function($timeout, $location) {
+angular.module('wcodpApp').factory('browserSize', ['$document', function($document) {
+
+
+    return {
+        
+        widths: {
+            // Using Twitter's Bootstrap defaults.
+            phoneMax:   767,
+            tabletMin:  768,
+            tabletMax:  979,
+            desktopMin: 980
+        },
+
+        isPhoneSize: function () {
+            var bw = this.getBrowserWidth();
+            return bw <= this.widths.phoneMax;
+        },
+
+        isTableSize: function () {
+            var bw = this.getBrowserWidth();
+            return this.widths.tabletMin <= bw && bw <= this.widths.tabletMax;
+        },
+
+        isDesktopSize: function () {
+            var bw = this.getBrowserWidth();
+            return this.widths.desktopMin <= bw;
+        },
+
+        getBrowserWidth: function () {
+            return $document[0].body.clientWidth;
+        },
+
+        watchBrowserWidth: function (callback) {
+            $(window).resize(function(event) {
+                if (callback) {
+                    callback();
+                }
+            });
+        }
+
+    };
+
+}]);
+
+angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'browserSize', function($timeout, $location, browserSize) {
 
     var defaultCenter = {
         lat: 40.44694705960048,
@@ -30445,7 +30489,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', functi
         replace: true,
         transclude: true,
         scope: {
-
+            showingMobileFiltersModal: "="
         },
         compile: function compile(tElement, tAttrs, transclude) {
             return {
@@ -30495,6 +30539,8 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', functi
                     scope.isLocationCollapsed = true;
                     scope.isCategoryCollapsed = true;
                     scope.isTagsCollapsed = true;
+                    scope.mobileMode = browserSize.isPhoneSize();
+                    scope.showingMobileFiltersModal = false;
 
                     scope.init = function () {
                         var queryNeeded = false;
@@ -30509,6 +30555,31 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', functi
                             scope.updateUrlQueryString(false);
                         }
                     
+                        browserSize.watchBrowserWidth(function () {
+                            scope.$apply(function () {
+                                scope.mobileMode = browserSize.isPhoneSize();
+                            })
+                        });
+
+                        scope.$watch('showingMobileFiltersModal', function (isMobalHidden) {
+                            if (console) console.log('watcher for showingMobileFiltersModal');
+                            try {
+                                // For mobile devices, modify viewport to be device-height
+                                //  only while modal is open.
+                                var viewport = document.querySelector("meta[name=viewport]");
+                                if (scope.mobileMode && scope.showingMobileFiltersModal) {
+                                    viewport.setAttribute('content', 'width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
+                                } else {
+                                    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
+                                }
+                            } catch (e) {
+                                // The browser being used doesn't have querySelector. 
+                                // But that's fine. This is targeted at mobile 
+                                // devices. Mobile devices have querySelector.
+                            }
+
+
+                        });
                         // For now, relying on jquery for desaturating 
                         // non-hovered filter groups.
                         $('.filter-group-toggle, .filter-group-container').hover(function (event) {
@@ -30692,6 +30763,13 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', functi
                         scope.isLocationCollapsed = (scope.filteredLocation == null);
                     };
 
+                    scope.mobileSearchSubmit = function () {
+                        scope.showingMobileFiltersModal = false;
+                        setTimeout(function () {
+                          window.scrollTo(0, 1);
+                        }, 100);
+                    };
+
                     scope.init();
                     scope.watchQueryString();
                 }
@@ -30809,8 +30887,9 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                 csv: { label: 'CSV' },
                 zip: { label: 'ZIP' },
                 html: { label: 'HTML' },
-                excel: { label: 'Excel' },
-                open: { label: 'Esri REST' }
+                xls: { label: 'Excel' },
+                xlsx: { label: 'Excel' },
+                esrirest: { label: 'Esri REST' }
             };
 
             scope.resultClicked = function($event) {
@@ -32288,15 +32367,16 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.resultsPerPageWatchInitialized = false;
 	$scope.queryStringWatchInitialized = false;
 	$scope.filtersAreActive = false;
+	$scope.showingMobileFiltersModal = false;
 
 	$scope.onLoad = function () {
-		$scope.watchQueryString();
-		$scope.watchResultsPerPage();
-		$scope.watchPageIndex();
-
 		solr.getRecordCount(function (count) {
 			$scope.recordCount = count;
 		});
+
+		$scope.watchQueryString();
+		$scope.watchResultsPerPage();
+		$scope.watchPageIndex();
 	};
 
 	$scope.resetPagination = function () {
@@ -32383,9 +32463,14 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		}
 	};
 
-
-	$scope.onLoad();	
+	$scope.onLoad();
 }]);
+
+// Force iPhone address bar to hide.
+setTimeout(function () {
+  window.scrollTo(0, 1);
+}, 100);
+
 /*
  * End site scripts
  **/

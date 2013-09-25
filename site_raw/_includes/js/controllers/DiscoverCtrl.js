@@ -9,15 +9,16 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.resultsPerPageWatchInitialized = false;
 	$scope.queryStringWatchInitialized = false;
 	$scope.filtersAreActive = false;
+	$scope.showingMobileFiltersModal = false;
 
 	$scope.onLoad = function () {
-		$scope.watchQueryString();
-		$scope.watchResultsPerPage();
-		$scope.watchPageIndex();
-
 		solr.getRecordCount(function (count) {
 			$scope.recordCount = count;
 		});
+
+		$scope.watchQueryString();
+		$scope.watchResultsPerPage();
+		$scope.watchPageIndex();
 	};
 
 	$scope.resetPagination = function () {
@@ -104,6 +105,5 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		}
 	};
 
-
-	$scope.onLoad();	
+	$scope.onLoad();
 }]);

@@ -29,8 +29,9 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                 csv: { label: 'CSV' },
                 zip: { label: 'ZIP' },
                 html: { label: 'HTML' },
-                excel: { label: 'Excel' },
-                open: { label: 'Esri REST' }
+                xls: { label: 'Excel' },
+                xlsx: { label: 'Excel' },
+                esrirest: { label: 'Esri REST' }
             };
 
             scope.resultClicked = function($event) {

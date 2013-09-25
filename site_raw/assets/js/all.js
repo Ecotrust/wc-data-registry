@@ -18,12 +18,19 @@
 angular.module('wcodpApp', ['ui.bootstrap', 'leaflet-directive']);
 {% include js/services/Solr.js %}
 {% include js/services/Metadata.js %}
+{% include js/services/BrowserSize.js %}
 {% include js/directives/Filters.js %}
 {% include js/directives/ResultsList.js %}
 {% include js/directives/Result.js %}
 {% include js/directives/Leaflet.js %}
 {% include js/controllers/HomeCtrl.js %}
 {% include js/controllers/DiscoverCtrl.js %}
+
+// Force iPhone address bar to hide.
+setTimeout(function () {
+  window.scrollTo(0, 1);
+}, 100);
+
 /*
  * End site scripts
  **/

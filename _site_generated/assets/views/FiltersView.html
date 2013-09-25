@@ -1,96 +1,113 @@
-<div>
-	<!-- F I L T E R S -->
+<div>	
 
-	<div id="search-filter">
-		<input type="text" placeholder="SEARCH" ng-model="searchText">
-		<img src="/assets/img/icons/black_search.png" ng-click="updateUrlQueryString(false)">
+	<div ng-show="mobileMode && !showingMobileFiltersModal" 
+		ng-click="showingMobileFiltersModal = true" 
+		class="filters-toggle filters-toggle-on">
+		SEARCH OPTIONS <i class="icon-angle-down"></i>
 	</div>
 
+	<div ng-hide="mobileMode && !showingMobileFiltersModal" ng-class="{'mobile-modal': mobileMode}" class="filters-container">
+		<!-- F I L T E R S -->
 
-	<!-- location filter -->
-	<a class="filter-group-toggle first" href="javascript:void(0)" ng-click="isLocationCollapsed = !isLocationCollapsed">
-		<div class="filter-group-label">
-			<i class="icon-map-marker subdued"></i>
-			Location 
-			<i ng-show="isLocationCollapsed" class="icon-angle-right pull-right"></i>
-			<i ng-hide="isLocationCollapsed" class="icon-angle-down pull-right"></i>
-		</div>		
-	</a>
-	<div collapse="isLocationCollapsed" id="location-filter" class="filter-group-container">
-	
-		<p ng-show="filteredLocation" class="directions">
-			<a class="select-all-link" href="javascript:void(0)" ng-click="clearLocationFilter()">CLEAR</a><small class="subdued">&nbsp;|&nbsp;Click map to select</small>
-		</p>
-		<p ng-hide="filteredLocation" class="directions">
-			<small class="subdued">Click map to select</small>
-		</p>
+		<div id="search-filter">
+			<input type="search" placeholder="SEARCH" ng-model="searchText">
+			<img src="/assets/img/icons/black_search.png" ng-click="updateUrlQueryString(false)">
+		</div>
+
+
+		<!-- location filter -->
+		<a class="filter-group-toggle first" href="javascript:void(0)" ng-click="isLocationCollapsed = !isLocationCollapsed">
+			<div class="filter-group-label">
+				<i class="icon-map-marker subdued"></i>
+				Location 
+				<i ng-show="isLocationCollapsed" class="icon-angle-right pull-right"></i>
+				<i ng-hide="isLocationCollapsed" class="icon-angle-down pull-right"></i>
+			</div>		
+		</a>
+		<div collapse="isLocationCollapsed" id="location-filter" class="filter-group-container">
 		
-		<div leaflet defaults="mapOptions" center="center" markers="markers" class="leaflet-directive"></div>
+			<p ng-show="filteredLocation" class="directions">
+				<a class="select-all-link" href="javascript:void(0)" ng-click="clearLocationFilter()">CLEAR</a><small class="subdued">&nbsp;|&nbsp;Click map to select</small>
+			</p>
+			<p ng-hide="filteredLocation" class="directions">
+				<small class="subdued">Click map to select</small>
+			</p>
+			
+			<div leaflet defaults="mapOptions" center="center" markers="markers" class="leaflet-directive"></div>
 
-		<p class="attribution subdued">
-			Map data CC-BY-SA by <a href="http://www.opendatacommons.org/licenses/odbl">OpenStreeMap</a>
-		</p>
-		<p class="attribution subdued">
-			Tiles by <a href="http://www.mapquest.com/">MapQuest</a>
-		</p>
-	
-	</div>
-
-	<!-- categories filter -->
-	<a class="filter-group-toggle" href="javascript:void(0)" ng-click="isCategoryCollapsed = !isCategoryCollapsed">
-		<div class="filter-group-label">
-			<i class="icon-th subdued"></i>
-			Categories
-			<i ng-show="isCategoryCollapsed" class="icon-angle-right pull-right"></i>
-			<i ng-hide="isCategoryCollapsed" class="icon-angle-down pull-right"></i>
+			<p class="attribution subdued">
+				Map data CC-BY-SA by <a href="http://www.opendatacommons.org/licenses/odbl">OpenStreeMap</a>
+			</p>
+			<p class="attribution subdued">
+				Tiles by <a href="http://www.mapquest.com/">MapQuest</a>
+			</p>
+		
 		</div>
-	</a>
-	<div collapse="isCategoryCollapsed" id="categories-filter" class="filter-group-container">
-		<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
-		<ul class="unstyled filter-options">
-			<li><i class="icon-check-empty"></i>Human Use <strong>00</strong></li>
-			<li><i class="icon-check-empty"></i>Physical Data <strong>00</strong></li>
-			<li><i class="icon-check-empty"></i>Biological Data <strong>00</strong></li>
-		</ul>
-	</div>
 
-	<!-- tags filter -->
-	<a class="filter-group-toggle" href="javascript:void(0)" ng-click="isTagsCollapsed = !isTagsCollapsed">
-		<div class="filter-group-label">
-			<i class="icon-tags subdued"></i>
-			Issues
-			<i ng-show="isTagsCollapsed" class="icon-angle-right pull-right"></i>
-			<i ng-hide="isTagsCollapsed" class="icon-angle-down pull-right"></i>
+		<!-- categories filter -->
+		<a class="filter-group-toggle" href="javascript:void(0)" ng-click="isCategoryCollapsed = !isCategoryCollapsed">
+			<div class="filter-group-label">
+				<i class="icon-th subdued"></i>
+				Categories
+				<i ng-show="isCategoryCollapsed" class="icon-angle-right pull-right"></i>
+				<i ng-hide="isCategoryCollapsed" class="icon-angle-down pull-right"></i>
+			</div>
+		</a>
+		<div collapse="isCategoryCollapsed" id="categories-filter" class="filter-group-container">
+			<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
+			<ul class="unstyled filter-options">
+				<li><i class="icon-check-empty"></i>Human Use <strong>00</strong></li>
+				<li><i class="icon-check-empty"></i>Physical Data <strong>00</strong></li>
+				<li><i class="icon-check-empty"></i>Biological Data <strong>00</strong></li>
+			</ul>
 		</div>
-	</a>
-	<div collapse="isTagsCollapsed" id="tags-filter" class="filter-group-container">
-		<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
-		<ul class="unstyled filter-options">
-			<li><i class="icon-check-empty"></i>Climate Change <strong>00</strong></li>
-			<li><i class="icon-check-empty"></i>Marine Debris <strong>00</strong></li>
-			<li><i class="icon-check-empty"></i>Renewable Energy <strong>00</strong></li>
-			<li><i class="icon-check-empty"></i>Sea Level Rise <strong>00</strong></li>
-		</ul>
-	</div>
 
-
-	<!-- formats filter -->
-	<!-- <a class="filter-group-toggle" href="javascript:void(0)" ng-click="isFormatsCollapsed = !isFormatsCollapsed">
-		<div class="filter-group-label">
-			<i class="icon-file-alt subdued"></i>
-			Formats
-			<i ng-show="isFormatsCollapsed" class="icon-angle-right pull-right"></i>
-			<i ng-hide="isFormatsCollapsed" class="icon-angle-down pull-right"></i>
+		<!-- tags filter -->
+		<a class="filter-group-toggle" href="javascript:void(0)" ng-click="isTagsCollapsed = !isTagsCollapsed">
+			<div class="filter-group-label">
+				<i class="icon-tags subdued"></i>
+				Issues
+				<i ng-show="isTagsCollapsed" class="icon-angle-right pull-right"></i>
+				<i ng-hide="isTagsCollapsed" class="icon-angle-down pull-right"></i>
+			</div>
+		</a>
+		<div collapse="isTagsCollapsed" id="tags-filter" class="filter-group-container">
+			<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
+			<ul class="unstyled filter-options">
+				<li><i class="icon-check-empty"></i>Climate Change <strong>00</strong></li>
+				<li><i class="icon-check-empty"></i>Marine Debris <strong>00</strong></li>
+				<li><i class="icon-check-empty"></i>Renewable Energy <strong>00</strong></li>
+				<li><i class="icon-check-empty"></i>Sea Level Rise <strong>00</strong></li>
+			</ul>
 		</div>
-	</a>
-	<div collapse="isFormatsCollapsed" id="formats-filter" class="filter-group-container">
-		<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
-		<ul class="unstyled filter-options">
-			<li><i class="icon-check-empty"></i>JSON <strong>00</strong></li>
-			<li><i class="icon-check-empty"></i>CSV <strong>00</strong></li>
-			<li><i class="icon-check-empty"></i>KML <strong>00</strong></li>
-			<li><i class="icon-check-empty"></i>Full Metadata <strong>00</strong></li>
-		</ul>
-	</div> -->
+
+
+		<!-- formats filter -->
+		<!-- <a class="filter-group-toggle" href="javascript:void(0)" ng-click="isFormatsCollapsed = !isFormatsCollapsed">
+			<div class="filter-group-label">
+				<i class="icon-file-alt subdued"></i>
+				Formats
+				<i ng-show="isFormatsCollapsed" class="icon-angle-right pull-right"></i>
+				<i ng-hide="isFormatsCollapsed" class="icon-angle-down pull-right"></i>
+			</div>
+		</a>
+		<div collapse="isFormatsCollapsed" id="formats-filter" class="filter-group-container">
+			<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
+			<ul class="unstyled filter-options">
+				<li><i class="icon-check-empty"></i>JSON <strong>00</strong></li>
+				<li><i class="icon-check-empty"></i>CSV <strong>00</strong></li>
+				<li><i class="icon-check-empty"></i>KML <strong>00</strong></li>
+				<li><i class="icon-check-empty"></i>Full Metadata <strong>00</strong></li>
+			</ul>
+		</div> -->
+		
+		<a ng-show="mobileMode" 
+			ng-click="mobileSearchSubmit()" 
+			class="filters-toggle filters-toggle-off"
+			href="javascript:void(0);">
+			SUBMIT <i class="icon-angle-right"></i>
+		</a>
+
+	</div>
 
 </div>

@@ -9,13 +9,14 @@ active: discover
 <div class="container" id="discover" ng-controller="DiscoverCtrl">
 
 	<div class="row">
-		
+
 		<div filters 
-			class="span4" 
-			id="filters">
+			id="filters" 
+			class="span4"
+			showing-mobile-filters-modal="showingMobileFiltersModal">
 		</div>
 
-		<div ng-show="filtersAreActive">
+		<div ng-show="filtersAreActive && !showingMobileFiltersModal">
 			<div results-list
 				data="resultsData"
 				num-found="numFound"
@@ -26,7 +27,7 @@ active: discover
 			</div>
 		</div>
 
-		<div ng-hide="filtersAreActive"
+		<div ng-hide="filtersAreActive || showingMobileFiltersModal"
 			ng-animate="'animate'"
 			class="span8"
 			id="discover-landing">

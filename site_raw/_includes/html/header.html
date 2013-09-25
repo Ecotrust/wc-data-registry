@@ -1,9 +1,11 @@
 <div class="header container">
 	<div class="row">
-		<div class="span4">
+		<div class="span4 brand">
 			<a href="/"><img src="/assets/img/WCODP_web_logo.png"></a>
 		</div>
-		<div class="span8">
+
+		<!--  D E S K T O P   M E N U -->
+		<div class="span8 visible-desktop">
 			<div class="clearfix">
 				<span class="pull-right description subdued">A project of the West Coast Governors Alliance on Ocean Health</span>
 			</div>
@@ -22,5 +24,23 @@
 				</ul>
 			</div>
 		</div>
+
+		<!--  N O N - D E S K T O P   M E N U -->
+		<div class="dropdown top-nav-mobile hidden-desktop">
+			<a class="dropdown-toggle" href="javascript:void(0)">MENU <i class="icon-angle-down"></i></a>
+			<ul class="dropdown-menu pull-right">
+				{% for link in site.links %}
+					{% if link == page.active %}
+					<li class="active {{ link }}">
+						<img src="/assets/img/icons/menu_caret.png">
+					{% else %}
+					<li>
+					{% endif %}
+						<a href="/{{ link }}">{{ link }}</a>
+					</li>
+				{% endfor %}
+			</ul>				
+		</div>
+
 	</div>
 </div>
