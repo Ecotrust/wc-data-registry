@@ -29,10 +29,17 @@
 		<div class="dropdown top-nav-mobile hidden-desktop">
 			<a class="dropdown-toggle" href="javascript:void(0)">MENU <i class="icon-angle-down"></i></a>
 			<ul class="dropdown-menu pull-right">
+				{% if 'home' == page.active %}
+					<li class="active {{ link }}">
+				{% else %}
+					<li>
+				{% endif %}
+						<a href="/">home</a>
+					</li>
+				
 				{% for link in site.links %}
 					{% if link == page.active %}
 					<li class="active {{ link }}">
-						<img src="/assets/img/icons/menu_caret.png">
 					{% else %}
 					<li>
 					{% endif %}

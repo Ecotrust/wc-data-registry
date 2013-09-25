@@ -25,13 +25,24 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             };
 
             scope.allowedLinkTypes = {
-                xml: { label: 'XML' },
                 csv: { label: 'CSV' },
-                zip: { label: 'ZIP' },
+                ftp: { label: 'FTP' },
                 html: { label: 'HTML' },
-                xls: { label: 'Excel' },
-                xlsx: { label: 'Excel' },
-                esrirest: { label: 'Esri REST' }
+                img: { label: 'IMG' },
+                kml: { label: 'KML' },
+                kmz: { label: 'KMZ' },
+                pdf: { label: 'PDF' },
+                shp: { label: 'SHP' },
+                tar: { label: 'TAR' },
+                tiff: { label: 'TIFF' },
+                txt: { label: 'TXT' },
+                wcs: { label: 'WCS' },
+                wfs: { label: 'WFS' },
+                wms: { label: 'WMS' },
+                xls: { label: 'XLS' },
+                xlsx: { label: 'XLSX' },
+                zip: { label: 'ZIP' },
+                esrirest: { label: 'ESRI REST' }
             };
 
             scope.resultClicked = function($event) {
