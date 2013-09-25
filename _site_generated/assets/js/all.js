@@ -30946,14 +30946,17 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             };
 
             scope.resultCloseClicked = function ($event) {
-                angular.element($event.currentTarget).parent()
-                    .removeClass('result-opened')
-                    .addClass('result-closed');
-                // Prevent bubbling event to the result.
-                if ($event.stopPropagation) $event.stopPropagation();
-                if ($event.preventDefault) $event.preventDefault();
-                $event.cancelBubble = true;
-                $event.returnValue = false;
+                var elem = angular.element($event.currentTarget).parents('.result');
+                if (elem.hasClass('result-opened')) {
+                    angular.element($event.currentTarget).parents('.result')
+                        .removeClass('result-opened')
+                        .addClass('result-closed');
+                    // Prevent bubbling event to the result.
+                    if ($event.stopPropagation) $event.stopPropagation();
+                    if ($event.preventDefault) $event.preventDefault();
+                    $event.cancelBubble = true;
+                    $event.returnValue = false;
+                }
             };
 
             scope.linkClicked = function ($event) {
