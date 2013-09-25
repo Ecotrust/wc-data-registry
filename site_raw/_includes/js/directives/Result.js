@@ -16,12 +16,12 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             scope.links = [];
 
             scope.metadata = {
-                datePublished: '--',
-                creator: '--',
-                publisher: '--',
-                contactName: '--',
-                contactEmail: '--',
-                constraints: '--'
+                datePublished: '',
+                creator: '',
+                publisher: '',
+                contactName: '',
+                contactEmail: '',
+                constraints: ''
             };
 
             scope.allowedLinkTypes = {
