@@ -432,6 +432,7 @@ ul.filter-options li > i {
   color: white;
   font-size: 22px;
   border: 10px solid white;
+  .rounded-corners(2px);
 }
 .filters-toggle:hover,
 .filters-toggle:active {
@@ -609,7 +610,8 @@ p.results-summary strong {
   background-color: fadeout(@blue, 95%);
 }
 
-.result-closed:hover {
+.result-closed:hover,
+.result-title:hover {
   cursor: pointer;  
 }
 
@@ -701,11 +703,18 @@ p.results-summary strong {
   #home {
     margin-top: 30px;
   }
+  /*.home-item-cntr.welcome p.big {
+    font-size: 18px;
+    line-height: 38px;
+  }*/
+  #filters {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 767px) {
   .home-item-cntr.welcome p.big {
     font-size: 18px;
     line-height: 38px;
-  }
-  #filters {
-    margin-top: 10px;
   }
 }
