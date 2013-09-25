@@ -1,18 +1,23 @@
 <div>	
 
-	<div ng-show="mobileMode && !showingMobileFiltersModal" 
+	<a ng-show="mobileMode && !showingMobileFiltersModal" 
 		ng-click="showingMobileFiltersModal = true" 
+		href="javascript:void(0);"
 		class="filters-toggle filters-toggle-on">
-		SEARCH OPTIONS <i class="icon-angle-down"></i>
-	</div>
+		<div class="label-container">
+			<i class="icon-filter"></i> SEARCH FILTERS 
+		</div>
+	</a>
 
 	<div ng-hide="mobileMode && !showingMobileFiltersModal" ng-class="{'mobile-modal': mobileMode}" class="filters-container">
 		<!-- F I L T E R S -->
 
-		<div id="search-filter">
-			<input type="search" placeholder="SEARCH" ng-model="searchText">
-			<img src="/assets/img/icons/black_search.png" ng-click="updateUrlQueryString(false)">
-		</div>
+		<form ng-submit="manualSubmit()">
+			<div id="search-filter">
+					<input type="search" placeholder="SEARCH" ng-model="searchText">
+					<img src="/assets/img/icons/black_search.png" ng-click="manualSubmit()">
+			</div>
+		</form>
 
 
 		<!-- location filter -->
@@ -101,12 +106,20 @@
 			</ul>
 		</div> -->
 		
-		<a ng-show="mobileMode" 
-			ng-click="mobileSearchSubmit()" 
-			class="filters-toggle filters-toggle-off"
+		<!-- <a ng-show="mobileMode" 
+			ng-click="manualSubmit()" 
+			class="filters-toggle filters-toggle-cancel"
 			href="javascript:void(0);">
-			SUBMIT <i class="icon-angle-right"></i>
+			CANCEL
+		</a> -->
+		
+		<a ng-show="mobileMode" 
+			ng-click="manualSubmit()" 
+			class="filters-toggle filters-toggle-submit"
+			href="javascript:void(0);">
+			SUBMIT <!-- <i class="icon-angle-right"></i> -->
 		</a>
+
 
 	</div>
 

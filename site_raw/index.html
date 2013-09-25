@@ -8,14 +8,16 @@ active: home
 {% raw %}
 <div class="container" id="home" ng-controller="HomeCtrl">
 	<div class="row">
-		<div class="home-item green1 w2 clearfix">
+
+		<a class="home-item green1 w2 clearfix" href="/discover">
 			<div class="home-item-cntr welcome">
 				<div class="home-item-label clearfix">
 					<div class="pull-left">WELCOME</div>
 				</div>
 				<p class="big">Discover & contribute valuable data resources to inform marine & coastal planning, policy development and resource management on the Pacific <span style="white-space:nowrap">Coast.<img style="margin-left: 10px;" src="/assets/img/icons/welcome_caret.png"></span></p>			
 			</div>
-		</div>
+		</a>
+
 		<div class="home-item red w1">
 			<div class="home-item-cntr search">
 				<div class="giantText">{{ recordCount }}</div>
@@ -28,23 +30,47 @@ active: home
 				</form>				
 			</div>
 		</div>
-		<div class="home-item blue w1">
+
+		<a class="home-item-biological home-item blue w1 h1" href="/discover">
 			<div class="home-item-cntr">
-				<div class="home-item-label clearfix">
+				<div class="home-item-label inverse clearfix">
 					<div class="pull-left">DISCOVER</div>
 				</div>
 				<p class="big">Biological Data</p>
+				<img class="home-item-icon" src="/assets/img/icons/white_search.png">
 			</div>
-			
-		</div>
-		<div class="home-item green2 w1">
+		</a>
+
+		<a class="home-item-marine-debris home-item green2 w1 h1" href="/discover">
 			<div class="home-item-cntr">
 				<div class="home-item-label clearfix">
 					<div class="pull-left">DISCOVER</div>
 				</div>
 				<p class="big">Marine Debris Data</p>
+				<img class="home-item-icon" src="/assets/img/icons/white_search.png">
 			</div>			
-		</div>
+		</a>
+
+		<a class="home-item-human-use home-item green2 w1 h1" href="/discover">
+			<div class="home-item-cntr">
+				<div class="home-item-label inverse clearfix">
+					<div class="pull-left">DISCOVER</div>
+				</div>
+				<p class="big">Human Use Data</p>
+				<img class="home-item-icon" src="/assets/img/icons/white_search.png">
+			</div>			
+		</a>
+
+		<a class="home-item-physical home-item green2 w1 h1" href="/discover">
+			<div class="home-item-cntr">
+				<div class="home-item-label inverse clearfix">
+					<div class="pull-left">DISCOVER</div>
+				</div>
+				<p class="big">Physical Data</p>
+				<img class="home-item-icon" src="/assets/img/icons/white_search.png">
+			</div>			
+		</a>
+
 	</div>
 </div>
 {% endraw %}

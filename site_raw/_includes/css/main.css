@@ -163,16 +163,8 @@ small {
 .home-item.w2 {
   width: 64%;
 }
-@media (max-width: 979px) {
-  .home-item.w1 {
-    width: 100%;
-  }
-  .home-item.w2 {
-    width: 100%;
-  }
-  #home {
-    margin-top: 30px;
-  }
+.home-item.h1 {
+  height: 300px;
 }
 /* colors */
 .home-item.green1 {
@@ -189,6 +181,11 @@ small {
 }
 .home-item.lightGrey {
   background-color: #a6a6a6;
+}
+img.home-item-icon {
+  float: right;
+  padding-right: 0px;
+  padding-bottom: 15px;
 }
 .home-item-cntr {
   padding: 10px 15px 15px 15px;
@@ -220,8 +217,20 @@ small {
   margin-bottom: 10px;
 }
 .home-item-label > .pull-left {
+  color: #332e1f;
   border-bottom: 1px solid #332e1f;
 }
+.home-item-label.inverse > .pull-left {
+  color: white;
+  border-bottom-color: white;
+}
+/*a.home-item .home-item-label {
+  color: @nearlyBlack;
+  text-decoration: none;
+}
+a.home-item .home-item-label.inverse {
+  color: white;
+}*/
 /*
  * p a g i n a t i o n
  */
@@ -362,19 +371,35 @@ ul.filter-options li > i {
  */
 .filters-toggle {
   height: 60px;
-  display: table-cell;
-  vertical-align: middle;
   text-align: center;
-  background-color: #ff3817;
-  width: inherit;
+  background-color: #baba27;
   color: white;
   font-size: 22px;
+  border: 10px solid white;
 }
-.filters-toggle-off-container {
+.filters-toggle:hover,
+.filters-toggle:active {
+  color: #eeeeee;
+}
+.filters-toggle-submit-container {
   margin-top: 20px;
 }
-.filters-toggle-off {
-  border: 10px solid white;
+.filters-toggle-on {
+  display: block;
+  border-width: 0;
+  margin-bottom: 20px;
+}
+.filters-toggle-on .label-container {
+  padding-top: 20px;
+}
+.filters-toggle-submit,
+.filters-toggle-cancel {
+  display: table-cell;
+  vertical-align: middle;
+  width: inherit;
+}
+.filters-toggle-cancel {
+  background-color: #ff3817;
 }
 #filters .mobile-modal {
   position: absolute;
@@ -574,4 +599,25 @@ p.results-summary strong {
 .animate-enter.animate-enter-active,
 .animate-leave {
   opacity: 1;
+}
+@media (max-width: 979px) {
+  .home-item.w1 {
+    width: 100%;
+  }
+  .home-item.w2 {
+    width: 100%;
+  }
+  .home-item.h1 {
+    height: auto;
+  }
+  #home {
+    margin-top: 30px;
+  }
+  .home-item-cntr.welcome p.big {
+    font-size: 18px;
+    line-height: 38px;
+  }
+  #filters {
+    margin-top: 10px;
+  }
 }

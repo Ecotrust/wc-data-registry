@@ -219,19 +219,21 @@ small {
 /* widths */
 .home-item.w1 { width: 31%; }
 .home-item.w2 { width: 64%; }
-@media (max-width: 979px) {
-  .home-item.w1 { width: 100%; }
-  .home-item.w2 { width: 100%; }
-  #home {
-    margin-top: 30px;
-  }
-}
+.home-item.h1 { height: 300px;}
+
 /* colors */
 .home-item.green1 { background-color: @green1; }
 .home-item.green2 { background-color: @green2; }
 .home-item.red { background-color: @red; }
 .home-item.blue { background-color: @blue; }
 .home-item.lightGrey { background-color: @lightGrey; }
+
+img.home-item-icon {
+  float: right;
+  padding-right: 0px;
+  padding-bottom: 15px;
+}
+
 
 .home-item-cntr { padding: 10px 15px 15px 15px; }
 .home-item-cntr.welcome { padding: 20px 30px 30px 30px; }
@@ -266,8 +268,23 @@ small {
   margin-bottom: 10px;
 }
 .home-item-label > .pull-left {
+  color: @nearlyBlack;
   border-bottom: 1px solid @nearlyBlack;
 }
+.home-item-label.inverse > .pull-left {
+  color: white;
+  border-bottom-color: white;
+}
+
+// Override link styling
+/*a.home-item .home-item-label {
+  color: @nearlyBlack;
+  text-decoration: none;
+}
+a.home-item .home-item-label.inverse {
+  color: white;
+}*/
+
 
 /*
  * p a g i n a t i o n
@@ -410,20 +427,38 @@ ul.filter-options li > i {
  */
 .filters-toggle {
   height: 60px;
-  display: table-cell;
-  vertical-align: middle;
   text-align: center;
-  background-color: @red;
-  width: inherit;
+  background-color: @green1;
   color: white;
   font-size: 22px;
-}
-.filters-toggle-off-container {
-  margin-top: 20px;
-}
-.filters-toggle-off {
   border: 10px solid white;
 }
+.filters-toggle:hover,
+.filters-toggle:active {
+  color: @faintGrey;
+  //background-color: @green2;
+}
+.filters-toggle-submit-container {
+  margin-top: 20px;
+}
+.filters-toggle-on {
+  display: block;
+  border-width: 0;
+  margin-bottom: 20px;
+}
+.filters-toggle-on .label-container {
+  padding-top: 20px;
+}
+.filters-toggle-submit,
+.filters-toggle-cancel {
+  display: table-cell;
+  vertical-align: middle;
+  width: inherit;
+}
+.filters-toggle-cancel {
+  background-color: @red;
+}
+
 #filters .mobile-modal {
   position: absolute;
   top: 0;
@@ -653,4 +688,24 @@ p.results-summary strong {
 .animate-enter.animate-enter-active,
 .animate-leave {
     opacity: 1;
+}
+
+
+
+// Responsiveness
+
+@media (max-width: 979px) {
+  .home-item.w1 { width: 100%; }
+  .home-item.w2 { width: 100%; }
+  .home-item.h1 { height: auto;}
+  #home {
+    margin-top: 30px;
+  }
+  .home-item-cntr.welcome p.big {
+    font-size: 18px;
+    line-height: 38px;
+  }
+  #filters {
+    margin-top: 10px;
+  }
 }

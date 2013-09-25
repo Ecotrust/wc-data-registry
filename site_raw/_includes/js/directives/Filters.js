@@ -300,11 +300,21 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         scope.isLocationCollapsed = (scope.filteredLocation == null);
                     };
 
-                    scope.mobileSearchSubmit = function () {
-                        scope.showingMobileFiltersModal = false;
-                        setTimeout(function () {
-                          window.scrollTo(0, 1);
-                        }, 100);
+                    scope.manualSubmit = function () {
+                        
+                        $timeout(function () {
+                            // Was experiencing an infinite loop once in 
+                            // a while on submit. Trying this in a timeout.
+                            // Haven't seen it happen again yet.
+
+                            scope.updateUrlQueryString(false);
+
+                            // Hide mobile filters modal.
+                            scope.showingMobileFiltersModal = false;
+                            setTimeout(function () {
+                              window.scrollTo(0, 1);
+                            }, 100);                        
+                        }, 1);
                     };
 
                     scope.init();
