@@ -7572,13 +7572,41 @@ img.home-item-icon {
   color: white;
   border-bottom-color: white;
 }
-/*a.home-item .home-item-label {
-  color: @nearlyBlack;
-  text-decoration: none;
+/**
+ * a b o u t
+ */
+#about {
+  margin-top: 30px;
 }
-a.home-item .home-item-label.inverse {
+.home-item .about .home-item-label div.pull-left {
+  border-bottom: #9ec73d 2px solid;
+}
+.home-item-cntr.about {
+  padding: 30px 50px 40px 50px;
+}
+#about p {
+  font-weight: 200;
+  font-size: 20px;
+  line-height: 36px;
+}
+.home-item-cntr.about p:first-child {
+  margin-top: 30px;
+}
+.home-item-cntr.about a {
   color: white;
-}*/
+  font-weight: normal;
+}
+.home-item-cntr.about a:hover {
+  text-decoration: underline;
+}
+.success-story > .cntr {
+  padding: 0 50px 40px 50px;
+}
+#about .success-story h3 {
+  font-family: OpenSans, sans-serif;
+  font-weight: 400;
+  margin-bottom: 30px;
+}
 /*
  * p a g i n a t i o n
  */
