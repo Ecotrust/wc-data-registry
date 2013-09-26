@@ -228,13 +228,7 @@ small {
 .home-item.blue { background-color: @blue; }
 .home-item.lightGrey { background-color: @lightGrey; }
 
-img.home-item-icon {
-  float: right;
-  padding-right: 0px;
-  padding-bottom: 15px;
-}
-
-
+.home-item { position: relative; }
 .home-item-cntr { padding: 10px 15px 15px 15px; }
 .home-item-cntr.welcome { padding: 20px 30px 30px 30px; }
 
@@ -274,6 +268,11 @@ img.home-item-icon {
 .home-item-label.inverse > .pull-left {
   color: white;
   border-bottom-color: white;
+}
+.home-item-cntr .home-item-icon {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
 }
 
 
@@ -482,6 +481,7 @@ ul.filter-options li > i {
   display: table-cell;
   vertical-align: middle;
   width: inherit;
+  .rounded-corners(2px);
 }
 .filters-toggle-cancel {
   background-color: @red;
@@ -743,4 +743,8 @@ p.results-summary strong {
     font-size: 18px;
     line-height: 38px;
   }
+  .home-item-cntr .home-item-icon {
+    right: 10px;
+    bottom: 10px;
+  }  
 }

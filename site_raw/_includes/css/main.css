@@ -182,10 +182,8 @@ small {
 .home-item.lightGrey {
   background-color: #a6a6a6;
 }
-img.home-item-icon {
-  float: right;
-  padding-right: 0px;
-  padding-bottom: 15px;
+.home-item {
+  position: relative;
 }
 .home-item-cntr {
   padding: 10px 15px 15px 15px;
@@ -223,6 +221,11 @@ img.home-item-icon {
 .home-item-label.inverse > .pull-left {
   color: white;
   border-bottom-color: white;
+}
+.home-item-cntr .home-item-icon {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
 }
 /**
  * a b o u t
@@ -658,5 +661,9 @@ p.results-summary strong {
   .home-item-cntr.welcome p.big {
     font-size: 18px;
     line-height: 38px;
+  }
+  .home-item-cntr .home-item-icon {
+    right: 10px;
+    bottom: 10px;
   }
 }
