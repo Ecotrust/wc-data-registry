@@ -41,7 +41,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 			$scope.resultsData = {};
 			$scope.numFound = 0;
 			$scope.filtersAreActive = $scope.checkFiltersAreActive(data.filterVals);
-			if (console) {console.log("Error querying Solr:" + data.error.msg || "no info available"); }
+			if (console) { console.log("Error querying Solr:" + data.error.msg || "no info available"); }
 		};
 
 		solr.getResultsForQueryString($scope.resultsPerPage, $scope.pageIndex, success, error);

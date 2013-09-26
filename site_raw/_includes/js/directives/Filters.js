@@ -99,7 +99,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         });
 
                         scope.$watch('showingMobileFiltersModal', function (isMobalHidden) {
-                            if (console) console.log('watcher for showingMobileFiltersModal');
+                            if (console) { console.log('watcher for showingMobileFiltersModal'); }
                             try {
                                 // For mobile devices, modify viewport to be device-height
                                 //  only while modal is open.

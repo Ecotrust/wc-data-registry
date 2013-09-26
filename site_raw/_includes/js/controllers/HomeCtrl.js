@@ -13,10 +13,6 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window',
 
 	$scope.pckry = $container.data('packery');
 
-	$scope.pckry.on( 'layoutComplete', function() {
-  		//console.log('layout is complete');
-	});
-
 	// manually trigger initial layout
 	$timeout(function () {
 		$scope.pckry.layout();	

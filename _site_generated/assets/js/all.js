@@ -30567,7 +30567,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         });
 
                         scope.$watch('showingMobileFiltersModal', function (isMobalHidden) {
-                            if (console) console.log('watcher for showingMobileFiltersModal');
+                            if (console) { console.log('watcher for showingMobileFiltersModal'); }
                             try {
                                 // For mobile devices, modify viewport to be device-height
                                 //  only while modal is open.
@@ -32387,10 +32387,6 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window',
 
 	$scope.pckry = $container.data('packery');
 
-	$scope.pckry.on( 'layoutComplete', function() {
-  		//console.log('layout is complete');
-	});
-
 	// manually trigger initial layout
 	$timeout(function () {
 		$scope.pckry.layout();	
@@ -32466,7 +32462,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 			$scope.resultsData = {};
 			$scope.numFound = 0;
 			$scope.filtersAreActive = $scope.checkFiltersAreActive(data.filterVals);
-			if (console) {console.log("Error querying Solr:" + data.error.msg || "no info available"); }
+			if (console) { console.log("Error querying Solr:" + data.error.msg || "no info available"); }
 		};
 
 		solr.getResultsForQueryString($scope.resultsPerPage, $scope.pageIndex, success, error);
