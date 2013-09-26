@@ -216,7 +216,12 @@ small {
 /*
  *  h o m e
  */
-/* widths */
+// .packery-container {
+//   display: none;
+// }
+.home-item { 
+  margin-left: 0; 
+}
 .home-item.w1 { width: 31%; }
 .home-item.w2 { width: 64%; }
 .home-item.h1 { height: 300px;}
@@ -721,6 +726,16 @@ p.results-summary strong {
 
 
 // Responsiveness
+#home .packery-container {  padding-left: 30px; }
+@media (max-width: 1199px) {
+  #home .packery-container {  padding-left: 20px; }
+}
+@media (max-width: 979px) {
+  #home .packery-container {  padding-left: 20px; }
+}
+@media (max-width: 767px) {
+  #home .packery-container {  padding-left: 0px; }
+}
 
 @media (max-width: 979px) {
   .home-item.w1 { width: 100%; }
@@ -747,4 +762,12 @@ p.results-summary strong {
     right: 10px;
     bottom: 10px;
   }  
+  #about .success-story {
+    margin-top: 30px;
+  }
+}
+
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
 }

@@ -1,15 +1,29 @@
 
-angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window', 'solr', '$location', function($scope, $http, $window, solr, $location) { 
+angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window', 'solr', '$location', '$timeout', function($scope, $http, $window, solr, $location, $timeout) { 
+
+	$scope.recordCount = "0";
 
 	// Initialize Packery
-	var $container = $('#home');
+	var $container = $('.packery-container');
 	$container.packery({
 		itemSelector: '.home-item',
-		gutter: 10
+		gutter: 10,
+		isInitLayout: false
 	});
 
+	$scope.pckry = $container.data('packery');
+
+	$scope.pckry.on( 'layoutComplete', function() {
+  		console.log('layout is complete');
+	});
+
+	// manually trigger initial layout
+	$timeout(function () {
+		$scope.pckry.layout();	
+	}, 2);
+
+
 	// Get record count.
-	$scope.recordCount = -1;
 	solr.getRecordCount(function (count) {
 		$scope.recordCount = count;
 	});

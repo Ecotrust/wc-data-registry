@@ -7,9 +7,9 @@ active: home
 
 {% raw %}
 <div class="container" id="home" ng-controller="HomeCtrl">
-	<div class="row">
+	<div class="row packery-container">
 
-		<a class="home-item green1 w2 clearfix" href="/discover">
+		<a class="home-item green1 span8 clearfix" href="/discover">
 			<div class="home-item-cntr welcome">
 				<div class="home-item-label clearfix">
 					<div class="pull-left">WELCOME</div>
@@ -18,9 +18,9 @@ active: home
 			</div>
 		</a>
 
-		<div class="home-item red w1">
+		<div class="home-item red span4">
 			<div class="home-item-cntr search">
-				<div class="giantText">{{ recordCount }}</div>
+				<div ng-cloak class="giantText">{{ recordCount }}</div>
 				<p>registered resources</p>
 				<form ng-submit="search()">
 					<div id="search-filter">
@@ -31,7 +31,7 @@ active: home
 			</div>
 		</div>
 
-		<a class="home-item-biological home-item blue w1 h1" href="/discover">
+		<a class="home-item-biological home-item blue span4 h1" href="/discover">
 			<div class="home-item-cntr">
 				<div class="home-item-label inverse clearfix">
 					<div class="pull-left">DISCOVER</div>
@@ -41,7 +41,7 @@ active: home
 			</div>
 		</a>
 
-		<a class="home-item-marine-debris home-item green2 w1 h1" href="/discover">
+		<a class="home-item-marine-debris home-item green2 span4 h1" href="/discover">
 			<div class="home-item-cntr">
 				<div class="home-item-label clearfix">
 					<div class="pull-left">DISCOVER</div>
@@ -51,7 +51,7 @@ active: home
 			</div>			
 		</a>
 
-		<a class="home-item-human-use home-item green2 w1 h1" href="/discover">
+		<a class="home-item-human-use home-item green2 span4 h1" href="/discover">
 			<div class="home-item-cntr">
 				<div class="home-item-label inverse clearfix">
 					<div class="pull-left">DISCOVER</div>
@@ -61,7 +61,7 @@ active: home
 			</div>			
 		</a>
 
-		<a class="home-item-physical home-item green2 w1 h1" href="/discover">
+		<a class="home-item-physical home-item green2 span4 h1" href="/discover">
 			<div class="home-item-cntr">
 				<div class="home-item-label inverse clearfix">
 					<div class="pull-left">DISCOVER</div>
