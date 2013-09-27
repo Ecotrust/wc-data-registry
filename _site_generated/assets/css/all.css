@@ -7532,6 +7532,9 @@ small {
 .home-item.lightGrey {
   background-color: #a6a6a6;
 }
+.home-item.transparent {
+  background-color: transparent;
+}
 .home-item {
   position: relative;
 }
@@ -7586,7 +7589,11 @@ small {
 .home-item .about .home-item-label div.pull-left {
   border-bottom: #9ec73d 2px solid;
 }
-.home-item-cntr.about {
+.home-item .learn-more .home-item-label div.pull-left {
+  border-bottom: #9ec73d 2px solid;
+}
+.home-item-cntr.about,
+.home-item-cntr.learn-more {
   padding: 30px 50px 40px 50px;
 }
 #about p {
@@ -7594,23 +7601,36 @@ small {
   font-size: 20px;
   line-height: 36px;
 }
-.home-item-cntr.about p:first-child {
+.home-item-cntr.about p:first-child,
+.home-item-cntr.learn-more p:first-child {
   margin-top: 30px;
 }
 .home-item-cntr.about a {
   color: white;
+}
+.home-item .learn-more p {
+  color: inherit;
+}
+.home-item-cntr.about a,
+.home-item-cntr.learn-more a {
   font-weight: normal;
 }
-.home-item-cntr.about a:hover {
+.home-item-cntr.about a:hover,
+.home-item-cntr.learn-more a:hover {
   text-decoration: underline;
 }
-.success-story > .cntr {
+.success-story > .cntr,
+.learn-more > .cntr {
   padding: 0 50px 40px 50px;
 }
-#about .success-story h3 {
+#about .success-story h3,
+#about .learn-more h3 {
   font-family: OpenSans, sans-serif;
   font-weight: 400;
   margin-bottom: 30px;
+}
+#about hr {
+  margin: 40px 30px 30px 30px;
 }
 /*
  * p a g i n a t i o n
@@ -7991,21 +8011,21 @@ p.results-summary strong {
 .animate-leave {
   opacity: 1;
 }
-#home .packery-container {
+.packery-container {
   padding-left: 30px;
 }
 @media (max-width: 1199px) {
-  #home .packery-container {
+  .packery-container {
     padding-left: 20px;
   }
 }
 @media (max-width: 979px) {
-  #home .packery-container {
+  .packery-container {
     padding-left: 20px;
   }
 }
 @media (max-width: 767px) {
-  #home .packery-container {
+  .packery-container {
     padding-left: 0px;
   }
 }
@@ -8029,8 +8049,19 @@ p.results-summary strong {
   #filters {
     margin-top: 10px;
   }
+  #about p {
+    font-size: 16px;
+    line-height: 28px;
+  }
+  #about .success-story h3,
+  #about .learn-more h3 {
+    margin-bottom: 15px;
+  }
 }
 @media (max-width: 767px) {
+  body {
+    font-size: 12px;
+  }
   .home-item-cntr.welcome p.big {
     font-size: 18px;
     line-height: 38px;
@@ -8040,7 +8071,17 @@ p.results-summary strong {
     bottom: 10px;
   }
   #about .success-story {
-    margin-top: 30px;
+    margin-top: 0px;
+  }
+  #about p {
+    font-size: 14px;
+    line-height: 24px;
+  }
+  #about hr {
+    margin-top: 0px;
+  }
+  .home-item-cntr.learn-more p:first-child {
+    margin-top: 10px;
   }
 }
 [ng\:cloak],

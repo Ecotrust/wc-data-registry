@@ -42,15 +42,20 @@
  * Begin site scripts
  */
 angular.module('wcodpApp', ['ui.bootstrap', 'leaflet-directive']);
+// Services
 {% include js/services/Solr.js %}
+{% include js/services/Packery.js %}
 {% include js/services/Metadata.js %}
 {% include js/services/BrowserSize.js %}
+// Directives
 {% include js/directives/Filters.js %}
 {% include js/directives/ResultsList.js %}
 {% include js/directives/Result.js %}
 {% include js/directives/Leaflet.js %}
+// Controllers
 {% include js/controllers/HomeCtrl.js %}
 {% include js/controllers/DiscoverCtrl.js %}
+{% include js/controllers/AboutCtrl.js %}
 
 // Force iPhone address bar to hide.
 setTimeout(function () {

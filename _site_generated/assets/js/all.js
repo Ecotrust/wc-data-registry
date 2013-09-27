@@ -30223,6 +30223,7 @@ angular.module("template/typeahead/typeahead.html", []).run(["$templateCache", f
  * Begin site scripts
  */
 angular.module('wcodpApp', ['ui.bootstrap', 'leaflet-directive']);
+// Services
 
 angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http, $location) {
 
@@ -30335,6 +30336,39 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                     errorCallback(data);
                 }
             });
+        }
+
+    };
+
+}]);
+
+angular.module('wcodpApp').factory('packery', ['$timeout', function($timeout) {
+
+    var pckry;
+
+    return {
+        
+        /**
+         * Looks for a div with .packery-container class and initializes
+         * packery which then handles updating the layout on resize.
+         */
+        handleLayout: function (callback) {
+
+            // Grab container
+            var $container = $('.packery-container');
+
+            // Initialize Packery in that container
+            $container.packery({
+                itemSelector: '.home-item',
+                gutter: 10,
+                isInitLayout: false
+            });
+
+            // Manually trigger initial layout
+            pckry = $container.data('packery');
+            $timeout(function () {
+                pckry.layout();
+            }, 2);
         }
 
     };
@@ -30489,6 +30523,7 @@ angular.module('wcodpApp').factory('browserSize', ['$document', function($docume
     };
 
 }]);
+// Directives
 
 angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'browserSize', function($timeout, $location, browserSize) {
 
@@ -32395,26 +32430,13 @@ leafletDirective.directive('leaflet', [
         }
     };
 }]);
+// Controllers
 
-angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window', 'solr', '$location', '$timeout', function($scope, $http, $window, solr, $location, $timeout) { 
+angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window', 'solr', '$location', '$timeout', 'packery', function($scope, $http, $window, solr, $location, $timeout, packery) { 
 
 	$scope.recordCount = "0";
 
-	// Initialize Packery
-	var $container = $('.packery-container');
-	$container.packery({
-		itemSelector: '.home-item',
-		gutter: 10,
-		isInitLayout: false
-	});
-
-	$scope.pckry = $container.data('packery');
-
-	// manually trigger initial layout
-	$timeout(function () {
-		$scope.pckry.layout();	
-	}, 2);
-
+	packery.handleLayout();
 
 	// Get record count.
 	solr.getRecordCount(function (count) {
@@ -32550,6 +32572,12 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	};
 
 	$scope.onLoad();
+}]);
+
+angular.module('wcodpApp').controller('AboutCtrl', ['$scope', 'packery', function($scope, packery) { 
+
+	packery.handleLayout();
+
 }]);
 
 // Force iPhone address bar to hide.
