@@ -9,8 +9,11 @@ Quick Start
 2. Install Jekyll
 3. Clone this repository
 4. Switch to the 'rebuild' branch
-5. Then...
 
-    cd wc-data-registry
+Then install the dependencies via bower. From the root repository directory:
+
     bower install
+    
+And run the Jekyll server such that it auto compiles any code updates:
+
     jekyll server --watch
