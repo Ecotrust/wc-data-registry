@@ -5,10 +5,15 @@ Data Registry for the West Coast Governors Alliance
 
 Quick Start
 ===========
-1. Install Bower
-2. Install Jekyll
-3. Clone this repository
-4. Switch to the 'rebuild' branch
+Install Bower:
+
+    npm install -g bower
+
+Install Jekyll:
+
+    gem install jekyll
+    
+Clone this repository. 
 
 Then install the dependencies via bower. From the root repository directory:
 
