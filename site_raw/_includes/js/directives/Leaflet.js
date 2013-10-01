@@ -8,6 +8,7 @@ leafletDirective.directive('leaflet', [
         minZoom: 1,
         doubleClickZoom: true,
         scrollWheelZoom: true,
+        zoomControl: true,
         tileLayer: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         tileLayerOptions: {
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -200,12 +201,15 @@ leafletDirective.directive('leaflet', [
                 parseInt($scope.defaults.minZoom, 10) : defaults.minZoom;
             $scope.leaflet.doubleClickZoom = !!(attrs.defaults && $scope.defaults && (typeof($scope.defaults.doubleClickZoom) === "boolean") ) ? $scope.defaults.doubleClickZoom  : defaults.doubleClickZoom;
             $scope.leaflet.scrollWheelZoom = !!(attrs.defaults && $scope.defaults && (typeof($scope.defaults.scrollWheelZoom) === "boolean") ) ? $scope.defaults.scrollWheelZoom  : defaults.scrollWheelZoom;
+            $scope.leaflet.zoomControl = !!(attrs.defaults && $scope.defaults && (typeof($scope.defaults.zoomControl) === "boolean") ) ? $scope.defaults.zoomControl  : defaults.zoomControl;
+
 
             var map = new L.Map(element[0], {
                 maxZoom: $scope.leaflet.maxZoom,
                 minZoom: $scope.leaflet.minZoom,
                 doubleClickZoom: $scope.leaflet.doubleClickZoom,
-                scrollWheelZoom: $scope.leaflet.scrollWheelZoom
+                scrollWheelZoom: $scope.leaflet.scrollWheelZoom,
+                zoomControl: $scope.leaflet.zoomControl
             });
             map.attributionControl.setPrefix('');
             var layers = null;
@@ -1356,6 +1360,10 @@ leafletDirective.directive('leaflet', [
                 for(var i = 0, count = $scope.customControls.length; i < count; i++) {
                     map.addControl(new $scope.customControls[i]());
                 }
+            }
+
+            function showZoomControls() {
+                
             }
         }
     };

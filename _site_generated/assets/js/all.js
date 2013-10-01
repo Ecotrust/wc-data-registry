@@ -30344,7 +30344,9 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
 
 angular.module('wcodpApp').factory('packery', ['$timeout', function($timeout) {
 
-    var pckry;
+    var pckry,
+        containerClass = '.packery-container',
+        itemClass = '.home-item';
 
     return {
         
@@ -30355,11 +30357,11 @@ angular.module('wcodpApp').factory('packery', ['$timeout', function($timeout) {
         handleLayout: function (callback) {
 
             // Grab container
-            var $container = $('.packery-container');
+            var $container = $(containerClass);
 
             // Initialize Packery in that container
             $container.packery({
-                itemSelector: '.home-item',
+                itemSelector: itemClass,
                 gutter: 10,
                 isInitLayout: false
             });
@@ -30369,6 +30371,11 @@ angular.module('wcodpApp').factory('packery', ['$timeout', function($timeout) {
             $timeout(function () {
                 pckry.layout();
             }, 2);
+        },
+
+        getInstance: function () {
+            var $container = $(containerClass);
+            return $container.data('packery');
         }
 
     };
@@ -31078,6 +31085,7 @@ leafletDirective.directive('leaflet', [
         minZoom: 1,
         doubleClickZoom: true,
         scrollWheelZoom: true,
+        zoomControl: true,
         tileLayer: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         tileLayerOptions: {
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -31270,12 +31278,15 @@ leafletDirective.directive('leaflet', [
                 parseInt($scope.defaults.minZoom, 10) : defaults.minZoom;
             $scope.leaflet.doubleClickZoom = !!(attrs.defaults && $scope.defaults && (typeof($scope.defaults.doubleClickZoom) === "boolean") ) ? $scope.defaults.doubleClickZoom  : defaults.doubleClickZoom;
             $scope.leaflet.scrollWheelZoom = !!(attrs.defaults && $scope.defaults && (typeof($scope.defaults.scrollWheelZoom) === "boolean") ) ? $scope.defaults.scrollWheelZoom  : defaults.scrollWheelZoom;
+            $scope.leaflet.zoomControl = !!(attrs.defaults && $scope.defaults && (typeof($scope.defaults.zoomControl) === "boolean") ) ? $scope.defaults.zoomControl  : defaults.zoomControl;
+
 
             var map = new L.Map(element[0], {
                 maxZoom: $scope.leaflet.maxZoom,
                 minZoom: $scope.leaflet.minZoom,
                 doubleClickZoom: $scope.leaflet.doubleClickZoom,
-                scrollWheelZoom: $scope.leaflet.scrollWheelZoom
+                scrollWheelZoom: $scope.leaflet.scrollWheelZoom,
+                zoomControl: $scope.leaflet.zoomControl
             });
             map.attributionControl.setPrefix('');
             var layers = null;
@@ -32427,6 +32438,10 @@ leafletDirective.directive('leaflet', [
                     map.addControl(new $scope.customControls[i]());
                 }
             }
+
+            function showZoomControls() {
+                
+            }
         }
     };
 }]);
@@ -32434,16 +32449,16 @@ leafletDirective.directive('leaflet', [
 
 angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window', 'solr', '$location', '$timeout', 'packery', function($scope, $http, $window, solr, $location, $timeout, packery) { 
 
-	$scope.recordCount = "0";
-
-	packery.handleLayout();
-
 	// Get record count.
+	$scope.recordCount = "0";
 	solr.getRecordCount(function (count) {
 		$scope.recordCount = count;
 	});
 
-	// Setup photo backgrounds
+	// Let Packery do its thing.
+	packery.handleLayout();
+
+	// Setup photo backgrounds.
 	$('.home-item-biological')
 		.backstretch("/assets/img/photos/kelp.jpg");
 	$('.home-item-marine-debris')
@@ -32452,6 +32467,35 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window',
 		.backstretch("/assets/img/photos/chumash.jpg");
 	$('.home-item-physical')
 		.backstretch("/assets/img/photos/astoria_bridge.jpg");
+
+	// Setup map in location block.
+	$scope.map = {
+		center: {
+			lat: 40.44694705960048,
+			lng: -120.76171875,
+			zoom: 3
+		},
+		options: {
+	        maxZoom: 8,
+	        tileLayer: 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png',
+	        tileLayerOptions: {
+	            attribution: '',
+	            subdomains: '1234'
+	        },
+			zoomControl: false
+		}
+	};
+	$('.home-item-location .labeling-layer').click(function (event) {
+		event.stopImmediatePropagation();
+		
+		// Hide labeling that is overlayed atop the map.
+		$(this).hide();
+		
+		// Expand the block.
+		$('.home-item-location').addClass('gigante');
+		var pckry = packery.getInstance();
+		pckry.fit($('.home-item-location')[0]);
+	});
 
 
 	// Search

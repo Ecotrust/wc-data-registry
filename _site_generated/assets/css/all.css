@@ -7506,6 +7506,7 @@ small {
  */
 .home-item {
   margin-left: 0;
+  position: relative;
 }
 .home-item.w1 {
   width: 31%;
@@ -7534,9 +7535,6 @@ small {
 }
 .home-item.transparent {
   background-color: transparent;
-}
-.home-item {
-  position: relative;
 }
 .home-item-cntr {
   padding: 10px 15px 15px 15px;
@@ -7580,6 +7578,28 @@ small {
   right: 15px;
   bottom: 15px;
 }
+.home-item-location .leaflet-directive,
+.home-item-location .home-item-cntr,
+.leaflet-cover,
+.home-item-location .labeling-layer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.home-item-location .leaflet-directive {
+  z-index: -1;
+}
+.leaflet-cover,
+.home-item-location .labeling-layer {
+  z-index: 9000;
+  background-color: blue;
+}
+.home-item .gigante {
+  width: 100%;
+  height: 400px;
+}
 /**
  * a b o u t
  */
@@ -7615,9 +7635,8 @@ small {
 .home-item-cntr.learn-more a {
   font-weight: normal;
 }
-.home-item-cntr.about a:hover,
-.home-item-cntr.learn-more a:hover {
-  text-decoration: underline;
+.home-item-cntr.about a:hover {
+  color: #a6a6a6;
 }
 .success-story > .cntr,
 .learn-more > .cntr {
@@ -7692,7 +7711,7 @@ small {
   top: 3px;
   cursor: pointer;
 }
-.leaflet-directive {
+#discover .leaflet-directive {
   height: 180px;
 }
 .leaflet-map-pane:hover {

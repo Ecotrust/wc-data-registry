@@ -1,7 +1,9 @@
 
 angular.module('wcodpApp').factory('packery', ['$timeout', function($timeout) {
 
-    var pckry;
+    var pckry,
+        containerClass = '.packery-container',
+        itemClass = '.home-item';
 
     return {
         
@@ -12,11 +14,11 @@ angular.module('wcodpApp').factory('packery', ['$timeout', function($timeout) {
         handleLayout: function (callback) {
 
             // Grab container
-            var $container = $('.packery-container');
+            var $container = $(containerClass);
 
             // Initialize Packery in that container
             $container.packery({
-                itemSelector: '.home-item',
+                itemSelector: itemClass,
                 gutter: 10,
                 isInitLayout: false
             });
@@ -26,6 +28,11 @@ angular.module('wcodpApp').factory('packery', ['$timeout', function($timeout) {
             $timeout(function () {
                 pckry.layout();
             }, 2);
+        },
+
+        getInstance: function () {
+            var $container = $(containerClass);
+            return $container.data('packery');
         }
 
     };
