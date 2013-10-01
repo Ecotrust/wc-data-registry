@@ -32,6 +32,9 @@
 			<dt>date published</dt>
 			<dd ng-hide="metadata.datePublished">not available</dd>
 			<dd ng-show="metadata.datePublished">{{metadata.datePublished}}</dd>
+
+			<dt>date harvested</dt>
+			<dd>{{resultData['sys.src.item.lastmodified_tdt'] | date:short }}</dd>
 			
 			<dt>creator</dt>
 			<dd ng-hide="metadata.creator">not available</dd>
