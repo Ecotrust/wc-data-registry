@@ -7650,6 +7650,14 @@ small {
 #about hr {
   margin: 40px 30px 30px 30px;
 }
+#about .success-story img {
+  padding-top: 15px;
+}
+@media (max-width: 767px) {
+  #about .success-story .img-container {
+    margin-left: 50px;
+  }
+}
 /*
  * p a g i n a t i o n
  */
