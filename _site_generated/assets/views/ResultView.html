@@ -29,20 +29,25 @@
 		</div>
 		<dl class="result-metadata">
 			
-			<dt ng-show="metadata.datePublished">date published</dt>
+			<dt>date published</dt>
+			<dd ng-hide="metadata.datePublished">not available</dd>
 			<dd ng-show="metadata.datePublished">{{metadata.datePublished}}</dd>
 			
-			<dt ng-show="metadata.creator">creator</dt>
+			<dt>creator</dt>
+			<dd ng-hide="metadata.creator">not available</dd>
 			<dd ng-show="metadata.creator">{{metadata.creator}}</dd> 
 			
-			<dt ng-show="metadata.publisher">publisher</dt>
+			<dt>publisher</dt>
+			<dd ng-hide="metadata.publisher">not available</dd>
 			<dd ng-show="metadata.publisher">{{metadata.publisher}}</dd>
 			
-			<dt ng-show="metadata.contactName || metadata.contactEmail">contact</dt>
-			<dd ng-show="metadata.contactName">{{metadata.contactName}}</dd>
+			<dt>contact</dt>
+			<dd ng-hide="metadata.contactName || metadata.contactEmail">not available</dd>
+			<dd ng-show="metadata.contactEmail">{{metadata.contactName}}</dd>
 			<dd ng-show="metadata.contactEmail">{{metadata.contactEmail}}</dd>
 			
-			<dt ng-show="metadata.constraints">constraints</dt>
+			<dt>constraints</dt>
+			<dd ng-hide="metadata.constraints">not available</dd>
 			<dd ng-show="metadata.constraints">{{metadata.constraints}}</dd>
 		</dl>
 	</div>
