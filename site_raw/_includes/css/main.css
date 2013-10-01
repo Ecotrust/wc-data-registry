@@ -246,7 +246,6 @@ small {
 .leaflet-cover,
 .home-item-location .labeling-layer {
   z-index: 9000;
-  background-color: blue;
 }
 .home-item .gigante {
   width: 100%;

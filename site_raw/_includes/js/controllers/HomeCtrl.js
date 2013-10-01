@@ -33,8 +33,9 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window',
 	        tileLayerOptions: {
 	            attribution: '',
 	            subdomains: '1234'
-	        },
-			zoomControl: false
+	        }
+	        //},
+			//zoomControl: false
 		}
 	};
 	$('.home-item-location .labeling-layer').click(function (event) {
