@@ -27,15 +27,12 @@
 		<div class="result-map">
 			map placeholder
 		</div>
-		<dl class="result-metadata">
+		<dl class="result-metadata clearfix">
 			
 			<dt>date published</dt>
 			<dd ng-hide="metadata.datePublished">not available</dd>
 			<dd ng-show="metadata.datePublished">{{metadata.datePublished}}</dd>
 
-			<dt>date harvested</dt>
-			<dd>{{resultData['sys.src.item.lastmodified_tdt'] | date:short }}</dd>
-			
 			<dt>creator</dt>
 			<dd ng-hide="metadata.creator">not available</dd>
 			<dd ng-show="metadata.creator">{{metadata.creator}}</dd> 
@@ -53,5 +50,7 @@
 			<dd ng-hide="metadata.constraints">not available</dd>
 			<dd ng-show="metadata.constraints">{{metadata.constraints}}</dd>
 		</dl>
+		<div class="clearfix">&nbsp;</div>
+		<p class="harvest-info subdued pull-right">Harvested {{resultData['sys.src.item.lastmodified_tdt'] | date:short }}</p>	
 	</div>
 </div>
