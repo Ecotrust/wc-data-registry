@@ -30962,6 +30962,8 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
 
             scope.links = [];
 
+            scope.map = null;
+
             scope.metadata = {
                 datePublished: '',
                 creator: '',
@@ -30993,8 +30995,11 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             };
 
             scope.resultClicked = function($event) {
-                var closed = angular.element($event.currentTarget).hasClass('result-closed'),
-                    id = angular.element($event.currentTarget).attr('id');
+                var elem = angular.element($event.currentTarget),
+                    closed = elem.hasClass('result-closed'),
+                    id = elem.attr('id'),
+                    mapContainer, 
+                    bounds;
                 if (closed) {
                     // Close all results.
                     angular.element($event.currentTarget)
@@ -31006,6 +31011,11 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                         .removeClass('result-closed')
                         .addClass('result-opened');
                     // Populate metadata fields
+                    //mapContainer = elem.find('.result-map');
+                    bounds = scope.resultData.envelope_geo;
+                    if (bounds.length) {
+                        scope.setupMap(id, bounds[0].split(" "));
+                    }
                     scope.populateMetadataFields(id);
                 }
             };
@@ -31028,6 +31038,40 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                 // Prevent bubbling event to the result.
                 if ($event.stopPropagation) $event.stopPropagation();
                 $event.cancelBubble = true;
+            };
+
+
+            scope.setupMap = function (mapContainerId, bounds) {
+                if (scope.map) { 
+                    // Already setup
+                    return; 
+                }
+                if (bounds.length === 4) {
+                    var p1 = new L.LatLng(bounds[1], bounds[0]), // sw
+                        p2 = new L.LatLng(bounds[3], bounds[2]), // ne
+                        bbox = new L.Rectangle([p1, p2], {color: "#ff7800", weight: 1, clickable: false});
+
+                    scope.map = new L.Map('result-map-' + mapContainerId, {
+                        doubleClickZoom: false,
+                        scrollWheelZoom: false,
+                        zoomControl: false,
+                        dragging: false,
+                        touchZoom: false,
+                        boxZoom: false,
+                        tap: false,
+                        keyboard: false
+                    }).fitBounds(bbox);
+
+                    L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
+                        attribution: '',
+                        subdomains: '1234'
+                    }).addTo(scope.map);
+
+                    bbox.addTo(scope.map);
+
+                    scope.map.attributionControl.setPrefix('');
+
+                }
             };
 
             scope.populateMetadataFields = function (id) {

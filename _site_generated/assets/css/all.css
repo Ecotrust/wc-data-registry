@@ -7931,7 +7931,9 @@ p.results-summary strong {
   width: 35%;
   height: 150px;
   float: left;
-  background-color: #a6a6a6;
+}
+.result-map .leaflet-map-pane:hover {
+  cursor: default !important;
 }
 .result-metadata {
   float: left;
