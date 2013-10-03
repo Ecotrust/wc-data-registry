@@ -76,7 +76,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
 
                     scope.isLocationCollapsed = true;
                     scope.isCategoryCollapsed = true;
-                    scope.isTagsCollapsed = true;
+                    scope.isIssuesCollapsed = true;
                     scope.mobileMode = browserSize.isPhoneSize();
                     scope.showingMobileFiltersModal = false;
 
@@ -392,6 +392,42 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
 
 
                     //
+                    //  C a t e g o r y   F i l t e r
+                    //
+
+                    /**
+                     * Take a query string list delimited by '~' and set the
+                     * filteredCategories object used for the UI.
+                     * @param {string} c List delimited by '~'
+                     */
+                    scope.setFilteredCategories = function (c) {
+                        // Break up listing into array.
+                        scope.filteredCategories = c ? c.split('~') : null;
+                    };
+
+                    scope.isSelectedSubcategory = function (key) {
+                        return _.contains(scope.filteredCategories, key);
+                    };
+
+                    //
+                    //  I s s u e   F i l t e r
+                    //
+
+                    /**
+                     * Take a query string list delimited by '~' and set the
+                     * filteredCategories object used for the UI.
+                     * @param {string} c List delimited by '~'
+                     */
+                    scope.setFilteredIssues = function (issues) {
+                        // Break up listing into array.
+                        scope.filteredIssues = issues ? issues.split('~') : null;
+                    };
+
+                    scope.isSelectedIssue = function (key) {
+                        return _.contains(scope.filteredIssues, key);
+                    };
+
+                    //
                     //  Sync UI with query string
                     //
                     scope.watchQueryString = function () {
@@ -410,11 +446,18 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
 
                     scope.syncUiWithQueryString = function () {
                         scope.searchText = $location.search().text;
+                        
                         scope.setFilterLocation({
                             lat: $location.search().lat,
                             lng: $location.search().lng
                         });
                         scope.isLocationCollapsed = (scope.filteredLocation == null);
+                        
+                        scope.setFilteredCategories($location.search().c);
+                        scope.isCategoryCollapsed = (scope.filteredCategories == null);
+
+                        scope.setFilteredIssues($location.search().i);
+                        scope.isIssuesCollapsed = (scope.filteredIssues == null);
                     };
 
                     scope.manualSubmit = function () {

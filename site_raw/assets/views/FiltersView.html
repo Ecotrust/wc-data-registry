@@ -65,7 +65,7 @@
 				<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
 				<ul class="unstyled filter-options">
 					<li ng-repeat="subcategory in category.subcategories">
-						<i class="icon-check-empty"></i>{{ subcategory.label }}&nbsp;&nbsp;&nbsp;<strong>{{ subcategory.count }}</strong>
+						<i ng-class="{'icon-check': isSelectedSubcategory(subcategory.key), 'icon-check-empty': !isSelectedSubcategory(subcategory.key)}"></i>{{ subcategory.label }}&nbsp;&nbsp;&nbsp;<strong>{{ subcategory.count }}</strong>
 					</li>
 				</ul>
 			</div>
@@ -73,20 +73,20 @@
 		</div>
 
 		<!-- tags filter -->
-		<a class="filter-group-toggle" href="javascript:void(0)" ng-click="isTagsCollapsed = !isTagsCollapsed">
+		<a class="filter-group-toggle" href="javascript:void(0)" ng-click="isIssuesCollapsed = !isIssuesCollapsed">
 			<div class="filter-group-label">
 				<i class="icon-tags subdued"></i>
 				Issues
-				<i ng-show="isTagsCollapsed" class="icon-angle-right pull-right"></i>
-				<i ng-hide="isTagsCollapsed" class="icon-angle-down pull-right"></i>
+				<i ng-show="isIssuesCollapsed" class="icon-angle-right pull-right"></i>
+				<i ng-hide="isIssuesCollapsed" class="icon-angle-down pull-right"></i>
 			</div>
 		</a>
-		<div collapse="isTagsCollapsed" id="tags-filter" class="filter-group-container">
+		<div collapse="isIssuesCollapsed" id="tags-filter" class="filter-group-container">
 
 			<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
 			<ul class="unstyled filter-options">
 				<li ng-repeat="issue in issues">
-					<i class="icon-check-empty"></i>{{ issue.label }}&nbsp;&nbsp;&nbsp;<strong>{{ issue.count }}</strong>
+					<i ng-class="{'icon-check': isSelectedIssue(issue.key), 'icon-check-empty': !isSelectedIssue(issue.key)}"></i>{{ issue.label }}&nbsp;&nbsp;&nbsp;<strong>{{ issue.count }}</strong>
 				</li>
 			</ul>
 
