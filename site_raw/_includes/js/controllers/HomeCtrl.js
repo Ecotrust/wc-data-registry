@@ -53,7 +53,11 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window',
 
 	// Search
 	$scope.search = function () {
-		$window.location.href = '/discover/#?text='+$scope.searchText;
+		var searchText = "*";
+		if ($scope.searchText && $scope.searchText.length > 0) {
+			searchText = $scope.searchText;
+		}
+		$window.location.href = '/discover/#?text='+searchText;
 	};
 
 	$scope.goTo = function (path) {

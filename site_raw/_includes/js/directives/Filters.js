@@ -137,10 +137,15 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     scope.watchFacets = function () {
                         scope.$watch('facets', function (newVal) {
                             var collection;
-                            collection = scope.parseCollection('category', newVal);
-                            scope.categories = collection.categories;
-                            collection = scope.parseCollection('issue', newVal);
-                            scope.issues = collection.categories;
+                            if (newVal) {
+                                collection = scope.parseCollection('category', newVal);
+                                scope.categories = collection.categories;
+                                collection = scope.parseCollection('issue', newVal);
+                                scope.issues = collection.categories;
+                            } else {
+                                scope.categories = null;
+                                scope.issues = null;
+                            }
                         });
                     };
 
@@ -322,6 +327,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             scope.runningTimeout = false;
                         }
                         scope.runningTimeout = $timeout(function() { 
+                            scope.skipCollapse = true
                             scope.updateUrlQueryString();
                         }, 300);
                     });
@@ -409,6 +415,8 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         scope.filteredBoundingBox = null;
                         delete scope.markers.mainMarker;
                         scope.location = angular.copy(defaultCenter);
+
+                        scope.skipCollapse = true
                         scope.updateUrlQueryString();
                     };
 
@@ -442,6 +450,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             scope.filteredCategories = scope.filteredCategories || [];
                             scope.filteredCategories.push(key);
                         }
+                        scope.skipCollapse = true                        
                         scope.updateUrlQueryString();
                     };
 
@@ -475,6 +484,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             scope.filteredIssues = scope.filteredIssues || [];
                             scope.filteredIssues.push(key);
                         }
+                        scope.skipCollapse = true                        
                         scope.updateUrlQueryString();
                     };
 
@@ -503,13 +513,20 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             lat: $location.search().lat,
                             lng: $location.search().lng
                         });
-                        scope.isLocationCollapsed = (scope.filteredLocation == null);
                         
                         scope.setFilteredCategories($location.search().c);
-                        scope.isCategoryCollapsed = (scope.filteredCategories == null);
-
                         scope.setFilteredIssues($location.search().i);
-                        scope.isIssuesCollapsed = (scope.filteredIssues == null);
+
+                        if (scope.skipCollapse) {
+                            // Query string was updated via user interaction such that we 
+                            // don't want to adjust which filters are expanded / collapsed
+                            // but next time we might want to.
+                            scope.skipCollapse = false;
+                        } else {
+                            scope.isLocationCollapsed = (scope.filteredLocation == null);
+                            scope.isCategoryCollapsed = (scope.filteredCategories == null);
+                            scope.isIssuesCollapsed = (scope.filteredIssues == null);
+                        }
                     };
 
                     scope.manualSubmit = function () {

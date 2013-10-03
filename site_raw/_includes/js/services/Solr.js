@@ -14,12 +14,24 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
         return (lat && lng) ? {lat: lat, lng: lng} : null;
     }
 
+    function getCategoriesFromUrl () {
+        var cats = $location.search().c;
+        return cats && cats.length > 0 ? cats.split('~') : [];
+    }
+
+    function getIssuesFromUrl () {
+        var issues = $location.search().i;
+        return issues && issues.length > 0 ? issues.split('~') : [];
+    }
+
     function getTextQuery(filterVals) {
         var q = "{!lucene q.op=AND df=text}",
             txt = filterVals.text,
-            applyingOtherFilters = filterVals.latLng !== null;
+            applyingOtherFilters = filterVals.latLng !== null || 
+                (filterVals.categories && filterVals.categories.length > 0) ||
+                (filterVals.issues && filterVals.issues.length > 0);
 
-        q = txt && txt.length > 0 ? q + txt + " " : applyingOtherFilters ? "* " : ""; //q + "* ";
+        q = txt && txt.length > 0 ? q + txt : applyingOtherFilters ? '*' : '';
         return q;
     }
 
@@ -28,34 +40,20 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
         return ll && ll.lat && ll.lng ? "{!bbox pt=" + ll.lat + "," + ll.lng + " sfield=envelope_geo d=0.001} " : "";
     }
 
-    function getKeywords() {
-        return '';
-        // if (!isEmpty(app.viewModel.keywords())) {
-
-        //  var keywords = '(';
-        //  var count = 0;
-        //  $.each(app.viewModel.keywords(), function(key, val){
-        //      if (count > 0) {
-        //          keywords = keywords + ' AND ';
-        //      }
-        //      keywords = keywords + key;
-        //      count++;
-        //  });
-
-        //  keywords = keywords + ')';
-
-        //  if (keywords.length > 0) {
-        //     app.viewModel.q_query(app.viewModel.q_query() + "keywords: " + keywords + " "); 
-        //  }
-        // }
+    function getFacetQuery(facetName, selectedFacetKeys) {
+        var keys = selectedFacetKeys;
+        if (keys && _.isArray(keys) && keys.length > 0) {
+            return facetName + ': (' + keys.join(' AND ') + ')';
+        } else {
+            return '';
+        }
     }
-
 
     return {
         
         /**
-         * Pulls parameters from the query string in the URL to initiate a Solr query. Returns via
-         * success and error callbacks.
+         * callback is called with a single paramter: the total record 
+         * count in the database.
          */
         getRecordCount: function (callback) {
             this.query({text: '* '}, 1, 1, function (data) {
@@ -71,18 +69,12 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
          * Pulls parameters from the query string in the URL to initiate a Solr query. Returns via
          * success and error callbacks.
          */
-        // getFilterOptions: function (data, successCallback, errorCallback) {
-        //     this.query({text: '* '}, 1, 1, successCallback, errorCallback);
-        // },
-
-        /**
-         * Pulls parameters from the query string in the URL to initiate a Solr query. Returns via
-         * success and error callbacks.
-         */
         getResultsForQueryString: function (resultsPerPage, pageIndex, successCallback, errorCallback) {
             var filterVals = {
                     text: getTextFromUrl(),
-                    latLng: getLatLngFromUrl()
+                    latLng: getLatLngFromUrl(),
+                    categories: getCategoriesFromUrl(),
+                    issues: getIssuesFromUrl()
                 };
 
             this.query(filterVals, resultsPerPage, pageIndex, successCallback, errorCallback);
@@ -90,27 +82,40 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
 
         query: function (filterVals, resultsPerPage, pageIndex, successCallback, errorCallback) {
             var queryConfig = {},
+                textQuery = getTextQuery(filterVals),
+                boundingBoxQuery = getBoundingBoxQuery(filterVals);
+                categoryQuery = getFacetQuery('category', filterVals.categories),
+                issueQuery = getFacetQuery('issue', filterVals.issues),
                 facetFields = [], 
                 facetMinCounts = [],
-                facets = ['keywords'],
                 mincount = 1;
-                
-            // Prep query string params.
-            _.each(facets, function (value) {
-                facetFields.push(value);
-                facetMinCounts.push(mincount);
-            });
+
+            // Prep facets to include.
+            // HOWDY RYAN, uncomment this when Esri customization ready.
+            // if (categoryQuery.length > 0) { 
+            //     facetFields.push('category'); 
+            //     facetMinCounts.push(mincount);
+            // }
+            // if (issueQuery.length > 0) { 
+            //     facetFields.push('issue'); 
+            //     facetMinCounts.push(mincount);
+            // }
+
+            // Prep query string params.            
             queryConfig.params = {
                 'start': (pageIndex - 1) * resultsPerPage,
                 'rows': resultsPerPage,
                 'wt': 'json', 
-                'q': getTextQuery(filterVals) + getKeywords(),
-                'fq': getBoundingBoxQuery(filterVals),
+                // HOWDY RYAN, uncomment this when Esri customization ready.
+                // 'q': textQuery + ' ' + categoryQuery + ' ' + issueQuery,
+                'q': textQuery,
+                'fq': boundingBoxQuery,
                 //'fl': 'contact.organizations_ss, id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
                 'fl': '',
                 'facet': true,
                 'facet.field': facetFields,
                 'facet.mincount': facetMinCounts
+                //'sort': 'date asc' or 'date desc'
             };
 
             // Execute query.
@@ -119,7 +124,8 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                 data.filterVals = filterVals;
 
                 //// 
-                // Fake Esri customization data
+                // HOWDY RYAN, here's the fake Esri customization data. Remove 
+                // this when customization is deployed.
                 // 
                 data.facet_counts.facet_fields['sys.src.collections_txt'] = [
                     "category", 4,

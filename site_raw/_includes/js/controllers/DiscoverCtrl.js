@@ -38,13 +38,15 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 			// Fill UI with results.
 			$scope.resultsData = data.response.docs;
 			$scope.numFound = data.response.numFound;
-			$scope.filtersAreActive = $scope.checkFiltersAreActive(data.filterVals);			
+			$scope.filtersAreActive = $scope.checkFiltersAreActive(data.filterVals);
+			$scope.facets = data.facet_counts;
 		};
 
 		var error = function (data) {
 			$scope.resultsData = {};
 			$scope.numFound = 0;
 			$scope.filtersAreActive = $scope.checkFiltersAreActive(data.filterVals);
+			$scope.facets = undefined;
 			if (console) { console.log("Error querying Solr:" + data.error.msg || "no info available"); }
 		};
 
