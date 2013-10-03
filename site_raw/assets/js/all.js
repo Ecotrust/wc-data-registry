@@ -42,6 +42,8 @@
  * Begin site scripts
  */
 angular.module('wcodpApp', ['ui.bootstrap', 'leaflet-directive']);
+// Filters
+{% include js/filters/OptionLabel.js%}
 // Services
 {% include js/services/Solr.js %}
 {% include js/services/Packery.js %}

@@ -12,8 +12,12 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.showingMobileFiltersModal = false;
 
 	$scope.onLoad = function () {
-		solr.getRecordCount(function (count) {
-			$scope.recordCount = count;
+		// Get total record count and initial filter option lists & counts.
+		solr.query({text: '* '}, 1, 1, function (data) {
+			$scope.recordCount = data.response.numFound;
+			$scope.facets = data.facet_counts;
+		}, function (data) {
+			if (console) console.log('Failed to get record count and filter options.');
 		});
 
 		$scope.watchQueryString();

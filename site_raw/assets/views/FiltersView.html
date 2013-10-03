@@ -59,13 +59,17 @@
 			</div>
 		</a>
 		<div collapse="isCategoryCollapsed" id="categories-filter" class="filter-group-container">
-			<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
-			<ul class="unstyled filter-options">
-				<li><i class="icon-check-empty"></i>Biological Data <strong>00</strong></li>
-				<li><i class="icon-check-empty"></i>Human Use Data <strong>00</strong></li>
-				<li><i class="icon-check-empty"></i>Marine Debris Data <strong>00</strong></li>
-				<li><i class="icon-check-empty"></i>Physical Data <strong>00</strong></li>
-			</ul>
+
+			<div class="filter-option-group" ng-repeat="category in categories">
+				<p class="filter-option-group-label">{{ category.label }} Data</p>
+				<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
+				<ul class="unstyled filter-options">
+					<li ng-repeat="subcategory in category.subcategories">
+						<i class="icon-check-empty"></i>{{ subcategory.label }}&nbsp;&nbsp;&nbsp;<strong>{{ subcategory.count }}</strong>
+					</li>
+				</ul>
+			</div>
+
 		</div>
 
 		<!-- tags filter -->
@@ -78,13 +82,15 @@
 			</div>
 		</a>
 		<div collapse="isTagsCollapsed" id="tags-filter" class="filter-group-container">
+
 			<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
 			<ul class="unstyled filter-options">
-				<li><i class="icon-check-empty"></i>Marine Debris <strong>00</strong></li>
-				<li><i class="icon-check-empty"></i>Sea Level Rise <strong>00</strong></li>
+				<li ng-repeat="issue in issues">
+					<i class="icon-check-empty"></i>{{ issue.label }}&nbsp;&nbsp;&nbsp;<strong>{{ issue.count }}</strong>
+				</li>
 			</ul>
-		</div>
 
+		</div>
 
 		<!-- formats filter -->
 		<!-- <a class="filter-group-toggle" href="javascript:void(0)" ng-click="isFormatsCollapsed = !isFormatsCollapsed">

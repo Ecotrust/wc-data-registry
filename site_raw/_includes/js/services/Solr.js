@@ -53,8 +53,12 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
 
     return {
         
+        /**
+         * Pulls parameters from the query string in the URL to initiate a Solr query. Returns via
+         * success and error callbacks.
+         */
         getRecordCount: function (callback) {
-            this.querySolr({text: '* '}, 1, 1, function (data) {
+            this.query({text: '* '}, 1, 1, function (data) {
                 if (callback) { 
                     callback(data.response.numFound);
                 }
@@ -63,16 +67,28 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
             });
         },
 
+        /**
+         * Pulls parameters from the query string in the URL to initiate a Solr query. Returns via
+         * success and error callbacks.
+         */
+        // getFilterOptions: function (data, successCallback, errorCallback) {
+        //     this.query({text: '* '}, 1, 1, successCallback, errorCallback);
+        // },
+
+        /**
+         * Pulls parameters from the query string in the URL to initiate a Solr query. Returns via
+         * success and error callbacks.
+         */
         getResultsForQueryString: function (resultsPerPage, pageIndex, successCallback, errorCallback) {
             var filterVals = {
                     text: getTextFromUrl(),
                     latLng: getLatLngFromUrl()
                 };
 
-            this.querySolr(filterVals, resultsPerPage, pageIndex, successCallback, errorCallback);
+            this.query(filterVals, resultsPerPage, pageIndex, successCallback, errorCallback);
         },
 
-        querySolr: function (filterVals, resultsPerPage, pageIndex, successCallback, errorCallback) {
+        query: function (filterVals, resultsPerPage, pageIndex, successCallback, errorCallback) {
             var queryConfig = {},
                 facetFields = [], 
                 facetMinCounts = [],
@@ -101,6 +117,33 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
             if (console) { console.log("Querying Solr"); }
             $http.get(solrUrl, queryConfig).success(function (data, status, headers, config) {
                 data.filterVals = filterVals;
+
+                //// 
+                // Fake Esri customization data
+                // 
+                data.facet_counts.facet_fields['sys.src.collections_txt'] = [
+                    "category", 4,
+                    "issue", 3,
+                    "marinedebris", 3,
+                    "biological", 2,
+                    "geological", 2,
+                    "topology", 2,
+                    "habitat", 1,
+                    "soil", 1,
+                    "species", 1
+                ];
+
+                data.facet_counts.facet_fields['sys.src.collections_ss'] = [
+                    "issue/marineDebris", 3,
+                    "category/geological/topology", 2,
+                    "category/biological/habitat", 1,
+                    "category/biological/species", 1,
+                    "category/geological/soil", 1
+                ];
+                // 
+                // End Esri customization data
+                ////
+
                 if (successCallback) {
                     successCallback(data);
                 }

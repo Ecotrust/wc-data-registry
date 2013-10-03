@@ -420,6 +420,9 @@ a.filter-group-toggle:first-of-type {
 #location-filter .select-all-link {
   display: inline;
 }
+.filter-option-group-label {
+  font-size: 16px;
+}
 ul.filter-options {
   margin-bottom: 30px;
 }

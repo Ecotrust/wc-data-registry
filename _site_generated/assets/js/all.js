@@ -30223,6 +30223,16 @@ angular.module("template/typeahead/typeahead.html", []).run(["$templateCache", f
  * Begin site scripts
  */
 angular.module('wcodpApp', ['ui.bootstrap', 'leaflet-directive']);
+// Filters
+// homeModule.filter('titleCase', function () {
+//   return function (input) {
+//     var words = input.split(' ');
+//     for (var i = 0; i < words.length; i++) {
+//       words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+//     }
+//     return words.join(' ');
+//   }
+// });
 // Services
 
 angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http, $location) {
@@ -30279,8 +30289,12 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
 
     return {
         
+        /**
+         * Pulls parameters from the query string in the URL to initiate a Solr query. Returns via
+         * success and error callbacks.
+         */
         getRecordCount: function (callback) {
-            this.querySolr({text: '* '}, 1, 1, function (data) {
+            this.query({text: '* '}, 1, 1, function (data) {
                 if (callback) { 
                     callback(data.response.numFound);
                 }
@@ -30289,16 +30303,28 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
             });
         },
 
+        /**
+         * Pulls parameters from the query string in the URL to initiate a Solr query. Returns via
+         * success and error callbacks.
+         */
+        // getFilterOptions: function (data, successCallback, errorCallback) {
+        //     this.query({text: '* '}, 1, 1, successCallback, errorCallback);
+        // },
+
+        /**
+         * Pulls parameters from the query string in the URL to initiate a Solr query. Returns via
+         * success and error callbacks.
+         */
         getResultsForQueryString: function (resultsPerPage, pageIndex, successCallback, errorCallback) {
             var filterVals = {
                     text: getTextFromUrl(),
                     latLng: getLatLngFromUrl()
                 };
 
-            this.querySolr(filterVals, resultsPerPage, pageIndex, successCallback, errorCallback);
+            this.query(filterVals, resultsPerPage, pageIndex, successCallback, errorCallback);
         },
 
-        querySolr: function (filterVals, resultsPerPage, pageIndex, successCallback, errorCallback) {
+        query: function (filterVals, resultsPerPage, pageIndex, successCallback, errorCallback) {
             var queryConfig = {},
                 facetFields = [], 
                 facetMinCounts = [],
@@ -30327,6 +30353,33 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
             if (console) { console.log("Querying Solr"); }
             $http.get(solrUrl, queryConfig).success(function (data, status, headers, config) {
                 data.filterVals = filterVals;
+
+                //// 
+                // Fake Esri customization data
+                // 
+                data.facet_counts.facet_fields['sys.src.collections_txt'] = [
+                    "category", 4,
+                    "issue", 3,
+                    "marinedebris", 3,
+                    "biological", 2,
+                    "geological", 2,
+                    "topology", 2,
+                    "habitat", 1,
+                    "soil", 1,
+                    "species", 1
+                ];
+
+                data.facet_counts.facet_fields['sys.src.collections_ss'] = [
+                    "issue/marineDebris", 3,
+                    "category/geological/topology", 2,
+                    "category/biological/habitat", 1,
+                    "category/biological/species", 1,
+                    "category/geological/soil", 1
+                ];
+                // 
+                // End Esri customization data
+                ////
+
                 if (successCallback) {
                     successCallback(data);
                 }
@@ -30559,7 +30612,8 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
         replace: true,
         transclude: true,
         scope: {
-            showingMobileFiltersModal: "="
+            showingMobileFiltersModal: "=",
+            facets: "="
         },
         compile: function compile(tElement, tAttrs, transclude) {
             return {
@@ -30617,6 +30671,8 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
 
                         scope.syncUiWithQueryString();
 
+                        scope.watchFacets();
+
                         // Run initial query only if values were provided in 
                         // the query string.
                         queryNeeded = _.isString(scope.searchText) && scope.searchText.length > 0;
@@ -30628,7 +30684,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         browserSize.watchBrowserWidth(function () {
                             scope.$apply(function () {
                                 scope.mobileMode = browserSize.isPhoneSize();
-                            })
+                            });
                         });
 
                         scope.$watch('showingMobileFiltersModal', function (isMobalHidden) {
@@ -30647,9 +30703,8 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                                 // But that's fine. This is targeted at mobile 
                                 // devices. Mobile devices have querySelector.
                             }
-
-
                         });
+
                         // For now, relying on jquery for desaturating 
                         // non-hovered filter groups.
                         $('.filter-group-toggle, .filter-group-container').hover(function (event) {
@@ -30663,6 +30718,121 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         }, function (event) {
                             $('.filter-group-toggle, .filter-group-container').removeClass('desaturated');
                         });
+                    };
+
+                    scope.watchFacets = function () {
+                        scope.$watch('facets', function (newVal) {
+                            var collection;
+                            collection = scope.parseCollection('category', newVal);
+                            scope.categories = collection.categories;
+                            collection = scope.parseCollection('issue', newVal);
+                            scope.issues = collection.categories;
+                        });
+                    };
+
+                    /**
+                     * Parse collections from Solr JSON (via Esri customization) into 
+                     * filter sets.
+                     * @param  {string} name        The key for the collection to be parsed (e.g., category, issue)
+                     * @param  {object} facetCounts The facet_counts object from a Solr query result. An example of
+                     * what this JSON looks like: 
+                     * {
+                     *   facet_fields: {
+                     *     sys.src.collections_txt: [
+                     *          "category",
+                     *          4,
+                     *          "issue",
+                     *          3,
+                     *          "marinedebris",
+                     *          3,
+                     *          "biological",
+                     *          2,
+                     *          "geological",
+                     *          2,
+                     *          "topology",
+                     *          2,
+                     *          "habitat",
+                     *          1,
+                     *          "soil",
+                     *          1,
+                     *          "species",
+                     *          1
+                     *      ],
+                     *      sys.src.collections_ss: [
+                     *          "issue/marineDebris",
+                     *          3,
+                     *          "category/geological/topology",
+                     *          2,
+                     *          "category/biological/habitat",
+                     *          1,
+                     *          "category/biological/species",
+                     *          1,
+                     *          "category/geological/soil",
+                     *          1
+                     *      ]
+                     *    }
+                     * } 
+                     * @return {object}    An object tailored for the filter UI.
+                     */
+                    scope.parseCollection = function (name, facetCounts) {
+                        var words,
+                            paths,
+                            pathArray,
+                            count,
+                            index,
+                            categories = {},
+                            isMultiTiered = false; 
+
+                        if (! (_.has(facetCounts.facet_fields, 'sys.src.collections_ss') &&
+                            _.has(facetCounts.facet_fields, 'sys.src.collections_txt'))) {
+                            return null;
+                        }
+                            
+                        words = facetCounts.facet_fields['sys.src.collections_txt'];
+                        paths = facetCounts.facet_fields['sys.src.collections_ss'];
+
+                        // Build data structure. 
+                        _.each(paths, function (val, index, list) {
+                            var pathArray;
+                            if (typeof val === 'number') {
+                                return;
+                            }
+
+                            pathArray = val.split('/');
+                            var collectionName = pathArray[0],
+                                categoryName = pathArray[1],
+                                subcategoryName = pathArray[2];
+
+                            isMultiTiered = isMultiTiered ? true : subcategoryName ? true : false;
+
+                            if (collectionName === name) {
+                                // This entry is in the named collection.
+                                if (!_.has(categories, categoryName)) {
+
+                                    // We haven't added this category yet, add it.
+                                    index = _.indexOf(words, categoryName.toLowerCase());
+                                    count = index > -1 ? words[index + 1] : 0;
+                                    categories[categoryName] = {
+                                        key: categoryName,
+                                        label: categoryName,
+                                        count: count,
+                                        subcategories: {}
+                                    };
+                                }
+
+                                // Add subcategory.
+                                if (subcategoryName) {
+                                    categories[categoryName].subcategories[subcategoryName] = {
+                                        key: subcategoryName,
+                                        label: subcategoryName,
+                                        count: list[index + 1]
+                                    };
+                                }
+                            }
+                        });
+                        
+                        return { 'isMultiTiered': isMultiTiered, 'categories': categories}
+
                     };
 
                     /** 
@@ -32567,8 +32737,12 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.showingMobileFiltersModal = false;
 
 	$scope.onLoad = function () {
-		solr.getRecordCount(function (count) {
-			$scope.recordCount = count;
+		// Get total record count and initial filter option lists & counts.
+		solr.query({text: '* '}, 1, 1, function (data) {
+			$scope.recordCount = data.response.numFound;
+			$scope.facets = data.facet_counts;
+		}, function (data) {
+			if (console) console.log('Failed to get record count and filter options.');
 		});
 
 		$scope.watchQueryString();
