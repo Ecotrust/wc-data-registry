@@ -432,6 +432,10 @@ ul.filter-options li {
   font-size: 16px;
   color: #0070cf;
 }
+ul.filter-options li:hover {
+  cursor: pointer;
+  color: #005580;
+}
 ul.filter-options li > i {
   margin-right: 18px;
 }

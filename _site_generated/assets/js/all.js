@@ -30835,22 +30835,29 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
 
                     };
 
-                    /** 
+                    /**
                      * Udates query string in URL with values from the filter
                      * controls. Other components can watch the query string
                      * for changes.
+                     * @param  {boolean} forceNewQuery Increments a 
+                     * querystring variable to force a new query. Not used 
+                     * anymore but leaving this in incase it is needed.
                      */
                     scope.updateUrlQueryString = function (forceNewQuery) {
                         var txt = scope.searchText,
                             ll = scope.filteredLocation,
+                            cats = scope.filteredCategories,
+                            issues = scope.filteredIssues,
                             f;
 
+                        // Text
                         if (txt && typeof txt === 'string' && txt.length > 0) {
                             $location.search('text', txt);
                         } else {
                             $location.search('text', null);
                         }
 
+                        // Location
                         if (ll && ll.lat && ll.lng) {
                             $location
                                 .search('lat', ll.lat)
@@ -30859,6 +30866,21 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             $location.search('lat', null).search('lng', null);
                         }
 
+                        // Categories
+                        if (cats && _.isArray(cats) && cats.length > 0) {
+                            $location.search('c', cats.join('~'));
+                        } else {
+                            $location.search('c', null);
+                        }
+
+                        // Issues
+                        if (issues && _.isArray(issues) && issues.length > 0) {
+                            $location.search('i', issues.join('~'));
+                        } else {
+                            $location.search('i', null);
+                        }
+
+                        // Force new query
                         if (forceNewQuery) {
                             f = parseInt($location.search().f);
                             if (typeof f === 'number' && !isNaN(f)) {
@@ -30995,13 +31017,28 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         return _.contains(scope.filteredCategories, key);
                     };
 
+                    scope.toggleSubcategory = function (key) {
+                        if (scope.isSelectedSubcategory(key))  {
+                            // Unselect
+                            scope.filteredCategories = _.reject(scope.filteredCategories, function (val) {
+                                return val === key;
+                            });
+                        } else {
+                            // Select
+                            scope.filteredCategories = scope.filteredCategories || [];
+                            scope.filteredCategories.push(key);
+                        }
+                        scope.updateUrlQueryString();
+                    };
+
+
                     //
                     //  I s s u e   F i l t e r
                     //
 
                     /**
                      * Take a query string list delimited by '~' and set the
-                     * filteredCategories object used for the UI.
+                     * filteredIssues object used for the UI.
                      * @param {string} c List delimited by '~'
                      */
                     scope.setFilteredIssues = function (issues) {
@@ -31012,6 +31049,21 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     scope.isSelectedIssue = function (key) {
                         return _.contains(scope.filteredIssues, key);
                     };
+
+                    scope.toggleIssue = function (key) {
+                        if (scope.isSelectedIssue(key))  {
+                            // Unselect
+                            scope.filteredIssues = _.reject(scope.filteredIssues, function (val) {
+                                return val === key;
+                            });
+                        } else {
+                            // Select
+                            scope.filteredIssues = scope.filteredIssues || [];
+                            scope.filteredIssues.push(key);
+                        }
+                        scope.updateUrlQueryString();
+                    };
+
 
                     //
                     //  Sync UI with query string

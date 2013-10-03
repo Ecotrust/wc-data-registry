@@ -64,14 +64,15 @@
 				<p class="filter-option-group-label">{{ category.label }} Data</p>
 				<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
 				<ul class="unstyled filter-options">
-					<li ng-repeat="subcategory in category.subcategories">
-						<i ng-class="{'icon-check': isSelectedSubcategory(subcategory.key), 'icon-check-empty': !isSelectedSubcategory(subcategory.key)}"></i>{{ subcategory.label }}&nbsp;&nbsp;&nbsp;<strong>{{ subcategory.count }}</strong>
+					<li ng-repeat="subcategory in category.subcategories" ng-click="toggleSubcategory(subcategory.key)">
+						<i ng-class="{'icon-check': isSelectedSubcategory(subcategory.key), 
+							'icon-check-empty': !isSelectedSubcategory(subcategory.key)}"></i>{{ subcategory.label }}&nbsp;&nbsp;&nbsp;<strong>{{ subcategory.count }}</strong>
 					</li>
 				</ul>
 			</div>
 
 		</div>
-
+ 
 		<!-- tags filter -->
 		<a class="filter-group-toggle" href="javascript:void(0)" ng-click="isIssuesCollapsed = !isIssuesCollapsed">
 			<div class="filter-group-label">
@@ -85,8 +86,9 @@
 
 			<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
 			<ul class="unstyled filter-options">
-				<li ng-repeat="issue in issues">
-					<i ng-class="{'icon-check': isSelectedIssue(issue.key), 'icon-check-empty': !isSelectedIssue(issue.key)}"></i>{{ issue.label }}&nbsp;&nbsp;&nbsp;<strong>{{ issue.count }}</strong>
+				<li ng-repeat="issue in issues" ng-click="toggleIssue(issue.key)">
+					<i ng-class="{'icon-check': isSelectedIssue(issue.key), 
+						'icon-check-empty': !isSelectedIssue(issue.key)}"></i>{{ issue.label }}&nbsp;&nbsp;&nbsp;<strong>{{ issue.count }}</strong>
 				</li>
 			</ul>
 
