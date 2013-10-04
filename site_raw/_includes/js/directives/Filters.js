@@ -451,7 +451,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     };
 
                     scope.selectEntireCategory = function (categoryKey, enableCollapsing) {
-                        if (!_.has(scope.categories, categoryKey)) {
+                        if (scope.categories === null || !_.has(scope.categories, categoryKey)) {
                             return;
                         }
 
