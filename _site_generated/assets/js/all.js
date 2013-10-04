@@ -30746,8 +30746,27 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     };
 
                     scope.watchFacets = function () {
-                        scope.updateFacets(scope.facets);
+                        if (scope.facets) {
+                            scope.updateFacets(scope.facets);
+
+                            if ($location.search().ctop) {
+                                // This only happens if somebody hits a link that should 
+                                // select an entire category. For instance, the blocks on
+                                // the homepage.
+                                scope.selectEntireCategory($location.search().ctop, true);
+                                $location.search('ctop', null).replace();
+                            }                            
+                        }
                         scope.$watch('facets', function (newVal) {
+                            if (newVal) {
+                                if ($location.search().ctop) {
+                                    // This only happens if somebody hits a link that should 
+                                    // select an entire category. For instance, the blocks on
+                                    // the homepage.
+                                    scope.selectEntireCategory($location.search().ctop, true);
+                                    $location.search('ctop', null).replace();
+                                }                                
+                            }
                             scope.updateFacets(newVal);
                         });
                     };
@@ -31152,14 +31171,6 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         });
                         
                         scope.setFilteredCategories($location.search().c);
-
-                        if ($location.search().ctop) {
-                            // This only happens if somebody hits a link that should 
-                            // select an entire category. For instance, the blocks on
-                            // the homepage.
-                            scope.selectEntireCategory($location.search().ctop, true);
-                            $location.search('ctop', null).replace();
-                        }
 
                         scope.setFilteredIssues($location.search().i);
 
