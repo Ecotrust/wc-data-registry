@@ -15,12 +15,12 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
     }
 
     function getCategoriesFromUrl () {
-        // HOWDY RYAN, there might not be a need to use the toLowerCase() call below.
-        // But as it is with the response example Esri folks passed us, marineDebris 
-        // shows up lowercase in the collections_txt facet rather than camel case in 
-        // the collections_ss facet.
         var cats = $location.search().c;
-        return cats && cats.length > 0 ? cats.toLowerCase().split('~') : [];
+        cats = cats && cats.length > 0 ? cats.split('~') : [];
+        _.each(cats, function (val, index, list) {
+            list[index] = val.replace(/[.]/g, '/');
+        });
+        return cats;
     }
 
     function getIssuesFromUrl () {
@@ -31,11 +31,12 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
     function getTextQuery(filterVals) {
         var q = "{!lucene q.op=AND df=text}",
             txt = filterVals.text,
-            applyingOtherFilters = filterVals.latLng !== null || 
-                (filterVals.categories && filterVals.categories.length > 0) ||
-                (filterVals.issues && filterVals.issues.length > 0);
+            applyingTextFilter = (filterVals.latLng !== null && filterVals.latLng !== undefined),
+            applyingCatFilter = filterVals.categories ? filterVals.categories.length > 0 : false,
+            applyingIssueFilter = filterVals.issues ? filterVals.issues.length > 0 : false,
+            applyingNonTextFilters = (applyingTextFilter || applyingCatFilter || applyingIssueFilter);
 
-        q = txt && txt.length > 0 ? q + txt : applyingOtherFilters ? '*' : '';
+        q = txt && txt.length > 0 ? q + txt : applyingNonTextFilters ? '*' : '';
         return q;
     }
 
@@ -46,7 +47,7 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
 
     function getCollectionsQuery(facetName, filterVals) {
         var keys = _.union(filterVals.categories, filterVals.issues);
-        if (keys.length > 0) {
+        if (keys.length > 0 && keys[0] !== undefined) {
             return facetName + ': (' + keys.join(' OR ') + ')';
         } else {
             return '';
@@ -88,14 +89,14 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
             var queryConfig = {},
                 textQuery = getTextQuery(filterVals),
                 boundingBoxQuery = getBoundingBoxQuery(filterVals);
-                collectionsFacetKey = 'sys.src.collections_txt',
+                collectionsFacetKey = 'sys.src.collections_ss',
                 collectionsQuery = getCollectionsQuery(collectionsFacetKey, filterVals),
                 facetFields = [], 
                 facetMinCounts = [],
                 mincount = 1;
 
             // Prep facets to include.
-            // HOWDY RYAN, uncomment this when Esri customization ready.
+            //HOWDY RYAN, uncomment this when Esri customization ready.
             // if (collectionsQuery.length > 0) { 
             //     facetFields.push(collectionsFacetKey);
             //     facetMinCounts.push(mincount);
@@ -107,7 +108,8 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                 'rows': resultsPerPage,
                 'wt': 'json', 
                 // HOWDY RYAN, uncomment this when Esri customization ready.
-                // 'q': textQuery + ' ' + collectionsQuery,
+                //'q': textQuery + ' ' + collectionsQuery,
+                // HOWDY RYAN, comment out this line when Esri customization is ready.
                 'q': textQuery,
                 'fq': boundingBoxQuery,
                 //'fl': 'contact.organizations_ss, id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',

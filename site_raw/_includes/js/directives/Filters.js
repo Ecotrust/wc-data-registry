@@ -237,19 +237,17 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                                 categoryName = pathArray[1],
                                 subcategoryName = pathArray[2];
 
-                            isMultiTiered = isMultiTiered ? true : subcategoryName ? true : false;
+                            isMultiTiered = subcategoryName ? true : false;
 
                             if (collectionName === name) {
                                 // This entry is in the named collection.
                                 if (!_.has(categories, categoryName)) {
 
                                     // We haven't added this category yet, add it.
-                                    _txtIndex = _.indexOf(words, categoryName.toLowerCase());
-                                    count = _txtIndex > -1 ? words[_txtIndex + 1] : 0;
                                     categories[categoryName] = {
-                                        key: categoryName,
+                                        key: [collectionName,categoryName].join('.'),
                                         label: categoryName,
-                                        count: count,
+                                        count: isMultiTiered ? null : list[_ssIndex + 1],
                                         subcategories: {}
                                     };
                                 }
@@ -257,7 +255,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                                 // Add subcategory.
                                 if (subcategoryName) {
                                     categories[categoryName].subcategories[subcategoryName] = {
-                                        key: subcategoryName,
+                                        key: [collectionName,categoryName,subcategoryName].join('.'),
                                         label: subcategoryName,
                                         count: list[_ssIndex + 1]
                                     };
@@ -470,14 +468,15 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     };
 
                     scope.selectEntireCategory = function (categoryKey, enableCollapsing) {
-                        if (scope.categories === null || !_.has(scope.categories, categoryKey)) {
+                        var cat = categoryKey.split('.')[1];
+                        if (scope.categories === null || !_.has(scope.categories, cat)) {
                             return;
                         }
 
                         scope.filteredCategories = scope.filteredCategories || [];
 
                         // Select all subcategories
-                        _.each(scope.categories[categoryKey].subcategories, function (subcat) {
+                        _.each(scope.categories[cat].subcategories, function (subcat) {
                             if (!scope.isSelectedSubcategory(subcat.key)) {
                                 scope.filteredCategories.push(subcat.key);
                             }
@@ -517,12 +516,11 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             scope.filteredIssues = scope.filteredIssues || [];
                             scope.filteredIssues.push(key);
                         }
-                        scope.skipCollapse = true                        
+                        scope.skipCollapse = true
                         scope.updateUrlQueryString();
                     };
 
                     scope.selectAllIssues = function () {
-
                         scope.filteredIssues = scope.filteredIssues || [];
 
                         // Select all issues
@@ -532,7 +530,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             }
                         });
 
-                        scope.skipCollapse = true                        
+                        scope.skipCollapse = true
                         scope.updateUrlQueryString();
                     }                    
 
