@@ -150,6 +150,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             }                            
                         }
                         scope.$watch('facets', function (newVal) {
+                            scope.updateFacets(newVal);
                             if (newVal) {
                                 if ($location.search().ctop) {
                                     // This only happens if somebody hits a link that should 
@@ -159,7 +160,6 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                                     $location.search('ctop', null).replace();
                                 }                                
                             }
-                            scope.updateFacets(newVal);
                         });
                     };
 
