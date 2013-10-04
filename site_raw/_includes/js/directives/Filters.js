@@ -73,9 +73,9 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     scope.init = function () {
                         var queryNeeded = false;
 
-                        scope.syncUiWithQueryString();
-
                         scope.watchFacets();
+
+                        scope.syncUiWithQueryString();
 
                         // Run initial query only if values were provided in 
                         // the query string.
@@ -124,18 +124,23 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         });
                     };
 
+                    scope.updateFacets = function (newVal) {
+                        var collection;
+                        if (newVal) {
+                            collection = scope.parseCollection('category', newVal);
+                            scope.categories = collection.categories;
+                            collection = scope.parseCollection('issue', newVal);
+                            scope.issues = collection.categories;
+                        } else {
+                            scope.categories = null;
+                            scope.issues = null;
+                        }                        
+                    };
+
                     scope.watchFacets = function () {
+                        scope.updateFacets(scope.facets);
                         scope.$watch('facets', function (newVal) {
-                            var collection;
-                            if (newVal) {
-                                collection = scope.parseCollection('category', newVal);
-                                scope.categories = collection.categories;
-                                collection = scope.parseCollection('issue', newVal);
-                                scope.issues = collection.categories;
-                            } else {
-                                scope.categories = null;
-                                scope.issues = null;
-                            }
+                            scope.updateFacets(newVal);
                         });
                     };
 
@@ -201,8 +206,9 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         paths = facetCounts.facet_fields['sys.src.collections_ss'];
 
                         // Build data structure. 
-                        _.each(paths, function (val, index, list) {
-                            var pathArray;
+                        _.each(paths, function (val, _ssIndex, list) {
+                            var pathArray,
+                            _txtIndex;
                             if (typeof val === 'number') {
                                 return;
                             }
@@ -219,8 +225,8 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                                 if (!_.has(categories, categoryName)) {
 
                                     // We haven't added this category yet, add it.
-                                    index = _.indexOf(words, categoryName.toLowerCase());
-                                    count = index > -1 ? words[index + 1] : 0;
+                                    _txtIndex = _.indexOf(words, categoryName.toLowerCase());
+                                    count = _txtIndex > -1 ? words[_txtIndex + 1] : 0;
                                     categories[categoryName] = {
                                         key: categoryName,
                                         label: categoryName,
@@ -234,7 +240,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                                     categories[categoryName].subcategories[subcategoryName] = {
                                         key: subcategoryName,
                                         label: subcategoryName,
-                                        count: list[index + 1]
+                                        count: list[_ssIndex + 1]
                                     };
                                 }
                             }
@@ -444,7 +450,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         scope.updateUrlQueryString();
                     };
 
-                    scope.selectEntireCategory = function (categoryKey) {
+                    scope.selectEntireCategory = function (categoryKey, enableCollapsing) {
                         if (!_.has(scope.categories, categoryKey)) {
                             return;
                         }
@@ -458,7 +464,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             }
                         });
 
-                        scope.skipCollapse = true                        
+                        scope.skipCollapse = !enableCollapsing;
                         scope.updateUrlQueryString();
                     }
 
@@ -538,6 +544,15 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         });
                         
                         scope.setFilteredCategories($location.search().c);
+
+                        if ($location.search().ctop) {
+                            // This only happens if somebody hits a link that should 
+                            // select an entire category. For instance, the blocks on
+                            // the homepage.
+                            scope.selectEntireCategory($location.search().ctop, true);
+                            $location.search('ctop', null).replace();
+                        }
+
                         scope.setFilteredIssues($location.search().i);
 
                         if (scope.skipCollapse) {

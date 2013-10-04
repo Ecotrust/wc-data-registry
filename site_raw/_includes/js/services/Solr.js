@@ -15,8 +15,12 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
     }
 
     function getCategoriesFromUrl () {
+        // HOWDY RYAN, there might not be a need to use the toLowerCase() call below.
+        // But as it is with the response example Esri folks passed us, marineDebris 
+        // shows up lowercase in the collections_txt facet rather than camel case in 
+        // the collections_ss facet.
         var cats = $location.search().c;
-        return cats && cats.length > 0 ? cats.split('~') : [];
+        return cats && cats.length > 0 ? cats.toLowerCase().split('~') : [];
     }
 
     function getIssuesFromUrl () {
@@ -43,7 +47,7 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
     function getCollectionsQuery(facetName, filterVals) {
         var keys = _.union(filterVals.categories, filterVals.issues);
         if (keys.length > 0) {
-            return facetName + ': (' + keys.join(' AND ') + ')';
+            return facetName + ': (' + keys.join(' OR ') + ')';
         } else {
             return '';
         }
@@ -120,27 +124,33 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                 data.filterVals = filterVals;
 
                 //// 
-                // HOWDY RYAN, here's the fake Esri customization data. Remove 
-                // this when customization is deployed.
+                // HOWDY RYAN, here's a modified version of the fake Esri 
+                // customization data. Remove this when customization is 
+                // deployed.
                 // 
                 data.facet_counts.facet_fields['sys.src.collections_txt'] = [
-                    "category", 4,
-                    "issue", 3,
+                    "category", 6,
+                    "issue", 4,
                     "marinedebris", 3,
+                    "humanuse", 2,
                     "biological", 2,
-                    "geological", 2,
+                    "physical", 2,
                     "topology", 2,
                     "habitat", 1,
-                    "soil", 1,
-                    "species", 1
+                    "species", 1,
+                    "sealevelrise", 1,
+                    "shippingroutes", 1,
+                    "waveenergysites", 1
                 ];
 
                 data.facet_counts.facet_fields['sys.src.collections_ss'] = [
                     "issue/marineDebris", 3,
-                    "category/geological/topology", 2,
+                    "category/physical/topology", 2,
                     "category/biological/habitat", 1,
                     "category/biological/species", 1,
-                    "category/geological/soil", 1
+                    "category/humanUse/shippingRoutes", 1,
+                    "category/humanUse/waveEnergySites", 1,
+                    "issue/seaLevelRise", 1
                 ];
                 // 
                 // End Esri customization data
