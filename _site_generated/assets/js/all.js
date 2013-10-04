@@ -30224,15 +30224,25 @@ angular.module("template/typeahead/typeahead.html", []).run(["$templateCache", f
  */
 angular.module('wcodpApp', ['ui.bootstrap', 'leaflet-directive']);
 // Filters
-// homeModule.filter('titleCase', function () {
-//   return function (input) {
-//     var words = input.split(' ');
-//     for (var i = 0; i < words.length; i++) {
-//       words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
-//     }
-//     return words.join(' ');
-//   }
-// });
+angular.module('wcodpApp').filter('titleCase', function() {
+	return function (input) {
+		// Solr/Geoportal might provide something like 'marineDebris' and 
+		// we want it to display as 'Marine Debris'. This filter splits
+		// 'marineDebris' into separate words and then sets them to title 
+		// case.
+		var words;
+
+		// Spit into words.
+		words = input.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase().split(' ');
+
+		// Title case
+		for (var i = 0; i < words.length; i++) {
+			words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+		}
+		return words.join(' ');
+	}
+});
+
 // Services
 
 angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http, $location) {
@@ -30276,9 +30286,9 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
         return ll && ll.lat && ll.lng ? "{!bbox pt=" + ll.lat + "," + ll.lng + " sfield=envelope_geo d=0.001} " : "";
     }
 
-    function getFacetQuery(facetName, selectedFacetKeys) {
-        var keys = selectedFacetKeys;
-        if (keys && _.isArray(keys) && keys.length > 0) {
+    function getCollectionsQuery(facetName, filterVals) {
+        var keys = _.union(filterVals.categories, filterVals.issues);
+        if (keys.length > 0) {
             return facetName + ': (' + keys.join(' AND ') + ')';
         } else {
             return '';
@@ -30320,20 +30330,16 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
             var queryConfig = {},
                 textQuery = getTextQuery(filterVals),
                 boundingBoxQuery = getBoundingBoxQuery(filterVals);
-                categoryQuery = getFacetQuery('category', filterVals.categories),
-                issueQuery = getFacetQuery('issue', filterVals.issues),
+                collectionsFacetKey = 'sys.src.collections_txt',
+                collectionsQuery = getCollectionsQuery(collectionsFacetKey, filterVals),
                 facetFields = [], 
                 facetMinCounts = [],
                 mincount = 1;
 
             // Prep facets to include.
             // HOWDY RYAN, uncomment this when Esri customization ready.
-            // if (categoryQuery.length > 0) { 
-            //     facetFields.push('category'); 
-            //     facetMinCounts.push(mincount);
-            // }
-            // if (issueQuery.length > 0) { 
-            //     facetFields.push('issue'); 
+            // if (collectionsQuery.length > 0) { 
+            //     facetFields.push(collectionsFacetKey);
             //     facetMinCounts.push(mincount);
             // }
 
@@ -30343,7 +30349,7 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                 'rows': resultsPerPage,
                 'wt': 'json', 
                 // HOWDY RYAN, uncomment this when Esri customization ready.
-                // 'q': textQuery + ' ' + categoryQuery + ' ' + issueQuery,
+                // 'q': textQuery + ' ' + collectionsQuery,
                 'q': textQuery,
                 'fq': boundingBoxQuery,
                 //'fl': 'contact.organizations_ss, id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
@@ -30628,22 +30634,12 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     angular.extend(scope, {
                         center: angular.copy(defaultCenter),
                         markers: {},
-                        paths: {
-                            // p1: {
-                            //     color: '#800000',
-                            //     weight: 8,
-                            //     latlngs: [
-                            //         { lat: 40.44694705960048, lng: -120.76171875 },
-                            //         { lat: 45.44694705960048, lng: -130.76171875 },
-                            //         { lat: 50.44694705960048, lng: -140.76171875 }
-                            //     ]
-                            // }
-                        }
+                        paths: {}
                     });
                     angular.extend(scope, {
                         mapOptions: {
                             maxZoom: 8,
-                            tileLayer: 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', //'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+                            tileLayer: 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png',
                             tileLayerOptions: {
                                 attribution: '',
                                 subdomains: '1234'
@@ -31042,9 +31038,27 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             scope.filteredCategories = scope.filteredCategories || [];
                             scope.filteredCategories.push(key);
                         }
-                        scope.skipCollapse = true                        
+                        scope.skipCollapse = true;
                         scope.updateUrlQueryString();
                     };
+
+                    scope.selectEntireCategory = function (categoryKey) {
+                        if (!_.has(scope.categories, categoryKey)) {
+                            return;
+                        }
+
+                        scope.filteredCategories = scope.filteredCategories || [];
+
+                        // Select all subcategories
+                        _.each(scope.categories[categoryKey].subcategories, function (subcat) {
+                            if (!scope.isSelectedSubcategory(subcat.key)) {
+                                scope.filteredCategories.push(subcat.key);
+                            }
+                        });
+
+                        scope.skipCollapse = true                        
+                        scope.updateUrlQueryString();
+                    }
 
 
                     //
@@ -31079,6 +31093,21 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         scope.skipCollapse = true                        
                         scope.updateUrlQueryString();
                     };
+
+                    scope.selectAllIssues = function () {
+
+                        scope.filteredIssues = scope.filteredIssues || [];
+
+                        // Select all issues
+                        _.each(scope.issues, function (issue) {
+                            if (!scope.isSelectedIssue(issue.key)) {
+                                scope.filteredIssues.push(issue.key);
+                            }
+                        });
+
+                        scope.skipCollapse = true                        
+                        scope.updateUrlQueryString();
+                    }                    
 
 
                     //

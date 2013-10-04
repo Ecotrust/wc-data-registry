@@ -8062,6 +8062,9 @@ p.results-summary strong {
   .packery-container {
     padding-left: 20px;
   }
+  a.filter-group-toggle {
+    font-size: 18px;
+  }
 }
 @media (max-width: 767px) {
   .packery-container {

@@ -36,22 +36,12 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     angular.extend(scope, {
                         center: angular.copy(defaultCenter),
                         markers: {},
-                        paths: {
-                            // p1: {
-                            //     color: '#800000',
-                            //     weight: 8,
-                            //     latlngs: [
-                            //         { lat: 40.44694705960048, lng: -120.76171875 },
-                            //         { lat: 45.44694705960048, lng: -130.76171875 },
-                            //         { lat: 50.44694705960048, lng: -140.76171875 }
-                            //     ]
-                            // }
-                        }
+                        paths: {}
                     });
                     angular.extend(scope, {
                         mapOptions: {
                             maxZoom: 8,
-                            tileLayer: 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', //'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+                            tileLayer: 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png',
                             tileLayerOptions: {
                                 attribution: '',
                                 subdomains: '1234'
@@ -450,9 +440,27 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             scope.filteredCategories = scope.filteredCategories || [];
                             scope.filteredCategories.push(key);
                         }
-                        scope.skipCollapse = true                        
+                        scope.skipCollapse = true;
                         scope.updateUrlQueryString();
                     };
+
+                    scope.selectEntireCategory = function (categoryKey) {
+                        if (!_.has(scope.categories, categoryKey)) {
+                            return;
+                        }
+
+                        scope.filteredCategories = scope.filteredCategories || [];
+
+                        // Select all subcategories
+                        _.each(scope.categories[categoryKey].subcategories, function (subcat) {
+                            if (!scope.isSelectedSubcategory(subcat.key)) {
+                                scope.filteredCategories.push(subcat.key);
+                            }
+                        });
+
+                        scope.skipCollapse = true                        
+                        scope.updateUrlQueryString();
+                    }
 
 
                     //
@@ -487,6 +495,21 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         scope.skipCollapse = true                        
                         scope.updateUrlQueryString();
                     };
+
+                    scope.selectAllIssues = function () {
+
+                        scope.filteredIssues = scope.filteredIssues || [];
+
+                        // Select all issues
+                        _.each(scope.issues, function (issue) {
+                            if (!scope.isSelectedIssue(issue.key)) {
+                                scope.filteredIssues.push(issue.key);
+                            }
+                        });
+
+                        scope.skipCollapse = true                        
+                        scope.updateUrlQueryString();
+                    }                    
 
 
                     //

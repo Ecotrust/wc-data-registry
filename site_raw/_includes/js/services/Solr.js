@@ -40,9 +40,9 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
         return ll && ll.lat && ll.lng ? "{!bbox pt=" + ll.lat + "," + ll.lng + " sfield=envelope_geo d=0.001} " : "";
     }
 
-    function getFacetQuery(facetName, selectedFacetKeys) {
-        var keys = selectedFacetKeys;
-        if (keys && _.isArray(keys) && keys.length > 0) {
+    function getCollectionsQuery(facetName, filterVals) {
+        var keys = _.union(filterVals.categories, filterVals.issues);
+        if (keys.length > 0) {
             return facetName + ': (' + keys.join(' AND ') + ')';
         } else {
             return '';
@@ -84,20 +84,16 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
             var queryConfig = {},
                 textQuery = getTextQuery(filterVals),
                 boundingBoxQuery = getBoundingBoxQuery(filterVals);
-                categoryQuery = getFacetQuery('category', filterVals.categories),
-                issueQuery = getFacetQuery('issue', filterVals.issues),
+                collectionsFacetKey = 'sys.src.collections_txt',
+                collectionsQuery = getCollectionsQuery(collectionsFacetKey, filterVals),
                 facetFields = [], 
                 facetMinCounts = [],
                 mincount = 1;
 
             // Prep facets to include.
             // HOWDY RYAN, uncomment this when Esri customization ready.
-            // if (categoryQuery.length > 0) { 
-            //     facetFields.push('category'); 
-            //     facetMinCounts.push(mincount);
-            // }
-            // if (issueQuery.length > 0) { 
-            //     facetFields.push('issue'); 
+            // if (collectionsQuery.length > 0) { 
+            //     facetFields.push(collectionsFacetKey);
             //     facetMinCounts.push(mincount);
             // }
 
@@ -107,7 +103,7 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                 'rows': resultsPerPage,
                 'wt': 'json', 
                 // HOWDY RYAN, uncomment this when Esri customization ready.
-                // 'q': textQuery + ' ' + categoryQuery + ' ' + issueQuery,
+                // 'q': textQuery + ' ' + collectionsQuery,
                 'q': textQuery,
                 'fq': boundingBoxQuery,
                 //'fl': 'contact.organizations_ss, id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
