@@ -30264,14 +30264,18 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
         var cats = $location.search().c;
         cats = cats && cats.length > 0 ? cats.split('~') : [];
         _.each(cats, function (val, index, list) {
-            list[index] = val.replace(/[.]/g, '/');
+            list[index] = val.replace(/[.]/g, '|');
         });
         return cats;
     }
 
     function getIssuesFromUrl () {
         var issues = $location.search().i;
-        return issues && issues.length > 0 ? issues.split('~') : [];
+        issues = issues && issues.length > 0 ? issues.split('~') : [];
+	_.each(issues, function (val, index, list) {
+            list[index] = val.replace(/[.]/g, '|');
+        });
+        return issues;
     }
 
     function getTextQuery(filterVals) {
@@ -30292,9 +30296,16 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
     }
 
     function getCollectionsQuery(facetName, filterVals) {
-        var keys = _.union(filterVals.categories, filterVals.issues);
-        if (keys.length > 0 && keys[0] !== undefined) {
-            return facetName + ': (' + keys.join(' OR ') + ')';
+        var catKeys = _.union(filterVals.categories);
+        var issKeys = _.union(filterVals.issues);
+        if (catKeys.length > 0 && catKeys[0] !== undefined) {
+            if (issKeys.length > 0 && issKeys[0] !== undefined) {
+                return facetName + ': ((' + catKeys.join(' OR ') + ') AND (' + issKeys.join(' OR ') + '))';
+            } else {
+                return facetName + ': (' + catKeys.join(' OR ') + ')';
+            }
+        } else if (issKeys.length > 0 && issKeys[0] !== undefined) {
+            return facetName + ': (' + issKeys.join(' OR ') + ')';
         } else {
             return '';
         }
@@ -30342,20 +30353,29 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                 mincount = 1;
 
             // Prep facets to include.
-            //HOWDY RYAN, uncomment this when Esri customization ready.
-            // if (collectionsQuery.length > 0) { 
-            //     facetFields.push(collectionsFacetKey);
-            //     facetMinCounts.push(mincount);
-            // }
+            facetFields = ['sys.src.collections_txt','sys.src.collections_ss'];
+            // facetMinCounts.push(mincount);
+
+            if (collectionsQuery.length > 0) { 
+                //facetFields.push(collectionsFacetKey);
+                //facetFields = ['sys.src.collections_txt','sys.src.collections_ss'];
+                facetMinCounts.push(mincount);
+                if (textQuery.length > 0) {
+                    textQuery = textQuery + ' ' + collectionsQuery;
+                } else {
+                    textQuery = collectionsQuery;
+                }
+            }
+
+            if (!textQuery.length > 0) {
+                textQuery = '*';
+            }
 
             // Prep query string params.            
             queryConfig.params = {
                 'start': (pageIndex - 1) * resultsPerPage,
                 'rows': resultsPerPage,
                 'wt': 'json', 
-                // HOWDY RYAN, uncomment this when Esri customization ready.
-                //'q': textQuery + ' ' + collectionsQuery,
-                // HOWDY RYAN, comment out this line when Esri customization is ready.
                 'q': textQuery,
                 'fq': boundingBoxQuery,
                 //'fl': 'contact.organizations_ss, id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
@@ -30371,39 +30391,6 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
             $http.get(solrUrl, queryConfig).success(function (data, status, headers, config) {
                 data.filterVals = filterVals;
 
-                //// 
-                // HOWDY RYAN, here's a modified version of the fake Esri 
-                // customization data. Remove this when customization is 
-                // deployed.
-                // 
-                data.facet_counts.facet_fields['sys.src.collections_txt'] = [
-                    "category", 6,
-                    "issue", 4,
-                    "marinedebris", 3,
-                    "humanuse", 2,
-                    "biological", 2,
-                    "physical", 2,
-                    "topology", 2,
-                    "habitat", 1,
-                    "species", 1,
-                    "sealevelrise", 1,
-                    "shippingroutes", 1,
-                    "waveenergysites", 1
-                ];
-
-                data.facet_counts.facet_fields['sys.src.collections_ss'] = [
-                    "issue/marineDebris", 3,
-                    "category/physical/topology", 2,
-                    "category/biological/habitat", 1,
-                    "category/biological/species", 1,
-                    "category/humanUse/shippingRoutes", 1,
-                    "category/humanUse/waveEnergySites", 1,
-                    "issue/seaLevelRise", 1
-                ];
-                // 
-                // End Esri customization data
-                ////
-
                 if (successCallback) {
                     successCallback(data);
                 }
@@ -30414,10 +30401,10 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                 }
             });
         }
-
     };
 
 }]);
+
 
 angular.module('wcodpApp').factory('packery', ['$timeout', function($timeout) {
 
@@ -30737,9 +30724,9 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     scope.updateFacets = function (newVal) {
                         var collection;
                         if (newVal) {
-                            collection = scope.parseCollection('category', newVal);
+                            collection = scope.parseCollection('Category', newVal);
                             scope.categories = collection.categories;
-                            collection = scope.parseCollection('issue', newVal);
+                            collection = scope.parseCollection('Issue', newVal);
                             scope.issues = collection.categories;
                         } else {
                             scope.categories = null;
@@ -30842,7 +30829,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                                 return;
                             }
 
-                            pathArray = val.split('/');
+                            pathArray = val.split('|');
                             var collectionName = pathArray[0],
                                 categoryName = pathArray[1],
                                 subcategoryName = pathArray[2];
@@ -31219,6 +31206,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
         }
     };
 }]);
+
 
 angular.module('wcodpApp').directive('resultsList', ['$http', '$location', function($http, $location) {
 

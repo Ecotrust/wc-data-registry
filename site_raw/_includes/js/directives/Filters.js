@@ -127,9 +127,9 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     scope.updateFacets = function (newVal) {
                         var collection;
                         if (newVal) {
-                            collection = scope.parseCollection('category', newVal);
+                            collection = scope.parseCollection('Category', newVal);
                             scope.categories = collection.categories;
-                            collection = scope.parseCollection('issue', newVal);
+                            collection = scope.parseCollection('Issue', newVal);
                             scope.issues = collection.categories;
                         } else {
                             scope.categories = null;
@@ -232,7 +232,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                                 return;
                             }
 
-                            pathArray = val.split('/');
+                            pathArray = val.split('|');
                             var collectionName = pathArray[0],
                                 categoryName = pathArray[1],
                                 subcategoryName = pathArray[2];
