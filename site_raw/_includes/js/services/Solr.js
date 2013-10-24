@@ -54,12 +54,12 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
         var issKeys = _.union(filterVals.issues);
         if (catKeys.length > 0 && catKeys[0] !== undefined) {
             if (issKeys.length > 0 && issKeys[0] !== undefined) {
-                return facetName + ': ((' + catKeys.join(' OR ') + ') AND (' + issKeys.join(' OR ') + '))';
+                return facetName + ': ((' + catKeys.join(' OR ') + ') AND (' + issKeys.join(' AND ') + '))';
             } else {
                 return facetName + ': (' + catKeys.join(' OR ') + ')';
             }
         } else if (issKeys.length > 0 && issKeys[0] !== undefined) {
-            return facetName + ': (' + issKeys.join(' OR ') + ')';
+            return facetName + ': (' + issKeys.join(' AND ') + ')';
         } else {
             return '';
         }

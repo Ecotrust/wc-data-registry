@@ -30300,12 +30300,12 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
         var issKeys = _.union(filterVals.issues);
         if (catKeys.length > 0 && catKeys[0] !== undefined) {
             if (issKeys.length > 0 && issKeys[0] !== undefined) {
-                return facetName + ': ((' + catKeys.join(' OR ') + ') AND (' + issKeys.join(' OR ') + '))';
+                return facetName + ': ((' + catKeys.join(' OR ') + ') AND (' + issKeys.join(' AND ') + '))';
             } else {
                 return facetName + ': (' + catKeys.join(' OR ') + ')';
             }
         } else if (issKeys.length > 0 && issKeys[0] !== undefined) {
-            return facetName + ': (' + issKeys.join(' OR ') + ')';
+            return facetName + ': (' + issKeys.join(' AND ') + ')';
         } else {
             return '';
         }
@@ -30843,7 +30843,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                                     // We haven't added this category yet, add it.
                                     categories[categoryName] = {
                                         key: [collectionName,categoryName].join('.'),
-                                        label: categoryName,
+                                        label: categoryName.split('_').join(' '),
                                         count: isMultiTiered ? null : list[_ssIndex + 1],
                                         subcategories: {}
                                     };
@@ -30853,7 +30853,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                                 if (subcategoryName) {
                                     categories[categoryName].subcategories[subcategoryName] = {
                                         key: [collectionName,categoryName,subcategoryName].join('.'),
-                                        label: subcategoryName,
+                                        label: subcategoryName.split('_').join(' '),
                                         count: list[_ssIndex + 1]
                                     };
                                 }
