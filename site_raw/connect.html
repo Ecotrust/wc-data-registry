@@ -5,11 +5,92 @@ permalink: /connect/
 active: connect
 ---
 
-<div class="container" id="connect" ng-controller="ConnectCtrl">
+<!--<div class="container" id="connect" ng-controller="ConnectCtrl">-->
+<div class="container" id="about" ng-controller="ConnectCtrl">
 
-	<div class="row">
-		
-		<h3>Connect</h3>
+	<div class="row packery-container">
+
+		<div class="home-item white span12">
+			<div class="home-item-cntr learn-more">
+				<h3>Connect</h3>
+				<div>
+					<p>This portal provides several pathways for data users and application developers to search and connect to the datasets that they discover.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row packery-container">
+		<div class="home-item blue 10">
+			<div class="home-item-cntr about">
+
+				<div class="home-item-label inverse clearfix">
+					<div class="pull-left">CSW - Catalog Services for the Web</div>
+				</div>
+
+				<div>
+					<p>Access our CSW at:</p>
+					<p><a target="_blank" href="/geoportal/csw">http://portal.westcoastoceans.org/geoportal/csw</a></p>
+<hr/>
+					<p>For example, the following URL queries the capabilities of our CSW:</p>
+					<p><a target="_blank" href="/geoportal/csw?service=CSW&version=2.0.2&request=GetCapabilities">http://portal.westcoastoceans.org/geoportal/csw?service=CSW&version=2.0.2&request=GetCapabilities</a></p>
+<hr/>
+					<p><a target="_blank" href="http://en.wikipedia.org/wiki/Catalog_Service_for_the_Web">What is a CSW?</a></p>
+					<p><a target="_blank" href="http://lab.usgin.org/groups/csw-debug-blog/csw-clients-and-servers-we-are-testing">How do I use a CSW?</a></p>
+
+				</div>
+
+			</div>
+		</div>
 
 	</div>
+<br/>
+	<div class="row packery-container">
+		<div class="home-item blue 10">
+			<div class="home-item-cntr about">
+
+				<div class="home-item-label inverse clearfix">
+					<div class="pull-left">ESRI Geoportal REST API</div>
+				</div>
+
+				<div>
+					<p>Access our Geoportal REST API at:</p>
+					<p><a target="_blank" href="/geoportal/rest/">http://portal.westcoastoceans.org/geoportal/rest/</a></p>
+<hr/>
+					<p>For example, the following URL queries all available metadata records in the portal and returns it in the JSON format:</p>
+					<p><a target="_blank" href="/geoportal/rest/find/document?f=pjson">http://portal.westcoastoceans.org/geoportal/rest/find/document?f=pjson</a></p>
+<hr/>
+					<p><a target="_blank" href="http://en.wikipedia.org/wiki/Catalog_Service_for_the_Web">Geoportal REST API Documentation</a></p>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+<br/>
+
+	<div class="row packery-container">
+		<div class="home-item blue 10">
+			<div class="home-item-cntr about">
+
+				<div class="home-item-label inverse clearfix">
+					<div class="pull-left">SOLR REST API</div>
+				</div>
+
+				<div>
+					<p>Access our SOLR REST API at:</p>
+					<p><a href="/solr/collection1/select">http://portal.westcoastoceans.org/solr/collection1/select</a></p>
+<hr/>
+					<p>For example, the following URL selects the first 20 metadata records for the marine debris category as JSON:</p>
+					<p><a target="_blank" href="/solr/collection1/select?&q=*+sys.src.collections_ss:%20(Issue|Marine_Debris)&rows=20&wt=json">http://portal.westcoastoceans.org/solr/collection1/select?&q=*+sys.src.collections_ss:%20(Issue|Marine_Debris)&rows=20&wt=json</a></p>
+<hr/>
+					<p><a target="_blank" href="http://lucene.apache.org/solr/">What is SOLR?</a></p>
+					<p><a target="_blank" href="http://www.solrtutorial.com/index.html">How do I use the SOLR REST API?</a></p>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+
 </div>
