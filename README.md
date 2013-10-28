@@ -21,4 +21,4 @@ Then install the dependencies via bower. From the root repository directory:
     
 And run the Jekyll server such that it auto compiles any code updates:
 
-    jekyll server --watch
+    jekyll serve --watch
