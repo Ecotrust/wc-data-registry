@@ -62,7 +62,6 @@
 
 			<div class="filter-option-group" ng-repeat="category in categories">
 				<p class="filter-option-group-label">{{ category.label | titleCase }} Data</p>
-				<a class="select-all-link" href="javascript:void(0)" ng-click="selectEntireCategory(category.key)">SELECT ALL</a>
 				<ul class="unstyled filter-options">
 					<li ng-repeat="subcategory in category.subcategories" ng-click="toggleSubcategory(subcategory.key)">
 						<i ng-class="{'icon-check': isSelectedSubcategory(subcategory.key), 
@@ -84,7 +83,6 @@
 		</a>
 		<div collapse="isIssuesCollapsed" id="tags-filter" class="filter-group-container">
 
-			<a class="select-all-link" href="javascript:void(0)" ng-click="selectAllIssues()">SELECT ALL</a>
 			<ul class="unstyled filter-options">
 				<li ng-repeat="issue in issues" ng-click="toggleIssue(issue.key)">
 					<i ng-class="{'icon-check': isSelectedIssue(issue.key), 
