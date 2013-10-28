@@ -8038,6 +8038,12 @@ p.results-summary strong {
 #discover-landing p i.blue {
   color: #0070cf;
 }
+#discover-browse-all {
+  font-size: 25px;
+  margin-left: 20px;
+  color: #332e1f;
+  cursor: pointer;
+}
 .animate-enter,
 .animate-leave {
   -webkit-transition: 400ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;

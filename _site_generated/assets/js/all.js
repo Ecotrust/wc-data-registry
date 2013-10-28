@@ -30300,9 +30300,9 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
         var issKeys = _.union(filterVals.issues);
         if (catKeys.length > 0 && catKeys[0] !== undefined) {
             if (issKeys.length > 0 && issKeys[0] !== undefined) {
-                return facetName + ': ((' + catKeys.join(' OR ') + ') AND (' + issKeys.join(' AND ') + '))';
+                return facetName + ': ((' + catKeys.join(' AND ') + ') AND (' + issKeys.join(' AND ') + '))';
             } else {
-                return facetName + ': (' + catKeys.join(' OR ') + ')';
+                return facetName + ': (' + catKeys.join(' AND ') + ')';
             }
         } else if (issKeys.length > 0 && issKeys[0] !== undefined) {
             return facetName + ': (' + issKeys.join(' AND ') + ')';
@@ -30337,6 +30337,17 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                     latLng: getLatLngFromUrl(),
                     categories: getCategoriesFromUrl(),
                     issues: getIssuesFromUrl()
+                };
+
+            this.query(filterVals, resultsPerPage, pageIndex, successCallback, errorCallback);
+        },
+
+        getAllResults: function (resultsPerPage, pageIndex, successCallback, errorCallback) {
+            var filterVals = {
+                    text: "*",
+                    latLng: null,
+                    categories: [],
+                    issues: []
                 };
 
             this.query(filterVals, resultsPerPage, pageIndex, successCallback, errorCallback);
@@ -31264,14 +31275,42 @@ angular.module('wcodpApp').directive('resultsList', ['$http', '$location', funct
             scope.getResultsSummaryItems = function () {
                 var summaryItems = [],
                     searchText = $location.search().text,
+                    categories = $location.search().c,
+                    issues = $location.search().i,
+                    sources = $location.search().s,
                     lat = $location.search().lat,
                     lng = $location.search().lng;
 
                 // Search text filter
                 if (_.isString(searchText)) {
                     searchText = $.trim(searchText);
-                    if (searchText.length > 0) {
+                    if (searchText.length > 0 && $.trim(searchText) != '*') {
                         summaryItems.push('"' + $.trim(searchText) + '"');
+                    }
+                }
+
+                if (categories) {
+                    cat_lst = categories.split('~');
+                    for (var i = 0; i < cat_lst.length; i++) {
+                        cat = cat_lst[i].split('.');
+                        summaryItem = cat[cat.length - 2] + ': ' + cat[cat.length - 1];
+                        summaryItems.push(summaryItem.split('_').join(" "));
+                    }
+                }
+
+                if (issues) {
+                    iss_lst = issues.split('~');
+                    for (var i = 0; i < iss_lst.length; i++) {
+                        iss = iss_lst[i].split('.');
+                        summaryItems.push(iss[iss.length - 1].split('_').join(" "));
+                    }
+                }
+
+                if (sources) {
+                    src_lst = categories.split('~');
+                    for (var i = 0; i < src_lst.length; i++) {
+                        src = src_lst[i].split('.');
+                        summaryItems.push(src[src.length - 1].split('_').join(" "));
                     }
                 }
 
@@ -31286,6 +31325,7 @@ angular.module('wcodpApp').directive('resultsList', ['$http', '$location', funct
         }
     };
 }]);
+
 
 angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata', function($http, $location, metadata) {
 
@@ -32953,6 +32993,30 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		solr.getResultsForQueryString($scope.resultsPerPage, $scope.pageIndex, success, error);
 	};
 
+        $scope.searchAll = function () {
+
+                var success = function (data) {
+                        // Fill UI with results.
+                        $scope.resultsData = data.response.docs;
+                        $scope.numFound = data.response.numFound;
+                        $scope.filtersAreActive = $scope.checkFiltersAreActive(data.filterVals);
+                        $scope.facets = data.facet_counts;
+                };
+
+                var error = function (data) {
+                        $scope.resultsData = {};
+                        $scope.numFound = 0;
+                        $scope.filtersAreActive = $scope.checkFiltersAreActive(data.filterVals);
+                        $scope.facets = undefined;
+                        if (console) { console.log("Error querying Solr:" + data.error.msg || "no info available"); }
+                };
+
+                solr.getAllResults($scope.resultsPerPage, $scope.pageIndex, success, error);
+
+                console.log("Search All!");
+
+        };
+
 	$scope.checkFiltersAreActive = function (filterVals) {
 		return !!(filterVals && (filterVals.text || filterVals.latLng));
 	};
@@ -33013,6 +33077,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 
 	$scope.onLoad();
 }]);
+
 
 angular.module('wcodpApp').controller('AboutCtrl', ['$scope', 'packery', function($scope, packery) { 
 
