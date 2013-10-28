@@ -32,6 +32,15 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
         return issues;
     }
 
+    function getSourcesFromUrl () {
+        var sources = $location.search().s;
+        sources = sources && sources.length > 0 ? sources.split('~') : [];
+        _.each(sources, function (val, index, list) {
+            list[index] = val.replace(/[.]/g, '/');
+        });
+        return sources;
+    }
+
     function getTextQuery(filterVals) {
         var q = "{!lucene q.op=AND df=text}",
             txt = filterVals.text,
@@ -40,7 +49,7 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
             applyingIssueFilter = filterVals.issues ? filterVals.issues.length > 0 : false,
             applyingNonTextFilters = (applyingTextFilter || applyingCatFilter || applyingIssueFilter);
 
-        q = txt && txt.length > 0 ? q + txt : applyingNonTextFilters ? '*' : '';
+        q = txt && txt.length > 0 ? q + txt : applyingNonTextFilters ? q + '* ' : '';
         return q;
     }
 
@@ -50,6 +59,7 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
     }
 
     function getCollectionsQuery(facetName, filterVals) {
+        //TODO: add source keys and language
         var catKeys = _.union(filterVals.categories);
         var issKeys = _.union(filterVals.issues);
         if (catKeys.length > 0 && catKeys[0] !== undefined) {
