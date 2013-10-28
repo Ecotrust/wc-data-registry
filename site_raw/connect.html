@@ -14,7 +14,7 @@ active: connect
 			<div class="home-item-cntr learn-more">
 				<h3>Connect</h3>
 				<div>
-					<p>This portal provides several pathways for data users and application developers to search and connect to the datasets that they discover.</p>
+					<p>This portal provides several pathways for data users and application developers to search and connect to the datasets that it publishes.  In fact, a combination of these are used to drive the user interface for this portal.</p>
 				</div>
 			</div>
 		</div>
@@ -28,13 +28,19 @@ active: connect
 				</div>
 
 				<div>
-					<p>Access our CSW at:</p>
+
+					<p>CSW is an open standard created by the Open Geospatial Consortium for discovering, browsing, and querying metadata records from a data catalog.  Access our CSW interface at the following URL using your favorite CSW client:</p>
 					<p><a target="_blank" href="/geoportal/csw">http://portal.westcoastoceans.org/geoportal/csw</a></p>
 <hr/>
-					<p>For example, the following URL queries the capabilities of our CSW:</p>
+					<p>Example 1 - click the following URL to query the capabilities of our CSW and return the results as an XML document.</p>
 					<p><a target="_blank" href="/geoportal/csw?service=CSW&version=2.0.2&request=GetCapabilities">http://portal.westcoastoceans.org/geoportal/csw?service=CSW&version=2.0.2&request=GetCapabilities</a></p>
 <hr/>
-					<p><a target="_blank" href="http://en.wikipedia.org/wiki/Catalog_Service_for_the_Web">What is a CSW?</a></p>
+					<p>Example 2 - click the following URL to initiate a CSW <i>GetRecords</i> query that returns the first 10 ISO metadata records found in the catalog as an XML document.</p>
+					<p><a target="_blank" href="/geoportal/csw?REQUEST=GetRecords&SERVICE=CSW&VERSION=2.0.2&OUTPUTSCHEMA=http://www.isotc211.org/2005/gmd&RESULTTYPE=results&TYPENAMES=csw:Record">http://portal.westcoastoceans.org/geoportal/csw?REQUEST=GetRecords&SERVICE=CSW&VERSION=2.0.2&OUTPUTSCHEMA=http://www.isotc211.org/2005/gmd&RESULTTYPE=results&TYPENAMES=csw:Record</a></p>
+
+<hr/>
+					<p><a target="_blank" href="http://en.wikipedia.org/wiki/Catalog_Service_for_the_Web">What is a Catalog Service for the Web?</a></p>
+					<p><a target="_blank" href="http://webhelp.esri.com/geoportal_extension/9.3.1/index.htm#geoportal_csw_cmpnts.htm">ESRI Geoportal CSW Documentation</a>
 
 				</div>
 
@@ -42,7 +48,9 @@ active: connect
 		</div>
 
 	</div>
+
 <br/>
+
 	<div class="row packery-container">
 		<div class="home-item blue 10">
 			<div class="home-item-cntr about">
@@ -55,10 +63,41 @@ active: connect
 					<p>Access our Geoportal REST API at:</p>
 					<p><a target="_blank" href="/geoportal/rest/">http://portal.westcoastoceans.org/geoportal/rest/</a></p>
 <hr/>
-					<p>For example, the following URL queries all available metadata records in the portal and returns it in the JSON format:</p>
+					<p>Example 1 - click the following URL to initiate a Geoportal <i>find</i> query that returns the first 10 metadata records in the portal as a JSON document:</p>
 					<p><a target="_blank" href="/geoportal/rest/find/document?f=pjson">http://portal.westcoastoceans.org/geoportal/rest/find/document?f=pjson</a></p>
 <hr/>
 					<p><a target="_blank" href="https://github.com/Esri/geoportal-server/wiki/REST-API-Syntax">Geoportal REST API Documentation</a></p>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+<br/>
+
+	<div class="row packery-container">
+		<div class="home-item blue 10">
+			<div class="home-item-cntr about">
+
+				<div class="home-item-label inverse clearfix">
+					<div class="pull-left">OpenSearch API</div>
+				</div>
+
+				<div>
+					<p>OpenSearch is an open standard for search created by Amazon A9 that makes records available in a format suitable for syndication and aggregation.  Access our OpenSearch API at:</p>
+					<p><a target="_blank" href="/geoportal/rest/find/document">http://portal.westcoastoceans.org/geoportal/rest/find/document</a></p>
+
+<hr/>
+
+					<p>Example 1 - click the following URL to query the description of our OpenSearch API and return the results as an XML document.</p>
+					<p><a target="_blank" href="/geoportal/openSearchDescription">http://portal.westcoastoceans.org/geoportal/openSearchDescription</a></p>
+
+<hr/>
+
+					<p>Example 2 - click the following URL to initiate a search that returns all records with the keyword 'bathymetry' as a GeoRSS XML document:</p>
+					<p><a target="_blank" href="/geoportal/rest/find/document?searchText=keywords:%20bathymetry">http://portal.westcoastoceans.org/geoportal/rest/find/document?searchText=keywords:%20bathymetry</a></p>
+<hr/>
+					<p><a target="_blank" href="http://webhelp.esri.com/geoportal_extension/9.3.1/index.htm#rest_opensrch.htm">Add our portal as a search provider in your favorite web browser</a></p>
 				</div>
 
 			</div>
@@ -76,10 +115,10 @@ active: connect
 				</div>
 
 				<div>
-					<p>Access our SOLR REST API at:</p>
+					<p>SOLR provides blazing-fast full-text and faceted search through a standard REST interface.  It's the driving force behind our <a href="/discover/">Discover</a> page.  Access our SOLR REST API at:</p>
 					<p><a target="_blank" href="/solr/collection1/select">http://portal.westcoastoceans.org/solr/collection1/select</a></p>
 <hr/>
-					<p>For example, the following URL selects the first 20 metadata records for the marine debris category as JSON:</p>
+					<p>Example 1 - click the following URL to initial a SOLR <i>select</i> query that return the first 20 metadata records for the marine debris category as a JSON document:</p>
 					<p><a target="_blank" href="/solr/collection1/select?&q=*+sys.src.collections_ss:%20(Issue|Marine_Debris)&rows=20&wt=json">http://portal.westcoastoceans.org/solr/collection1/select?&q=*+sys.src.collections_ss:%20(Issue|Marine_Debris)&rows=20&wt=json</a></p>
 <hr/>
 					<p><a target="_blank" href="http://lucene.apache.org/solr/">What is SOLR?</a></p>
