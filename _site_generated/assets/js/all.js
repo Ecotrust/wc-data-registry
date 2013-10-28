@@ -30300,9 +30300,9 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
         var issKeys = _.union(filterVals.issues);
         if (catKeys.length > 0 && catKeys[0] !== undefined) {
             if (issKeys.length > 0 && issKeys[0] !== undefined) {
-                return facetName + ': ((' + catKeys.join(' OR ') + ') AND (' + issKeys.join(' AND ') + '))';
+                return facetName + ': ((' + catKeys.join(' AND ') + ') AND (' + issKeys.join(' AND ') + '))';
             } else {
-                return facetName + ': (' + catKeys.join(' OR ') + ')';
+                return facetName + ': (' + catKeys.join(' AND ') + ')';
             }
         } else if (issKeys.length > 0 && issKeys[0] !== undefined) {
             return facetName + ': (' + issKeys.join(' AND ') + ')';
