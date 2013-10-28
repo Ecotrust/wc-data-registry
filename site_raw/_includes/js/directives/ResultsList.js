@@ -55,14 +55,42 @@ angular.module('wcodpApp').directive('resultsList', ['$http', '$location', funct
             scope.getResultsSummaryItems = function () {
                 var summaryItems = [],
                     searchText = $location.search().text,
+                    categories = $location.search().c,
+                    issues = $location.search().i,
+                    sources = $location.search().s,
                     lat = $location.search().lat,
                     lng = $location.search().lng;
 
                 // Search text filter
                 if (_.isString(searchText)) {
                     searchText = $.trim(searchText);
-                    if (searchText.length > 0) {
+                    if (searchText.length > 0 && $.trim(searchText) != '*') {
                         summaryItems.push('"' + $.trim(searchText) + '"');
+                    }
+                }
+
+                if (categories) {
+                    cat_lst = categories.split('~');
+                    for (var i = 0; i < cat_lst.length; i++) {
+                        cat = cat_lst[i].split('.');
+                        summaryItem = cat[cat.length - 2] + ': ' + cat[cat.length - 1];
+                        summaryItems.push(summaryItem.split('_').join(" "));
+                    }
+                }
+
+                if (issues) {
+                    iss_lst = issues.split('~');
+                    for (var i = 0; i < iss_lst.length; i++) {
+                        iss = iss_lst[i].split('.');
+                        summaryItems.push(iss[iss.length - 1].split('_').join(" "));
+                    }
+                }
+
+                if (sources) {
+                    src_lst = categories.split('~');
+                    for (var i = 0; i < src_lst.length; i++) {
+                        src = src_lst[i].split('.');
+                        summaryItems.push(src[src.length - 1].split('_').join(" "));
                     }
                 }
 

@@ -96,6 +96,17 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
             this.query(filterVals, resultsPerPage, pageIndex, successCallback, errorCallback);
         },
 
+        getAllResults: function (resultsPerPage, pageIndex, successCallback, errorCallback) {
+            var filterVals = {
+                    text: "*",
+                    latLng: null,
+                    categories: [],
+                    issues: []
+                };
+
+            this.query(filterVals, resultsPerPage, pageIndex, successCallback, errorCallback);
+        },
+
         query: function (filterVals, resultsPerPage, pageIndex, successCallback, errorCallback) {
             var queryConfig = {},
                 textQuery = getTextQuery(filterVals),

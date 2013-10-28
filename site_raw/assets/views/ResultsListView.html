@@ -53,6 +53,9 @@
 	<p class="results-summary" ng-show="getResultsSummaryItems().length == 1"> 
 		<strong>{{numFound}}</strong> results found for <strong>{{ getResultsSummaryItems().join('') }}</strong>.
 	</p>
+        <p class="results-summary" ng-show="getResultsSummaryItems().length == 0">
+                <strong>{{numFound}}</strong> results found.
+        </p>
 
 	<!-- R E S U L T S -->
 	<div class="results-list">
