@@ -30461,7 +30461,7 @@ angular.module('wcodpApp').factory('metadata', [function() {
         creator: {
             cd: "",
             fgdc: "metadata > idinfo > citation > citeinfo > origin",
-            iso: "gmd\\:contact > gmd\\:CI_ResponsibleParty > gmd\\:organisationName > gco\\:CharacterString, contact > CI_ResponsibleParty > organisationName > CharacterString"
+            iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:pointOfContact > gmd\\:CI_ResponsibleParty > gmd\\:organisationName > gco\\:CharacterString, identificationInfo > MD_DataIdentification > pointOfContact > CI_ResponsibleParty > organisationName > CharacterString"
         },
         publisher: {
             cd: "",
@@ -30471,7 +30471,7 @@ angular.module('wcodpApp').factory('metadata', [function() {
         contactName: {
             cd: "",
             fgdc: "metadata > idinfo > ptcontac > cntinfo > cntorgp > cntper",
-            iso: "gmd\\:contact > gmd\\:CI_ResponsibleParty > gmd\\:individualName > gco\\:CharacterString, contact > CI_ResponsibleParty > individualName > CharacterString"
+            iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:pointOfContact > gmd\\:CI_ResponsibleParty > gmd\\:individualName > gco\\:CharacterString, identificationInfo > MD_DataIdentification > pointOfContact > CI_ResponsibleParty > individualName > CharacterString"
         },
         contactEmail: {
             cd: "",
