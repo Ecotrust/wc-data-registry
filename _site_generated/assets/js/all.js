@@ -31365,25 +31365,80 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             };
 
             scope.allowedLinkTypes = {
-                csv: { label: 'CSV' },
-                ftp: { label: 'FTP' },
-                html: { label: 'HTML' },
-                img: { label: 'IMG' },
-                kml: { label: 'KML' },
-                kmz: { label: 'KMZ' },
-                pdf: { label: 'PDF' },
-                shp: { label: 'SHP' },
-                tar: { label: 'TAR' },
-                tiff: { label: 'TIFF' },
-                txt: { label: 'TXT' },
-                wcs: { label: 'WCS' },
-                wfs: { label: 'WFS' },
-                wms: { label: 'WMS' },
-                xls: { label: 'XLS' },
-                xlsx: { label: 'XLSX' },
-                zip: { label: 'ZIP' },
-                esrirest: { label: 'ESRI REST' }
+                csv: {
+                    label: 'CSV',
+                    toolip: "Comma Separated Values"
+                },
+                ftp: {
+                    label: 'FTP',
+                    tooltip: "File Transfer Protocol"
+                },
+                html: {
+                    label: 'HTML'
+                    tooltip: "Stylized Metadata"
+                },
+                img: {
+                    label: 'IMG',
+                    img: "Image File"
+                },
+                kml: {
+                    label: 'KML',
+                    tooltip: "Google Earth XML File"
+                },
+                kmz: {
+                    label: 'KMZ',
+                    tooltip: "Compressed Google Earth XML File"
+                },
+                pdf: {
+                    label: 'PDF',
+                    tooltip: "PDF Document"
+                },
+                shp: { 
+                    label: 'SHP',
+                    tooltip: "ESRI Shapefile"
+                },
+                tar: {
+                    label: 'TAR',
+                    tooltip: "Archival File Format"
+                },
+                tiff: {
+                    label: 'TIFF'
+                    tooltip: "Georeferenced TIFF Image File"
+                },
+                txt: {
+                    label: 'TXT'
+                    tooltip: "Text Document"
+                },
+                wcs: {
+                    label: 'WCS',
+                    tooltip: "OGC Web Coverage Service"
+                },
+                wfs: {
+                    label: 'WFS',
+                    tooltip: "OGC Web Feature Service"
+                },
+                wms: {
+                    label: 'WMS',
+                    tooltip: "ORC Web Mapping Service"
+                },
+                xls: {
+                    label: 'XLS',
+                    tooltip: "Excel Spreadsheet"
+                },
+                xlsx: {
+                    label: 'XLSX',
+                    tooltip: "Excel Spreadsheet"
+                },
+                zip: {
+                    label: 'ZIP',
+                    tooltip: "Compressed Files for Download"
+                },
+                esrirest: {
+                    label: 'ESRI REST',
+                    tooltip: "ArcGIS Server Web Service"
+                }
             };
+
 
             scope.resultClicked = function($event) {
                 var elem = angular.element($event.currentTarget),
@@ -33099,6 +33154,14 @@ angular.module('wcodpApp').controller('AboutCtrl', ['$scope', 'packery', functio
 setTimeout(function () {
   window.scrollTo(0, 1);
 }, 100);
+
+// show tooltips if present
+$(document).ready(function () {
+    $("[data-toggle='tooltip']").tooltip({
+        placement: "bottom"
+    });
+});
+
 
 /*
  * End site scripts
