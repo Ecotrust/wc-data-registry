@@ -64,6 +64,14 @@ setTimeout(function () {
   window.scrollTo(0, 1);
 }, 100);
 
+// show tooltips if present
+$(document).ready(function () {
+    $("[data-toggle='tooltip']").tooltip({
+        placement: "bottom"
+    });
+});
+
+
 /*
  * End site scripts
  **/
