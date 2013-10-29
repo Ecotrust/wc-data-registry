@@ -177,7 +177,8 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                 'fl': '',
                 'facet': true,
                 'facet.field': facetFields,
-                'facet.mincount': facetMinCounts
+                'facet.mincount': facetMinCounts,
+                'f.sys.src.site.name_s.facet.mincount': mincount
                 //'sort': 'date asc' or 'date desc'
             };
     

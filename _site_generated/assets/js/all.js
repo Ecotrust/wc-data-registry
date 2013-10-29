@@ -30785,7 +30785,8 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                 'fl': '',
                 'facet': true,
                 'facet.field': facetFields,
-                'facet.mincount': facetMinCounts
+                'facet.mincount': facetMinCounts,
+                'f.sys.src.site.name_s.facet.mincount': mincount
                 //'sort': 'date asc' or 'date desc'
             };
     
@@ -31068,6 +31069,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     scope.isLocationCollapsed = true;
                     scope.isCategoryCollapsed = true;
                     scope.isIssuesCollapsed = true;
+                    scope.isSourcesCollapsed = true;
                     scope.mobileMode = browserSize.isPhoneSize();
                     scope.showingMobileFiltersModal = false;
 

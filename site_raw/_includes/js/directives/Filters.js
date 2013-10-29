@@ -67,6 +67,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     scope.isLocationCollapsed = true;
                     scope.isCategoryCollapsed = true;
                     scope.isIssuesCollapsed = true;
+                    scope.isSourcesCollapsed = true;
                     scope.mobileMode = browserSize.isPhoneSize();
                     scope.showingMobileFiltersModal = false;
 
