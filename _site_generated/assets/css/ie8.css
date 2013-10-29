@@ -1,0 +1,28 @@
+
+
+.packery-container .span8 {
+  /*width: 780px !important;*/
+  margin-left: 0;
+}
+
+
+.packery-container .span5 {
+  /*width: 460px !important;*/
+  margin-left: 0;
+}
+
+.packery-container .span4 {
+  /*width: 320px !important;*/
+  margin-left: 0;
+}
+
+.packery-container .span3 {
+  /*width: 280px !important;*/
+  margin-left: 0;
+}
+
+@media (max-width: 1199px) {
+	.packery-container .span3 {
+		width: 230px !important;
+	}
+}

@@ -1,3 +1,5 @@
 ---
 ---
+{% include css/ie7.css %}
 {% include bower_components/font-awesome/css/font-awesome-ie7.min.css %}
+
