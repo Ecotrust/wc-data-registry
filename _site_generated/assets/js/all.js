@@ -31914,12 +31914,15 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                     _.each(allLinks, function (element, index, list) {
                         if (element.type && angular.lowercase(element.type) in scope.allowedLinkTypes) {
                             element.type = angular.lowercase(element.type);
+                            element.find("[data-toggle='tooltip']").tooltip({
+                                placement: "bottom"
+                            });
                             scope.links.push(element);
                         }
                     });
-                    scope.rootElement.find("[data-toggle='tooltip']").tooltip({
-                        placement: "bottom"
-                    });
+                    // scope.rootElement.find("[data-toggle='tooltip']").tooltip({
+                    //     placement: "bottom"
+                    // });
 
                 }).error(function (data) {
                     if (console) { console.log('Error getting result links.'); }  
