@@ -36,7 +36,7 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
         var sources = $location.search().s;
         sources = sources && sources.length > 0 ? sources.split('~') : [];
         _.each(sources, function (val, index, list) {
-            list[index] = val.replace(/[.]/g, '/');
+            list[index] = val.replace(/[_]/g, ' ');
         });
         return sources;
     }
@@ -62,15 +62,27 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
         //TODO: add source keys and language
         var catKeys = _.union(filterVals.categories);
         var issKeys = _.union(filterVals.issues);
-        if (catKeys.length > 0 && catKeys[0] !== undefined) {
-            if (issKeys.length > 0 && issKeys[0] !== undefined) {
-                return facetName + ': ((' + catKeys.join(' AND ') + ') AND (' + issKeys.join(' AND ') + '))';
-            } else {
-                return facetName + ': (' + catKeys.join(' AND ') + ')';
+        var srcKeys = _.union(filterVals.sources);
+        if (catKeys.length > 0 && catKeys[0] !== undefined) {  //1--
+            if (issKeys.length > 0 && issKeys[0] !== undefined) {  //11-
+	                return facetName + ': ((' + catKeys.join(' AND ') + ') AND (' + issKeys.join(' AND ') + '))';
+            } else {  //10-
+                    return facetName + ': (' + catKeys.join(' AND ') + ')';
             }
-        } else if (issKeys.length > 0 && issKeys[0] !== undefined) {
-            return facetName + ': (' + issKeys.join(' AND ') + ')';
-        } else {
+        } else {  //0--
+            if (issKeys.length > 0 && issKeys[0] !== undefined) {  //01-
+                    return facetName + ': (' + issKeys.join(' AND ') + ')';
+            } else {  //00-
+                    return '';
+            }
+        }
+    }
+
+    function getSitesQuery(facetName, filterVals) {
+        var srcKeys = _.union(filterVals.sources);
+        if (srcKeys.length > 0 && srcKeys[0] !== undefined) {  //001
+            return facetName + ':"' + srcKeys.join('" AND "') + '"';
+        } else {  //000
             return '';
         }
     }
@@ -90,47 +102,48 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                 if (console) console.log('Failed to get record count.');
             });
         },
-
         /**
          * Pulls parameters from the query string in the URL to initiate a Solr query. Returns via
          * success and error callbacks.
-         */
+        */
         getResultsForQueryString: function (resultsPerPage, pageIndex, successCallback, errorCallback) {
             var filterVals = {
-                    text: getTextFromUrl(),
-                    latLng: getLatLngFromUrl(),
-                    categories: getCategoriesFromUrl(),
-                    issues: getIssuesFromUrl()
-                };
-
+                text: getTextFromUrl(),
+                latLng: getLatLngFromUrl(),
+                categories: getCategoriesFromUrl(),
+                issues: getIssuesFromUrl(),
+                sources: getSourcesFromUrl(),
+            };
+    
             this.query(filterVals, resultsPerPage, pageIndex, successCallback, errorCallback);
         },
-
+   
         getAllResults: function (resultsPerPage, pageIndex, successCallback, errorCallback) {
             var filterVals = {
-                    text: "*",
-                    latLng: null,
-                    categories: [],
-                    issues: []
-                };
-
+                text: "*",
+                latLng: null,
+                categories: [],
+                issues: [],
+                sources: []
+            };
+  
             this.query(filterVals, resultsPerPage, pageIndex, successCallback, errorCallback);
         },
-
+    
         query: function (filterVals, resultsPerPage, pageIndex, successCallback, errorCallback) {
             var queryConfig = {},
                 textQuery = getTextQuery(filterVals),
                 boundingBoxQuery = getBoundingBoxQuery(filterVals);
                 collectionsFacetKey = 'sys.src.collections_ss',
                 collectionsQuery = getCollectionsQuery(collectionsFacetKey, filterVals),
+                sitesQuery = getSitesQuery('sys.src.site.name_s', filterVals),
+                fQuery = [],
                 facetFields = [], 
                 facetMinCounts = [],
                 mincount = 1;
-
             // Prep facets to include.
-            facetFields = ['sys.src.collections_txt','sys.src.collections_ss'];
+            facetFields = ['sys.src.collections_txt','sys.src.collections_ss','sys.src.site.name_s'];
             // facetMinCounts.push(mincount);
-
             if (collectionsQuery.length > 0) { 
                 //facetFields.push(collectionsFacetKey);
                 //facetFields = ['sys.src.collections_txt','sys.src.collections_ss'];
@@ -146,13 +159,20 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                 textQuery = '*';
             }
 
+            if (boundingBoxQuery!=='') {
+                fQuery.push(boundingBoxQuery);
+            }
+            if (sitesQuery !== '') {
+                fQuery.push(sitesQuery);
+            }
+
             // Prep query string params.            
             queryConfig.params = {
                 'start': (pageIndex - 1) * resultsPerPage,
                 'rows': resultsPerPage,
                 'wt': 'json', 
                 'q': textQuery,
-                'fq': boundingBoxQuery,
+                'fq': fQuery,
                 //'fl': 'contact.organizations_ss, id, title, description, keywords, envelope_geo, sys.src.item.lastmodified_tdt, url.metadata_s, sys.src.item.uri_s, sys.sync.foreign.id_s',
                 'fl': '',
                 'facet': true,
@@ -160,12 +180,12 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                 'facet.mincount': facetMinCounts
                 //'sort': 'date asc' or 'date desc'
             };
-
+    
             // Execute query.
             if (console) { console.log("Querying Solr"); }
             $http.get(solrUrl, queryConfig).success(function (data, status, headers, config) {
                 data.filterVals = filterVals;
-
+   
                 if (successCallback) {
                     successCallback(data);
                 }
@@ -175,7 +195,8 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
                     errorCallback(data);
                 }
             });
-        }
-    };
-
-}]);
+        } // /query
+    }; // /return
+} // /anon function($http, $location)
+]
+);

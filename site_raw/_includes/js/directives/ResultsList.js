@@ -87,7 +87,7 @@ angular.module('wcodpApp').directive('resultsList', ['$http', '$location', funct
                 }
 
                 if (sources) {
-                    src_lst = categories.split('~');
+                    src_lst = sources.split('~');
                     for (var i = 0; i < src_lst.length; i++) {
                         src = src_lst[i].split('.');
                         summaryItems.push(src[src.length - 1].split('_').join(" "));

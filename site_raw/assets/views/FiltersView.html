@@ -92,6 +92,26 @@
 
 		</div>
 
+                <!-- sources filter -->
+                <a class="filter-group-toggle" href="javascript:void(0)" ng-click="isSourcesCollapsed = !isSourcesCollapsed">
+                        <div class="filter-group-label">
+                                <i class="icon-th subdued"></i>
+                                Sources
+                                <i ng-show="isSourcesCollapsed" class="icon-angle-right pull-right"></i>
+                                <i ng-hide="isSourcesCollapsed" class="icon-angle-down pull-right"></i>
+                        </div>
+                </a>
+                <div collapse="isSourcesCollapsed" id="sourcess-filter" class="filter-group-container">
+
+                        <ul class="unstyled filter-options">
+                            <li ng-repeat="source in sources" ng-click="toggleSource(source.key)">
+                                <i ng-class="{'icon-check': isSelectedSource(source.key),
+                                    'icon-check-empty': !isSelectedSource(source.key) }"></i>{{ source.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ source.count }}</strong>
+                            </li>
+                        </ul>
+                </div>
+
+
 		<!-- formats filter -->
 		<!-- <a class="filter-group-toggle" href="javascript:void(0)" ng-click="isFormatsCollapsed = !isFormatsCollapsed">
 			<div class="filter-group-label">
