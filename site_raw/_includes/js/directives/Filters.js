@@ -280,6 +280,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             ll = scope.filteredLocation,
                             cats = scope.filteredCategories,
                             issues = scope.filteredIssues,
+                            sources = scope.filteredSources,
                             f;
 
                         // Text
@@ -311,6 +312,14 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         } else {
                             $location.search('i', null);
                         }
+
+                        // Sources
+                        if (sources && _.isArray(sources) && sources.length > 0) {
+                            $location.search('s', sources.join('~'));
+                        } else {
+                            $location.search('s', null);
+                        }
+
 
                         // Force new query
                         if (forceNewQuery) {
@@ -534,6 +543,52 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         scope.updateUrlQueryString();
                     }                    
 
+                    //
+                    //  S o u r c e   F i l t e r
+                    //
+
+                    /**
+                     * Take a query string list delimited by '~' and set the
+                     * filteredSources object used for the UI.
+                     * @param {string} c List delimited by '~'
+                     */
+                    scope.setFilteredSources = function (sources) {
+                        // Break up listing into array.
+                        scope.filteredSources = sources ? sources.split('~') : null;
+                    };
+
+                    scope.isSelectedSource = function (key) {
+                        return _.contains(scope.filteredSources, key);
+                    };
+
+                    scope.toggleSource = function (key) {
+                        if (scope.isSelectedSource(key))  {
+                            // Unselect
+                            scope.filteredSources = _.reject(scope.filteredSources, function (val) {
+                                return val === key;
+                            });
+                        } else {
+                            // Select
+                            scope.filteredSources = scope.filteredSources || [];
+                            scope.filteredSources.push(key);
+                        }
+                        scope.skipCollapse = true
+                        scope.updateUrlQueryString();
+                    };
+
+                    scope.selectAllSources = function () {
+                        scope.filteredSources = scope.filteredSources || [];
+
+                        // Select all sources
+                        _.each(scope.sources, function (source) {
+                            if (!scope.isSelectedSource(source.key)) {
+                                scope.filteredSourcess.push(source.key);
+                            }
+                        });
+
+                        scope.skipCollapse = true
+                        scope.updateUrlQueryString();
+                    }
 
                     //
                     //  Sync UI with query string
@@ -563,6 +618,8 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         scope.setFilteredCategories($location.search().c);
 
                         scope.setFilteredIssues($location.search().i);
+
+                        scope.setFilteredSources($location.search().s);
 
                         if (scope.skipCollapse) {
                             // Query string was updated via user interaction such that we 
