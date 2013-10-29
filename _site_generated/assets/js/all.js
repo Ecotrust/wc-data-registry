@@ -31132,9 +31132,12 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             scope.categories = collection.categories;
                             collection = scope.parseCollection('Issue', newVal);
                             scope.issues = collection.categories;
+                            collection = scope.parseSites(newVal);
+                            scope.sources = collection.sources;
                         } else {
                             scope.categories = null;
                             scope.issues = null;
+                            scope.sources = null;
                         }                        
                     };
 
@@ -31266,6 +31269,30 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         
                         return { 'isMultiTiered': isMultiTiered, 'categories': categories}
 
+                    };
+
+                    scope.parseSites = function(facetCounts) {
+                        var sources = {};
+
+                        if (!_.has(facetCounts.facet_fields, 'sys.src.site.name_s')) {
+                            return null;
+                        }
+
+                        _.each(facetCounts.facet_fields['sys.src.site.name_s'], function (val, _ssIndex, list) {
+                            if (typeof val === 'number') {
+                                return;
+                            }
+                           
+                            if (!_.has(sources, val)) {
+                                sources[val] = {
+                                    key: val,
+                                    label: val.split('_').join(' '),
+                                    count: list[_ssIndex + 1]
+                                };
+                            }
+                        });
+
+                        return { 'sources': sources }
                     };
 
                     /**
