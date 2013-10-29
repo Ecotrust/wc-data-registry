@@ -31917,6 +31917,9 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                             scope.links.push(element);
                         }
                     });
+                    scope.rootElement.find("[data-toggle='tooltip']").tooltip({
+                        placement: "bottom"
+                    });
 
                 }).error(function (data) {
                     if (console) { console.log('Error getting result links.'); }  
@@ -31924,6 +31927,9 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             };
 
             scope.getLinks();
+
+
+
         }
     };
 }]);
@@ -33517,14 +33523,6 @@ angular.module('wcodpApp').controller('AboutCtrl', ['$scope', 'packery', functio
 setTimeout(function () {
   window.scrollTo(0, 1);
 }, 100);
-
-// show tooltips if present
-$(document).ready(function () {
-    $("[data-toggle='tooltip']").tooltip({
-        placement: "bottom"
-    });
-});
-
 
 /*
  * End site scripts
