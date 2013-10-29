@@ -14,7 +14,7 @@
 
 			<li ng-repeat="link in links">
 				<a target="_blank" ng-click="linkClicked($event)" href="{{ link.href }}">{{ allowedLinkTypes[link.type].label }}</a>
-				<i class="icon-info-sign" tooltip-placement="bottom" tooltip="allowedLinkTypes[link.type].tooltip"></i>
+				<i class="icon-info-sign" tooltip-placement="bottom" tooltip="{{allowedLinkTypes[link.type].tooltip}}"></i>
 			</li>
 			
 			
