@@ -14,12 +14,12 @@
 
 			<li ng-repeat="link in links">
 				<a target="_blank" ng-click="linkClicked($event)" href="{{ link.href }}">{{ allowedLinkTypes[link.type].label }}</a>
-				<i class="icon-info-sign" data-toggle="tooltip" title="{{ allowedLinkTypes[link.type].tooltip }}"></i>
+				<i class="icon-info-sign" tooltip-placement="bottom" tooltip="allowedLinkTypes[link.type].tooltip"></i>
 			</li>
 			
 			
-			<li><a target="_blank" ng-click="linkClicked($event)" href="{{ metadataXmlUrl() }}">METADATA XML</a><i class="icon-info-sign" data-toggle="tooltip" title="Raw XML Metadata"></i></li>
-			<li><a target="_blank" ng-click="linkClicked($event)" href="{{ jsonUrl() }}">JSON</a><i class="icon-info-sign" data-toggle="tooltip" title="Javascript Object Notation"></i></li> 
+			<li><a target="_blank" ng-click="linkClicked($event)" href="{{ metadataXmlUrl() }}">METADATA XML</a><i class="icon-info-sign" tooltip-placement="bottom" tooltip="Raw XML Metadata"></i></li>
+			<li><a target="_blank" ng-click="linkClicked($event)" href="{{ jsonUrl() }}">JSON</a><i class="icon-info-sign" tooltip-placement="bottom" tooltip="Javascript Object Notation"></i></li> 
 			
 		</ul>
 	</div>
