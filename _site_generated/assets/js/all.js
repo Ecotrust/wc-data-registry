@@ -31374,7 +31374,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                     tooltip: "File Transfer Protocol"
                 },
                 html: {
-                    label: 'HTML'
+                    label: 'HTML',
                     tooltip: "Stylized Metadata"
                 },
                 img: {
@@ -31402,11 +31402,11 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                     tooltip: "Archival File Format"
                 },
                 tiff: {
-                    label: 'TIFF'
+                    label: 'TIFF',
                     tooltip: "Georeferenced TIFF Image File"
                 },
                 txt: {
-                    label: 'TXT'
+                    label: 'TXT',
                     tooltip: "Text Document"
                 },
                 wcs: {
@@ -31565,6 +31565,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
         }
     };
 }]);
+
 var leafletDirective = angular.module("leaflet-directive", []);
 
 leafletDirective.directive('leaflet', [
