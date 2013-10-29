@@ -8067,7 +8067,7 @@ p.results-summary strong {
   padding-left: 30px;
 }
 .packery-container .span3 {
-  width: 290px !important;
+  width: 290px;
 }
 .packery-container .home-item.home-item-smaller {
   height: 170px;
