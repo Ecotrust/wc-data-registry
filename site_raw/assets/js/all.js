@@ -32,6 +32,7 @@
 {% include js/third-party/ui-bootstrap-tpls-0.5.0.js %}
 {% include js/third-party/packery.pkgd.min.js %}
 {% include js/third-party/backstretch.min.js %}
+{% include js/third-party/bootstrap-tooltip.js %}
 {% include bower_components/underscore/underscore-min.js %}
 
 /*
