@@ -33423,7 +33423,7 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window',
 	$('.home-item-biological')
 		.backstretch("/assets/img/photos/kelp.jpg");
 	$('.home-item-marine-debris')
-		.backstretch("/assets/img/photos/seattle.jpg");
+		.backstretch("/assets/img/photos/marinedebris_3.jpg");
 	$('.home-item-human-use')
 		.backstretch("/assets/img/photos/chumash.jpg");
 	$('.home-item-physical')
