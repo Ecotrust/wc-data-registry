@@ -51,6 +51,6 @@
 			<dd ng-show="metadata.constraints">{{metadata.constraints}}</dd>
 		</dl>
 		<div class="clearfix">&nbsp;</div>
-		<p class="harvest-info subdued pull-right">Harvested from {{resultData['sys.src.site.name_s']}} on {{resultData['sys.src.item.lastmodified_tdt'] | date:short }}</p>	
+		<p class="harvest-info subdued pull-right">Harvested {{resultData['sys.src.item.lastmodified_tdt'] | date:short }} from <a ng-href={{resultData['sys.src.site_url_s']}}>{{resultData['sys.src.site.name_s']}}</a></p>	
 	</div>
 </div>
