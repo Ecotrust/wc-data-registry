@@ -1,19 +1,90 @@
 ---
 layout: default
-title: Explore
-permalink: /explore/
+title: Contributors
+permalink: /contributors/
 ---
 
 <div class="container" id="about" ng-controller="ExploreCtrl">
 
-	<div class="row packery-container">
+	<div class="row">
 
 		<div class="home-item white span12">
 			<div class="home-item-cntr learn-more">
-				<h3>Explore</h3>
-				<div>
-					<p>ToDo</p>
-				</div>
+				<h3>Contributors</h3>
+                <p>Real-time harvest stats coming soon</p>
+				<h3>Contribute</h3>
+                <p>Do you have resources pertaining to the West Coast that you think could be valuable to others?  If so, we encourage you to fill out the form below and we will contact you to discuss the possibility of advertising them in this portal to a West Coast focused audience.</p>
+                <p>Note that all new data resources registered on this portal are required to have valid metadata including: owner, date created, description, date range, etc.  Contact us to learn more.</p>
+            <br/>
+            <form class="form-vertical" action="mailto:todd.r.hallenbeck@westcoastoceans.org?subject=Contribute to West Coast Portal" enctype="text/plain" method="post">
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="input01">Is your data or other resource already published online?</label>
+                        <div class="controls">
+                            <input type="radio" name="online" value="yes">Yes<br>
+                            <input type="radio" name="online" value="no">No
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="input01">Does your data have metadata available?</label>
+                        <div class="controls">
+                            <input type="radio" name="metadata" value="yes">Yes<br>
+                            <input type="radio" name="metadata" value="no">No
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="input01">Describe your data and include relevant URLs</label>
+                        <div class="controls">
+                          <textarea class="span4" name="description" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="input01">Name</label>
+                        <div class="controls">
+                            <input type="text" name="name" class="span4"/>
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="input01">Email address</label>
+                        <div class="controls">
+                            <input type="email" name="email" class="span4"/>
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">Organization</label>
+                        <div class="controls">
+                            <input type="text" name="organization" class="span4"/>
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="input01">Phone number</label>
+                        <div class="controls">
+                            <input type="tel" name="telephone" class="span4"/>
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="input01">Additional comments:</label>
+                        <div class="controls">
+                          <textarea class="span4" name="comments" rows="4">
+                          </textarea>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="row">
+                    <div class="span4">
+                        <div class="pull-right">    
+                            <button class="btn" type="submit">Send message</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
 			</div>
 		</div>
 	</div>
+</div>
