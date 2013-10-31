@@ -48,6 +48,33 @@ angular.module('wcodpApp').directive('resultsList', ['$http', '$location', funct
                 return indexes;
             };
 
+            scope.clearItem = function(item) {
+                var queryString = $location.search();
+                if (item.key != "location"){
+                    if (item.key != "text") {
+                        currentFilter = queryString[item.type].split('~');
+                    }
+                    if (currentFilter.length > 1) {
+                        for (var i = 0; i < currentFilter.length; i++) {
+                            if (item.key === currentFilter[i]) {
+                                currentFilter.splice(i, 1);
+	                        continue;
+                            }
+                        }
+                        queryString[item.type] = currentFilter.join('~');
+                    } else {
+                        if (item.key == currentFilter[0]) {
+                            delete queryString[item.type];
+                        }
+                    }
+                } else {
+                    delete queryString.lat;
+                    delete queryString.lng;
+
+                }
+		$location.search(queryString);
+            }
+
             /**
              * @return {array of strings} String representations of the filters 
              * in use for display in the results summary.
@@ -65,43 +92,63 @@ angular.module('wcodpApp').directive('resultsList', ['$http', '$location', funct
                 if (_.isString(searchText)) {
                     searchText = $.trim(searchText);
                     if (searchText.length > 0 && $.trim(searchText) != '*') {
-                        summaryItems.push('"' + $.trim(searchText) + '"');
+                        summaryItems.push({
+                            label:searchText,
+                            key: searchText,
+                            type: "text"
+                        });
                     }
                 }
 
                 if (categories) {
-                    cat_lst = categories.split('~');
+                    var cat_lst = categories.split('~');
                     for (var i = 0; i < cat_lst.length; i++) {
-                        cat = cat_lst[i].split('.');
-                        summaryItem = cat[cat.length - 2] + ': ' + cat[cat.length - 1];
-                        summaryItems.push(summaryItem.split('_').join(" "));
+                        var cat = cat_lst[i].split('.');
+                        var summaryItem = cat[cat.length - 2] + ': ' + cat[cat.length - 1];
+                        summaryItems.push({
+                            label:summaryItem.split('_').join(" "),
+                            key:cat_lst[i],
+                            type:"c"
+                        });
                     }
                 }
 
                 if (issues) {
-                    iss_lst = issues.split('~');
+                    var iss_lst = issues.split('~');
                     for (var i = 0; i < iss_lst.length; i++) {
-                        iss = iss_lst[i].split('.');
-                        summaryItems.push(iss[iss.length - 1].split('_').join(" "));
+                        var iss = iss_lst[i].split('.');
+                        summaryItems.push({
+                            label:iss[iss.length - 1].split('_').join(" "),
+                            key:iss_lst[i],
+                            type:"i"
+                        });
                     }
                 }
 
                 if (sources) {
-                    src_lst = sources.split('~');
+                    var src_lst = sources.split('~');
                     for (var i = 0; i < src_lst.length; i++) {
-                        src = src_lst[i].split('.');
-                        summaryItems.push(src[src.length - 1].split('_').join(" "));
+                        var src = src_lst[i].split('.');
+                        summaryItems.push({
+                            label:src[src.length - 1].split('_').join(" "),
+                            key:src_lst[i],
+                            type:"s"
+                        });
                     }
                 }
 
                 // Location filter
                 if (lat && lng) {
-                    summaryItems.push("current location");
+                    summaryItems.push({
+                            label:"current location",
+                            key:"location",
+                            type:"location"
+                        });
                 }
 
                 return summaryItems;
             };
-
+            scope.$watch(function(){return $location.search();},function(){scope.summaryItems = scope.getResultsSummaryItems();},true);
         }
     };
 }]);
