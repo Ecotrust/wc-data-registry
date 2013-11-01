@@ -17,7 +17,7 @@ active: discover
 			showing-mobile-filters-modal="showingMobileFiltersModal">
 		</div>
 
-		<div ng-show="filtersAreActive && !showingMobileFiltersModal">
+		<div ng-show="(filtersAreActive || browseAll) && !showingMobileFiltersModal">
 			<div results-list
 				data="resultsData"
 				num-found="numFound"
@@ -28,7 +28,7 @@ active: discover
 			</div>
 		</div>
 
-		<div ng-hide="filtersAreActive || showingMobileFiltersModal"
+		<div ng-hide="filtersAreActive || showingMobileFiltersModal || browseAll"
 			ng-animate="'animate'"
 			class="span8"
 			id="discover-landing">

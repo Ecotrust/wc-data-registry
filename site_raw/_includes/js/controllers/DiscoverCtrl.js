@@ -10,6 +10,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.queryStringWatchInitialized = false;
 	$scope.filtersAreActive = false;
 	$scope.showingMobileFiltersModal = false;
+        $scope.browseAll = false;
 
 	$scope.onLoad = function () {
 		// Get total record count and initial filter option lists & counts.
@@ -72,6 +73,8 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
                 };
 
                 solr.getAllResults($scope.resultsPerPage, $scope.pageIndex, success, error);
+
+                $scope.browseAll = true;
 
                 console.log("Search All!");
 
