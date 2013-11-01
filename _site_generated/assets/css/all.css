@@ -7764,6 +7764,11 @@ a.filter-group-toggle:first-of-type {
 #filters a.filter-group-toggle.desaturated i[class^="icon"] {
   color: rgba(166, 166, 166, 0.5);
 }
+.small-icon {
+  font-size: 15px;
+  margin-left: 3px;
+  margin-right: 4px;
+}
 #filters a.filter-group-toggle:hover {
   border-top-color: rgba(143, 182, 204, 0.5);
 }
@@ -8137,9 +8142,9 @@ p.results-summary strong {
     font-size: 12px;
   }
   /*.home-item-cntr.welcome p.big {
-      font-size: 18px;
-      line-height: 38px;
-    }*/
+    font-size: 18px;
+    line-height: 38px;
+  }*/
   .packery-container .home-item.home-item-smaller {
     height: 140px;
   }

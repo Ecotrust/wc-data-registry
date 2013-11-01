@@ -48,10 +48,10 @@
 
 	<!-- R E S U L T S   S U M M A R Y -->
 	<p class="results-summary" ng-show="summaryItems.length > 1"> 
-		<strong>{{numFound}}</strong> results found for <span ng-repeat="item in summaryItems"><strong>{{ item.label }}</strong><i class="icon-remove-sign" tooltip-placement="bottom" tooltip="Remove Filter" ng-click="clearItem(item)"></i><span ng-show="$index==summaryItems.length-2"> &&nbsp;</span><span ng-hide="$last || $index==summaryItems.length-2">,&nbsp;</span></span>.
+		<strong>{{numFound}}</strong> results found for <span ng-repeat="item in summaryItems"><strong>{{ item.label }}</strong><i class="icon-remove-sign subdued small-icon" tooltip-placement="bottom" tooltip="Remove Filter" ng-click="clearItem(item)"></i><span ng-show="$index==summaryItems.length-2"> &&nbsp;</span><span ng-hide="$last || $index==summaryItems.length-2">,&nbsp;</span></span>.
 	</p>
 	<p class="results-summary" ng-show="summaryItems.length == 1"> 
-		<strong>{{numFound}}</strong> results found for <span ng-repeat="item in summaryItems"><strong>{{ item.label }}</strong> <i class="icon-remove-sign" tooltip-placement="bottom" tooltip="Remove Filter" ng-click="clearItem(item)"></i></span>.
+		<strong>{{numFound}}</strong> results found for <span ng-repeat="item in summaryItems"><strong>{{ item.label }}</strong> <i class="icon-remove-sign subdued small-icon" tooltip-placement="bottom" tooltip="Remove Filter" ng-click="clearItem(item)"></i></span>.
 	</p>
         <p class="results-summary" ng-show="summaryItems.length == 0">
                 <strong>{{numFound}}</strong> results found.
