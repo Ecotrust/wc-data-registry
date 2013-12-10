@@ -37,7 +37,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                 },
                 html: {
                     label: 'HTML',
-                    tooltip: "Stylized Metadata"
+                    tooltip: "Web Page or Styled Metadata"
                 },
                 img: {
                     label: 'IMG',
@@ -45,11 +45,11 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                 },
                 kml: {
                     label: 'KML',
-                    tooltip: "Google Earth XML File"
+                    tooltip: "Google Earth KML File"
                 },
                 kmz: {
                     label: 'KMZ',
-                    tooltip: "Compressed Google Earth XML File"
+                    tooltip: "Google Earth KML File"
                 },
                 pdf: {
                     label: 'PDF',
@@ -81,7 +81,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                 },
                 wms: {
                     label: 'WMS',
-                    tooltip: "ORC Web Mapping Service"
+                    tooltip: "OGC Web Mapping Service"
                 },
                 xls: {
                     label: 'XLS',

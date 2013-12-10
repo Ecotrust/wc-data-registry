@@ -7,9 +7,10 @@ angular.module('wcodpApp').factory('metadata', [function() {
     //  the namespaces and escaped colons; another without the namespaces.
     var _paths = {
         datePublished: {
-            iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:date > gmd\\:CI_Date > gmd\\:date > gco\\:DateTime, identificationInfo > MD_DataIdentification > citation > CI_Citation > date > CI_Date > date > DateTime",
             cd: "",
-            fgdc: "metadata > idinfo > timeperd > timeinfo > sngdate > caldate"
+            fgdc: "metadata > idinfo > citation > citeinfo > pubdate",
+            // fgdc: "metadata > idinfo > timeperd > timeinfo > sngdate > caldate",
+            iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:date > gmd\\:CI_Date > gmd\\:date > gco\\:DateTime, identificationInfo > MD_DataIdentification > citation > CI_Citation > date > CI_Date > date > DateTime"
         },
         creator: {
             cd: "",
@@ -18,7 +19,8 @@ angular.module('wcodpApp').factory('metadata', [function() {
         },
         publisher: {
             cd: "",
-            fgdc: "metadata > idinfo > citation > citeinfo > pubinfo > publish",
+            fgdc: "metadata > distinfo > distrib > cntinfo > cntorgp > cntorg",
+            //fgdc: "metadata > idinfo > citation > citeinfo > pubinfo > publish",
             iso: "gmd\\:contact > gmd\\:CI_ResponsibleParty > gmd\\:organisationName > gco\\:CharacterString, contact > CI_ResponsibleParty > organisationName > CharacterString"
         },
         contactName: {
