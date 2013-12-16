@@ -30850,7 +30850,6 @@ angular.module('wcodpApp').factory('packery', ['$timeout', function($timeout) {
     };
 
 }]);
-
 angular.module('wcodpApp').factory('metadata', [function() {
 
     // jQuery selector strings used for xml lookup of values across
@@ -30888,7 +30887,7 @@ angular.module('wcodpApp').factory('metadata', [function() {
         constraints: {
             cd: "",
             fgdc: "metadata > idinfo > useconst",
-            iso: "gmd\\:resourceConstraints gmd\\:useConstraints, resourceConstraints useConstraints"
+            iso: "gmd\\:resourceConstraints > gmd\\:MD_LegalConstraints > gmd\\:otherConstraints > gmd\\:CharacterString, resourceConstraints > MD_LegalConstraints > otherConstraints > CharacterString"
         }
     };
 
@@ -30957,6 +30956,7 @@ angular.module('wcodpApp').factory('metadata', [function() {
     };
 
 }]);
+
 
 angular.module('wcodpApp').factory('browserSize', ['$document', function($document) {
 
