@@ -1,4 +1,3 @@
-
 angular.module('wcodpApp').factory('metadata', [function() {
 
     // jQuery selector strings used for xml lookup of values across
@@ -36,7 +35,7 @@ angular.module('wcodpApp').factory('metadata', [function() {
         constraints: {
             cd: "",
             fgdc: "metadata > idinfo > useconst",
-            iso: "gmd\\:resourceConstraints gmd\\:useConstraints, resourceConstraints useConstraints"
+            iso: iso: "gmd\\:resourceConstraints gmd\\:MD_LegalConstraints gmd\\:otherConstraints gmd\\:CharacterString, resourceConstraints MD_LegalConstraints otherConstraints CharacterString"
         }
     };
 
