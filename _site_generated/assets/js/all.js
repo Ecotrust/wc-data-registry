@@ -30887,7 +30887,7 @@ angular.module('wcodpApp').factory('metadata', [function() {
         constraints: {
             cd: "",
             fgdc: "metadata > idinfo > useconst",
-            iso: "gmd\\:resourceConstraints > gmd\\:MD_LegalConstraints > gmd\\:otherConstraints > gmd\\:CharacterString, resourceConstraints > MD_LegalConstraints > otherConstraints > CharacterString"
+            iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:resourceConstraints > gmd\\:MD_LegalConstraints > gmd\\:otherConstraints > gco\\:CharacterString, identificationInfo > MD_DataIdentification > resourceConstraints > MD_LegalConstraints > otherConstraints > CharacterString"
         }
     };
 
@@ -32051,7 +32051,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             };
 
             scope.metadataXmlUrl = function () {
-                return '/geoportal/rest/document?id=' + scope.resultData['sys.src.item.uri_s'];
+                return '/geoportal/rest/document?id=' + scope.resultData['sys.sync.foreign.id_s'];
             };
 
             scope.jsonUrl = function () {
