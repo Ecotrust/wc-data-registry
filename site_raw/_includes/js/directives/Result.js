@@ -195,7 +195,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             };
 
             scope.metadataXmlUrl = function () {
-                return '/geoportal/rest/document?id=' + scope.resultData['sys.src.item.uri_s'];
+                return '/geoportal/rest/document?id=' + scope.resultData['sys.sync.foreign.id_s'];
             };
 
             scope.jsonUrl = function () {

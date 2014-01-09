@@ -35,7 +35,7 @@ angular.module('wcodpApp').factory('metadata', [function() {
         constraints: {
             cd: "",
             fgdc: "metadata > idinfo > useconst",
-            iso: "gmd\\:resourceConstraints > gmd\\:MD_LegalConstraints > gmd\\:otherConstraints > gmd\\:CharacterString, resourceConstraints > MD_LegalConstraints > otherConstraints > CharacterString"
+            iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:resourceConstraints > gmd\\:MD_LegalConstraints > gmd\\:otherConstraints > gco\\:CharacterString, identificationInfo > MD_DataIdentification > resourceConstraints > MD_LegalConstraints > otherConstraints > CharacterString"
         }
     };
 
