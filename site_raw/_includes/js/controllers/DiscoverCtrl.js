@@ -10,7 +10,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.queryStringWatchInitialized = false;
 	$scope.filtersAreActive = false;
 	$scope.showingMobileFiltersModal = false;
-        $scope.browseAll = false;
+		$scope.browseAll = false;
 
 	$scope.onLoad = function () {
 		// Get total record count and initial filter option lists & counts.
@@ -54,31 +54,28 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		solr.getResultsForQueryString($scope.resultsPerPage, $scope.pageIndex, success, error);
 	};
 
-        $scope.searchAll = function () {
+	$scope.searchAll = function () {
 
-                var success = function (data) {
-                        // Fill UI with results.
-                        $scope.resultsData = data.response.docs;
-                        $scope.numFound = data.response.numFound;
-                        $scope.filtersAreActive = $scope.checkFiltersAreActive(data.filterVals);
-                        $scope.facets = data.facet_counts;
-                };
+		var success = function (data) {
+			// Fill UI with results.
+			$scope.resultsData = data.response.docs;
+			$scope.numFound = data.response.numFound;
+			$scope.filtersAreActive = $scope.checkFiltersAreActive(data.filterVals);
+			$scope.facets = data.facet_counts;
+		};
 
-                var error = function (data) {
-                        $scope.resultsData = {};
-                        $scope.numFound = 0;
-                        $scope.filtersAreActive = $scope.checkFiltersAreActive(data.filterVals);
-                        $scope.facets = undefined;
-                        if (console) { console.log("Error querying Solr:" + data.error.msg || "no info available"); }
-                };
+		var error = function (data) {
+			$scope.resultsData = {};
+			$scope.numFound = 0;
+			$scope.filtersAreActive = $scope.checkFiltersAreActive(data.filterVals);
+			$scope.facets = undefined;
+			if (console) { console.log("Error querying Solr:" + data.error.msg || "no info available"); }
+		};
 
-                solr.getAllResults($scope.resultsPerPage, $scope.pageIndex, success, error);
+		solr.getAllResults($scope.resultsPerPage, $scope.pageIndex, success, error);
 
-                $scope.browseAll = true;
-
-                console.log("Search All!");
-
-        };
+		$scope.browseAll = true;
+	};
 
 	$scope.checkFiltersAreActive = function (filterVals) {
 		return (filterVals && (filterVals.text || filterVals.latLng || (filterVals.categories && filterVals.categories.length > 0) || (filterVals.issues && filterVals.issues.length > 0) || (filterVals.sources && filterVals.sources.length > 0)));
