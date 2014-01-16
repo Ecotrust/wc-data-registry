@@ -30864,7 +30864,7 @@ angular.module('wcodpApp').factory('metadata', [function() {
             iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:date > gmd\\:CI_Date > gmd\\:date > gco\\:DateTime, identificationInfo > MD_DataIdentification > citation > CI_Citation > date > CI_Date > date > DateTime"
         },
         creator: {
-            cd: "",
+            cd: "rdf\\:RDF > rdf\\:Description > dc\\:creator",
             fgdc: "metadata > idinfo > citation > citeinfo > origin",
             iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:pointOfContact > gmd\\:CI_ResponsibleParty > gmd\\:organisationName > gco\\:CharacterString, identificationInfo > MD_DataIdentification > pointOfContact > CI_ResponsibleParty > organisationName > CharacterString"
         },
@@ -30885,7 +30885,7 @@ angular.module('wcodpApp').factory('metadata', [function() {
             iso: "gmd\\:contactInfo > gmd\\:CI_Contact > gmd\\:address > gmd\\:CI_Address > gmd\\:electronicMailAddress > gco\\:CharacterString, contactInfo > CI_Contact > address > CI_Address > electronicMailAddress > CharacterString"
         },
         constraints: {
-            cd: "",
+            cd: "rdf\\:RDF > rdf\\:Description > dct\\:abstract > rdf\\:value[rdf\\:resource='mxd.subject']",
             fgdc: "metadata > idinfo > useconst",
             iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:resourceConstraints > gmd\\:MD_LegalConstraints > gmd\\:otherConstraints > gco\\:CharacterString, identificationInfo > MD_DataIdentification > resourceConstraints > MD_LegalConstraints > otherConstraints > CharacterString"
         }
