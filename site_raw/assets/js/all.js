@@ -55,6 +55,7 @@ angular.module('wcodpApp', ['ui.bootstrap', 'leaflet-directive']);
 {% include js/directives/ResultsList.js %}
 {% include js/directives/Result.js %}
 {% include js/directives/Leaflet.js %}
+{% include js/directives/ScrollTo.js %}
 // Controllers
 {% include js/controllers/HomeCtrl.js %}
 {% include js/controllers/DiscoverCtrl.js %}

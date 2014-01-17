@@ -6,7 +6,7 @@ active: connect
 ---
 
 <!--<div class="container" id="connect" ng-controller="ConnectCtrl">-->
-<div class="container" id="about" ng-controller="ConnectCtrl">
+<div class="container" id="about">
 
 	<div class="row">
 
@@ -32,21 +32,21 @@ active: connect
 					<p>In addition to the "Discover" web interface for data seekers, this portal provides several machine pathways for application developers to enable them to search and connect to the services and datasets published by network members. These pathways represent multiple ways that portal services can be integrated into local tools, and thereby enable smaller projects to benefit from the published contributions of the wider network.
 					</p><p>Read more about these pathways and how to use them below:</p>
 					<ul>
-					<li><a href="#csw" >Catalog Services for the Web (CSW)</a></li>
-					<li><a href="#esri" >ESRI Geoportal REST API</a></li>
-					<li><a href="#opensearch" >OpenSearch API</a></li>
-					<li><a href="#solr" >SOLR REST API</a></li>
+					<li><a href="" scroll-to="csw" >Catalog Services for the Web (CSW)</a></li>
+					<li><a href="" scroll-to="esri" >ESRI Geoportal REST API</a></li>
+					<li><a href="" scroll-to="opensearch" >OpenSearch API</a></li>
+					<li><a href="" scroll-to="solr" >SOLR REST API</a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="row" id="csw">
 		<div class="home-item blue span12">
 			<div class="home-item-cntr about">
 				<div class="home-item-label inverse clearfix">
-					<div class="pull-left"><a name="csw"></a>Catalog Services for the Web (CSW)</div>
+					<div class="pull-left">Catalog Services for the Web (CSW)</div>
 				</div>
 				<div>
 					<p>CSW is an open standard created by the Open Geospatial Consortium for discovering, browsing, and querying metadata records from a data catalog.  This portal uses CSW to harvest many of the published resources from our network providers, and in turn publishes a CSW interface that you can connect to.  Access our CSW interface at the following URL using your favorite CSW client:</p>
@@ -78,11 +78,11 @@ active: connect
 
 
 
-	<div class="row">
+	<div class="row" id="esri">
 		<div class="home-item blue span12">
 			<div class="home-item-cntr about">
 				<div class="home-item-label inverse clearfix">
-					<div class="pull-left"><a name="esri"></a>ESRI Geoportal REST API</div>
+					<div class="pull-left">ESRI Geoportal REST API</div>
 				</div>
 				<div>
 					<p>At the heart of this portal is an ESRI Geoportal data catalog, which provides an easy to use HTTP-based interface for querying resources. Access our Geoportal REST API at:</p>
@@ -107,11 +107,11 @@ active: connect
 	</div>
 
 
-	<div class="row">
+	<div class="row" id="opensearch">
 		<div class="home-item blue span12">
 			<div class="home-item-cntr about">
 				<div class="home-item-label inverse clearfix">
-					<div class="pull-left"><a name="opensearch"></a>OpenSearch API</div>
+					<div class="pull-left"></a>OpenSearch API</div>
 				</div>
 				<div>
 					<p>OpenSearch is an open standard for search created by Amazon A9 that makes records available in a format suitable for syndication and aggregation.  Access our OpenSearch API at:</p>
@@ -141,11 +141,11 @@ active: connect
 	</div>
 
 
-	<div class="row">
+	<div class="row" id="solr">
 		<div class="home-item blue span12">
 			<div class="home-item-cntr about">
 				<div class="home-item-label inverse clearfix">
-					<div class="pull-left"><a name="solr"></a>SOLR REST API</div>
+					<div class="pull-left"></a>SOLR REST API</div>
 				</div>
 				<div>
 					<p>SOLR provides blazing-fast full-text and faceted search through a standard REST interface.  It's the driving force behind our <a href="/discover/">Discover</a> page.  Access our SOLR REST API at:</p>
