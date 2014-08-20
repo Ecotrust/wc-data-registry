@@ -21,7 +21,14 @@
 			<li><a target="_blank" ng-click="linkClicked($event)" href="{{ metadataXmlUrl() }}">METADATA XML</a><i class="icon-info-sign" tooltip-placement="bottom" tooltip="Metadata XML Document (ISO or FGDC)"></i></li>
 			<li><a target="_blank" ng-click="linkClicked($event)" href="{{ jsonUrl() }}">JSON</a><i class="icon-info-sign" tooltip-placement="bottom" tooltip="ESRI REST Service JSON"></i></li> 
 
-			<li><a target="_blank" ng-click="linkClicked($event)" href="{{ marinePlannerUrl() }}">VISUALIZE</a><i class="icon-info-sign" tooltip-placement="bottom" tooltip="View on an interactive map"></i></li>		
+			<li ng-show="marinePlannerUrl">
+				<a 
+					target="_blank" 
+					ng-click="linkClicked($event)" 
+					href="{{ marinePlannerUrl }}">VISUALIZE
+				</a>
+				<i class="icon-info-sign" tooltip-placement="bottom" tooltip="View on an interactive map"></i>
+			</li>		
 			
 		</ul>
 	</div>

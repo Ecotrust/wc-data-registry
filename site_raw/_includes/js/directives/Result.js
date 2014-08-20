@@ -1,5 +1,5 @@
 
-angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata', function($http, $location, metadata, marinePlanner) {
+angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata', 'marinePlanner', function($http, $location, metadata, marinePlanner) {
 
     return {
         templateUrl: '/assets/views/ResultView.html',
@@ -204,20 +204,20 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                 return scope.metadataXmlUrl() + '&f=pjson';
             };
             
-            scope.marinePlannerUrl = function () {
+            scope.getMarinePlannerUrl = function () {
                 var uuid = scope.resultData['sys.sync.foreign.id_s'];
-                if (scope.marinePlannerUrl.length > 0) {
-                    return scope.marinePlannerUrl;
-                } else {
+                if (scope.marinePlannerUrl.length === 0) {
                     var success = function (result) {
                         scope.marinePlannerUrl = result;
                     };
                     var error = function () {
-                        scope.marinePlannerUrl = '#error';
+                        scope.marinePlannerUrl = '';
                     };
                     marinePlanner.getMarinePlannerUrl(uuid, success, error);
                 }
             };
+            scope.getMarinePlannerUrl();
+
 
             scope.getLinks = function () {
                 $http.get(scope.jsonUrl()).success(function (data) {
