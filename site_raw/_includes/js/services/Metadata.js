@@ -25,8 +25,8 @@ angular.module('wcodpApp').factory('metadata', [function() {
         contactName: {
             cd: "",
             fgdc: "metadata > idinfo > ptcontac > cntinfo > cntorgp > cntper",
-            iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:pointOfContact > gmd\\:CI_ResponsibleParty > gmd\\:individualName > gco\\:CharacterString, identificationInfo > MD_DataIdentification > pointOfContact > CI_ResponsibleParty > individualName > CharacterString"
-        },
+            iso: "gmi\\:MI_Metadata > gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:pointOfContact > gmd\\:CI_ResponsibleParty > gmd\\:individualName > gco\\:CharacterString, MI_Metadata > identificationInfo > MD_DataIdentification > pointOfContact > CI_ResponsibleParty > individualName > CharacterString" 
+		},
         contactEmail: {
             cd: "",
             fgdc: "metadata > idinfo > ptcontac > cntinfo > cntemail",

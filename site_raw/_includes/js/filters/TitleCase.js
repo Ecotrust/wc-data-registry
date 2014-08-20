@@ -7,7 +7,7 @@ angular.module('wcodpApp').filter('titleCase', function() {
 		var words;
 
 		// Spit into words.
-		words = input.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase().split(' ');
+		words = input.replace(/([a-z])([A-Z])/g, '$1 $2').split(' ');
 
 		// Title case
 		for (var i = 0; i < words.length; i++) {
