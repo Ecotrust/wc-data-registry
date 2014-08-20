@@ -192,7 +192,11 @@ small {
   background-color: transparent;
 }
 .home-item-cntr {
-  padding: 10px 15px 15px 15px;
+  padding: 0px 15px 0px 15px;
+  height: 100%;
+}
+a > div.home-item-cntr:hover {
+  background: rgba(4, 4, 4, 0.1);
 }
 .home-item-cntr.welcome {
   padding: 20px 30px 30px 30px;
@@ -221,6 +225,7 @@ small {
   font-size: 24px;
 }
 .home-item-label {
+  padding-top: 10px;
   margin-bottom: 10px;
 }
 .home-item-label > .pull-left {

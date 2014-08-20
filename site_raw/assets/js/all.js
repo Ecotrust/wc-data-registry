@@ -47,6 +47,7 @@ angular.module('wcodpApp', ['ui.bootstrap', 'leaflet-directive']);
 {% include js/filters/TitleCase.js%}
 // Services
 {% include js/services/Solr.js %}
+{% include js/services/MarinePlanner.js %}
 {% include js/services/Packery.js %}
 {% include js/services/Metadata.js %}
 {% include js/services/BrowserSize.js %}
