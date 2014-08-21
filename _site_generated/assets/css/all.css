@@ -7625,20 +7625,21 @@ a > div.home-item-cntr:hover {
 }
 .home-sub-item {
   background: white;
-  background: rgba(252, 252, 252, 0.9);
+  background: rgba(252, 252, 252, 0.75);
   display: block;
   max-width: 350px;
   padding: 10px;
   margin: 10px;
   font-family: OpenSans, sans-serif;
   color: black;
-  text-shadow: 1px 1px 10px #ffffff;
+  text-shadow: 0px 0px 2px #ffffff;
+  font-weight: bold;
   padding-left: 27px;
   line-height: 24px;
 }
 .home-sub-item:hover {
   background: #eee;
-  background: rgba(230, 230, 230, 0.8);
+  background: rgba(230, 230, 230, 0.9);
   cursor: pointer;
   color: black;
 }
