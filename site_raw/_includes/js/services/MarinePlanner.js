@@ -2,7 +2,7 @@
 angular.module('wcodpApp').factory('marinePlanner', ['$http', '$timeout', function($http, $timeout) {
 
     var _availableLayers = [],
-        _availableLayersEndpoint = 'http://wcodp-md.apps.pointnineseven.com/data_manager/geoportal_ids',
+        _availableLayersEndpoint = 'http://wcodp-md.apps.pointnineseven.com/data_manager/geoportal_ids?callback=JSON_CALLBACK',
         _slugPlaceholder = '{layerSlug}',
         _layerUrlPattern = 'http://wcodp-md.apps.pointnineseven.com/visualize/#' + _slugPlaceholder;
 
@@ -16,30 +16,34 @@ angular.module('wcodpApp').factory('marinePlanner', ['$http', '$timeout', functi
             callback(_availableLayers);
         } else {
             // Grab list of visualizable layers from mp.
-            //$http.get(_availableLayersEndpoint).success(function (data) {
+            $http.jsonp(_availableLayersEndpoint).success(function (data) {
                 // 'data' should be a collection of objects, each containing 
                 // an id and a slug.
                 
                 // Cache result so we don't always have to fetch the list 
                 // from marine planner.
-                //_availableLayers = data;
+                _availableLayers = data;
                 
-                _availableLayers = {
-                    geoportal_layers: [
-                        {
-                            uuid: "174BE5C6-F9E8-4978-9F1B-CF0862920AA8",
-                            name: "American Indian Trust Lands (USCB, 2010)",
-                            slug: "american-indian-trust-lands-uscb-2010"
-                        }
-                    ]
-                };
+                //
+                // For testing purposes comment the above line adn replace with this:
+                //
+                // _availableLayers = {
+                //     geoportal_layers: [
+                //         {
+                //             uuid: "174BE5C6-F9E8-4978-9F1B-CF0862920AA8",
+                //             name: "American Indian Trust Lands (USCB, 2010)",
+                //             slug: "american-indian-trust-lands-uscb-2010"
+                //         }
+                //     ]
+                // };
+                // 
                 
                 // Satisfy the current request.
                 callback(_availableLayers);
 
-            // }).error(function (data) {
-            //     if (console) { console.log('Error getting available layers list from marine planner.'); }  
-            // });
+            }).error(function (data, status, headers, config) {
+                if (console) { console.log('Error getting available layers list from marine planner.'); }  
+            });
         }
     }
 
