@@ -18,7 +18,11 @@
 						{% else %}
 						<li>
 						{% endif %}
+							{% if link == 'visualize' %}
+							<a href="http://wcodp-md.apps.pointnineseven.com/visualize">{{ link }}</a>
+							{% else %}
 							<a href="/{{ link }}">{{ link }}</a>
+							{% endif %}
 						</li>
 					{% endfor %}
 				</ul>
