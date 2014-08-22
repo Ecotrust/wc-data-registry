@@ -1,10 +1,14 @@
 
-angular.module('wcodpApp').factory('marinePlanner', ['$http', '$timeout', function($http, $timeout) {
+angular.module('wcodpApp').factory('marinePlanner', ['$http', '$location', function($http, $location) {
 
     var _availableLayers = [],
-        _availableLayersEndpoint = 'http://wcodp-md.apps.pointnineseven.com/data_manager/geoportal_ids?callback=JSON_CALLBACK',
         _slugPlaceholder = '{layerSlug}',
-        _layerUrlPattern = 'http://wcodp-md.apps.pointnineseven.com/visualize/#' + _slugPlaceholder;
+        _isProduction = $location.host().indexOf('westcoastoceans.org') > -1,
+        _mpProdUrl = 'http://wcodp-md.apps.pointnineseven.com',
+        _mpStagingUrl = 'http://wcodp-md-staging.apps.pointnineseven.com',
+        _mpUrl = _isProduction ? _mpProdUrl : _mpStagingUrl,
+        _availableLayersEndpoint = _mpUrl + '/data_manager/geoportal_ids?callback=JSON_CALLBACK',
+        _layerUrlPattern = _mpUrl + '/visualize/#' + _slugPlaceholder;
 
 
     /**
