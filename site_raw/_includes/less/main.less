@@ -368,7 +368,18 @@ a > div.home-item-cntr:hover {
 }
 
 .home-item-cntr.about,
-.home-item-cntr.learn-more { padding: 30px 50px 40px 50px; }
+.home-item-cntr.learn-more,
+.image-item-cntr
+{ padding: 30px 50px 40px 50px; }
+
+.image-item-cntr {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.image-item-cntr p.big {
+  padding-top: 30px;
+  padding-bottom: 40px;
+}
 
 #about p {
   font-weight: 200;
@@ -1020,4 +1031,10 @@ p.results-summary strong {
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
+}
+
+.image-item { margin-left: 10px; }
+
+@media (max-width: 767px) {
+.image-item { margin-left: 0px; margin-top: 10px;}  
 }
