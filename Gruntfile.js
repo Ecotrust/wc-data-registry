@@ -9,8 +9,20 @@ module.exports = function(grunt) {
             dest: './_site_generated/assets/'
         }]
       }
+    },
+    cssmin: {
+      my_target: {
+        files: [{
+          expand: true,
+          cwd: '_site_generated/assets/css/',
+          src: ['*.css', '!*.min.css'],
+          dest: '_site_generated/assets/css/',
+          ext: '.css'
+        }]
+      }
     }
   });
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.registerTask('default', ['uglify']);
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.registerTask('default', ['uglify', 'cssmin']);
 }
