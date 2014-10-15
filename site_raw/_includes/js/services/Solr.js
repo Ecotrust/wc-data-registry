@@ -157,6 +157,8 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
 
             if (!textQuery.length > 0) {
                 textQuery = '*';
+            }else{
+                textQuery += '*';
             }
 
             if (boundingBoxQuery!=='') {
