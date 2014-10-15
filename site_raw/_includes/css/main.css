@@ -191,6 +191,9 @@ small {
 .home-item.transparent {
   background-color: transparent;
 }
+.blue {
+  background-color: #0070cf;
+}
 .home-item-cntr {
   padding: 0px 15px 0px 15px;
   height: 100%;
@@ -957,10 +960,18 @@ p.results-summary strong {
 .InformNumbers--number {
   font-size: 16px;
   padding-right: 10px;
+  color: #0070cf;
 }
 p.InformNumbers--footnote {
   margin-top: 20px;
   font-size: 12px !important;
   color: #4d4d4f !important;
   line-height: 19px !important;
+}
+.debris-img-caption {
+  margin-top: 24px;
+  color: #332e1f;
+}
+.white-text {
+  color: white !important;
 }
