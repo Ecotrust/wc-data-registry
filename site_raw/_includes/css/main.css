@@ -450,6 +450,9 @@ ul.filter-options li:hover {
 ul.filter-options li > i {
   margin-right: 18px;
 }
+ul.sub-filter-options {
+  margin-left: 33px;
+}
 #location-filter {
   padding-left: 0;
   padding-right: 0;
