@@ -369,7 +369,8 @@ a > div.home-item-cntr:hover {
 
 .home-item-cntr.about,
 .home-item-cntr.learn-more,
-.image-item-cntr
+.image-item-cntr,
+.home-item-cntr.numbers
 { padding: 30px 50px 40px 50px; }
 
 .image-item-cntr {
@@ -387,7 +388,8 @@ a > div.home-item-cntr:hover {
   line-height: 36px;
 }
 .home-item-cntr.about p:first-child,
-.home-item-cntr.learn-more p:first-child {
+.home-item-cntr.learn-more p:first-child,
+.home-item-cntr.numbers p:first-child {
   margin-top: 30px;
 }
 .home-item-cntr.about a {
@@ -396,7 +398,8 @@ a > div.home-item-cntr:hover {
 .home-item .learn-more p { color: inherit; }
 
 .home-item-cntr.about a,
-.home-item-cntr.learn-more a {
+.home-item-cntr.learn-more a,
+.home-item-cntr.numbers a {
   font-weight: normal;
 }
 .home-item-cntr.about a:hover {
@@ -1038,3 +1041,27 @@ p.results-summary strong {
 @media (max-width: 767px) {
 .image-item { margin-left: 0px; margin-top: 10px;}  
 }
+
+
+
+/*
+ * marine debris page
+ */
+.InformNumbers p {
+  font-size: 14px !important;
+  .use-monospaced-font();
+  line-height: 22px !important;
+}
+
+.InformNumbers--number {
+  font-size: 16px;
+  padding-right: 10px;
+}
+
+p.InformNumbers--footnote {
+  margin-top: 20px;
+  font-size: 12px !important;
+  color: @darkGrey !important;
+  line-height: 19px !important;
+}
+
