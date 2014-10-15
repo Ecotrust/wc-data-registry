@@ -31,7 +31,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             scope.allowedLinkTypes = {
                 csv: {
                     label: 'CSV',
-                    toolip: "Comma Separated Values"
+                    tooltip: "Comma Separated Values"
                 },
                 ftp: {
                     label: 'FTP',
@@ -100,6 +100,10 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                 esrirest: {
                     label: 'ESRI REST',
                     tooltip: "ArcGIS Server Web Service"
+                },
+                open: {
+                    label: 'Open',
+                    tooltip: "Go to web page with more information"
                 }
             };
 
