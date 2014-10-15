@@ -30765,6 +30765,8 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
 
             if (!textQuery.length > 0) {
                 textQuery = '*';
+            }else{
+                textQuery += '*';
             }
 
             if (boundingBoxQuery!=='') {
@@ -31345,6 +31347,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             var collectionName = pathArray[0],
                                 categoryName = pathArray[1],
                                 subcategoryName = pathArray[2];
+                                subsubcategoryName = pathArray[3];
 
                             isMultiTiered = subcategoryName ? true : false;
 
@@ -31362,18 +31365,32 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                                 }
 
                                 // Add subcategory.
-                                if (subcategoryName) {
+                                if (subcategoryName && !subsubcategoryName) {
                                     categories[categoryName].subcategories[subcategoryName] = {
                                         key: [collectionName,categoryName,subcategoryName].join('.'),
                                         label: subcategoryName.split('_').join(' '),
                                         count: list[_ssIndex + 1]
+                                        ,subsubcategories: {}
                                     };
                                 }
+
+                                if (subsubcategoryName){
+                                    categories[categoryName].subcategories[subcategoryName].subsubcategories[subsubcategoryName] = {
+                                        key: [collectionName,categoryName,subcategoryName,subsubcategoryName].join('.'),
+                                        label: subsubcategoryName.split('_').join(' '),
+                                        count: list[_ssIndex + 1]
+                                    };
+                                }
+
                             }
                         });
                         
                         return { 'isMultiTiered': isMultiTiered, 'categories': categories}
 
+                    };
+
+                    scope.showSubCategories = function (subsubcategories){
+                        return !_.isEmpty(subsubcategories);
                     };
 
                     scope.parseSites = function(facetCounts) {
