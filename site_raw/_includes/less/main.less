@@ -1068,11 +1068,36 @@ p.InformNumbers--footnote {
   line-height: 19px !important;
 }
 
-.debris-img-caption {
-  margin-top: 24px;
-  color: @nearlyBlack;
-}
-
 .white-text {
   color: white !important;
 }
+
+.MpLinkBlock {
+  margin-top: 10px;
+}
+.MpLinkBlock:hover {
+  background-color: @faintGrey;
+}
+.MpLinkBlock--linkBackground {
+  padding: 10px;
+  display: block;
+}
+.MpLinkBlock--title {
+  padding-bottom: 10px;
+  color: @nearlyBlack;
+}
+.MpLinkBlock--caption {
+  padding-top: 10px;
+  color: black;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  margin: 10px 10px 0 10px;
+}
+
+
+@media (min-width: 768px)  { .MpLinkBlock--title { height: 130px; } }
+@media (min-width: 980px)  { .MpLinkBlock--title { height: 95px;  } }
+@media (min-width: 1200px) { .MpLinkBlock--title { height: 80px;  } }
+
+@media (max-width: 979px)  { .MpLinkBlock--title { font-size: 12px;} }
+@media (max-width: 768px)  { .MpLinkBlock--title { font-size: 14px;} }

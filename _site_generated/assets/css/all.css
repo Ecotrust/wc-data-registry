@@ -7854,9 +7854,6 @@ ul.filter-options li:hover {
 ul.filter-options li > i {
   margin-right: 18px;
 }
-ul.sub-filter-options {
-  margin-left: 33px;
-}
 #location-filter {
   padding-left: 0;
   padding-right: 0;
@@ -8319,12 +8316,54 @@ p.InformNumbers--footnote {
   color: #4d4d4f !important;
   line-height: 19px !important;
 }
-.debris-img-caption {
-  margin-top: 24px;
-  color: #332e1f;
-}
 .white-text {
   color: white !important;
+}
+.MpLinkBlock {
+  margin-top: 10px;
+}
+.MpLinkBlock:hover {
+  background-color: #eeeeee;
+}
+.MpLinkBlock--linkBackground {
+  padding: 10px;
+  display: block;
+}
+.MpLinkBlock--title {
+  padding-bottom: 10px;
+  color: #332e1f;
+}
+.MpLinkBlock--caption {
+  padding-top: 10px;
+  color: black;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  margin: 10px 10px 0 10px;
+}
+@media (min-width: 768px) {
+  .MpLinkBlock--title {
+    height: 130px;
+  }
+}
+@media (min-width: 980px) {
+  .MpLinkBlock--title {
+    height: 95px;
+  }
+}
+@media (min-width: 1200px) {
+  .MpLinkBlock--title {
+    height: 80px;
+  }
+}
+@media (max-width: 979px) {
+  .MpLinkBlock--title {
+    font-size: 12px;
+  }
+}
+@media (max-width: 768px) {
+  .MpLinkBlock--title {
+    font-size: 14px;
+  }
 }
 
  
