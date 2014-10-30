@@ -4,8 +4,8 @@ angular.module('wcodpApp').factory('marinePlanner', ['$http', '$location', funct
     var _availableLayers = [],
         _slugPlaceholder = '{layerSlug}',
         _isProduction = $location.host().indexOf('westcoastoceans.org') > -1,
-        _mpProdUrl = 'http://wcodp-md.apps.pointnineseven.com',
-        _mpStagingUrl = 'http://wcodp-md-staging.apps.pointnineseven.com',
+        _mpProdUrl = 'http://maps.westcoastoceans.org',
+        _mpStagingUrl = 'http://maps.westcoastoceans.org',
         _mpUrl = _isProduction ? _mpProdUrl : _mpStagingUrl,
         _availableLayersEndpoint = _mpUrl + '/data_manager/geoportal_ids?callback=JSON_CALLBACK',
         _layerUrlPattern = _mpUrl + '/visualize/#' + _slugPlaceholder;
@@ -82,7 +82,7 @@ angular.module('wcodpApp').factory('marinePlanner', ['$http', '$location', funct
         /**
          * An asynchronous call to get a url, if any exists, from a Marine Planner
          * end point that currently sits at: 
-         * http://wcodp-md.apps.pointnineseven.com/data_manager/geoportal_ids
+         * http://maps.westcoastoceans.org/data_manager/geoportal_ids
          */
         getMarinePlannerUrl: function (uuid, success_callback, error_callback) {
             _getListOfLayers(function (list) {
