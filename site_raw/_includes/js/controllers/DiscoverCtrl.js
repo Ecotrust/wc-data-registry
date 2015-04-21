@@ -50,7 +50,6 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 			$scope.facets = undefined;
 			if (console) { console.log("Error querying Solr:" + data.error.msg || "no info available"); }
 		};
-
 		solr.getResultsForQueryString($scope.resultsPerPage, $scope.pageIndex, success, error);
 	};
 

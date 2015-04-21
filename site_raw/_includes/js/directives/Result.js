@@ -19,6 +19,8 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
 
             scope.marinePlannerUrl = '';
 
+            scope.geoportalUrl = "http://wcga-vm01.sdsc.edu";
+
             scope.metadata = {
                 datePublished: '',
                 creator: '',
@@ -201,7 +203,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             };
 
             scope.metadataXmlUrl = function () {
-                return '/geoportal/rest/document?id=' + scope.resultData['sys.sync.foreign.id_s'];
+                return scope.geoportalUrl + '/geoportal/rest/document?id=' + scope.resultData['sys.sync.foreign.id_s'];
             };
 
             scope.jsonUrl = function () {

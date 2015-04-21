@@ -1,158 +1,177 @@
-<div>	
+<div>   
 
-	<a ng-show="mobileMode && !showingMobileFiltersModal" 
-		ng-click="showingMobileFiltersModal = true" 
-		href="javascript:void(0);"
-		class="filters-toggle filters-toggle-on">
-		<div class="label-container">
-			<i class="icon-filter"></i> FILTERING TOOLS
-		</div>
-	</a>
+    <a ng-show="mobileMode && !showingMobileFiltersModal" 
+        ng-click="showingMobileFiltersModal = true" 
+        href="javascript:void(0);"
+        class="filters-toggle filters-toggle-on">
+        <div class="label-container">
+            <i class="icon-filter"></i> FILTERING TOOLS
+        </div>
+    </a>
 
-	<div ng-hide="mobileMode && !showingMobileFiltersModal" ng-class="{'mobile-modal': mobileMode}" class="filters-container">
-		<!-- F I L T E R S -->
+    <div ng-hide="mobileMode && !showingMobileFiltersModal" ng-class="{'mobile-modal': mobileMode}" class="filters-container">
+        <!-- F I L T E R S -->
 
-		<form ng-submit="manualSubmit()">
-			<div id="search-filter">
-					<input type="search" placeholder="SEARCH KEYWORDS" ng-model="searchText">
-					<img src="/assets/img/icons/black_search.png" ng-click="manualSubmit()">
-			</div>
-		</form>
+        <form ng-submit="manualSubmit()">
+            <div id="search-filter">
+                    <input type="search" placeholder="SEARCH KEYWORDS" ng-model="searchText">
+                    <img src="/assets/img/icons/black_search.png" ng-click="manualSubmit()">
+            </div>
+        </form>
 
 
-		<!-- location filter -->
-		<a class="filter-group-toggle first" href="javascript:void(0)" ng-click="isLocationCollapsed = !isLocationCollapsed">
-			<div class="filter-group-label">
-				<i class="icon-map-marker subdued"></i>
-				Location 
-				<i ng-show="isLocationCollapsed" class="icon-angle-right pull-right"></i>
-				<i ng-hide="isLocationCollapsed" class="icon-angle-down pull-right"></i>
-			</div>		
-		</a>
-		<div collapse="isLocationCollapsed" id="location-filter" class="filter-group-container">
-		
-			<p ng-show="filteredLocation" class="directions">
-				<a class="select-all-link" href="javascript:void(0)" ng-click="clearLocationFilter()">CLEAR</a><small class="subdued">&nbsp;|&nbsp;Click map to select</small>
-			</p>
-			<p ng-hide="filteredLocation" class="directions">
-				<small class="subdued">Click map to select</small>
-			</p>
-			
-			<div leaflet defaults="mapOptions" center="center" markers="markers" class="leaflet-directive"></div>
+        <!-- location filter -->
+        <a class="filter-group-toggle first" href="javascript:void(0)" ng-click="isLocationCollapsed = !isLocationCollapsed">
+            <div class="filter-group-label">
+                <i class="icon-map-marker subdued"></i>
+                Location 
+                <i ng-show="isLocationCollapsed" class="icon-angle-right pull-right"></i>
+                <i ng-hide="isLocationCollapsed" class="icon-angle-down pull-right"></i>
+            </div>      
+        </a>
+        <div collapse="isLocationCollapsed" id="location-filter" class="filter-group-container">
+        
+            <p ng-show="filteredLocation" class="directions">
+                <a class="select-all-link" href="javascript:void(0)" ng-click="clearLocationFilter()">CLEAR</a><small class="subdued">&nbsp;|&nbsp;Click map to select</small>
+            </p>
+            <p ng-hide="filteredLocation" class="directions">
+                <small class="subdued">Click map to select</small>
+            </p>
+            
+            <div leaflet defaults="mapOptions" center="center" markers="markers" class="leaflet-directive"></div>
 
-			<p class="attribution subdued">
-				Map data CC-BY-SA by <a href="http://www.opendatacommons.org/licenses/odbl">OpenStreeMap</a>
-			</p>
-			<p class="attribution subdued">
-				Tiles by <a href="http://www.mapquest.com/">MapQuest</a>
-			</p>
-		
-		</div>
+            <p class="attribution subdued">
+                Map data CC-BY-SA by <a href="http://www.opendatacommons.org/licenses/odbl">OpenStreeMap</a>
+            </p>
+            <p class="attribution subdued">
+                Tiles by <a href="http://www.mapquest.com/">MapQuest</a>
+            </p>
+        
+        </div>
 
-		<!-- categories filter -->
-		<a class="filter-group-toggle" href="javascript:void(0)" ng-click="isCategoryCollapsed = !isCategoryCollapsed">
-			<div class="filter-group-label">
-				<i class="icon-th subdued"></i>
-				Categories
-				<i ng-show="isCategoryCollapsed" class="icon-angle-right pull-right"></i>
-				<i ng-hide="isCategoryCollapsed" class="icon-angle-down pull-right"></i>
-			</div>
-		</a>
-		<div collapse="isCategoryCollapsed" id="categories-filter" class="filter-group-container">
+        <!-- categories filter -->
+        <a class="filter-group-toggle" href="javascript:void(0)" ng-click="isCategoryCollapsed = !isCategoryCollapsed">
+            <div class="filter-group-label">
+                <i class="icon-th subdued"></i>
+                Categories
+                <i ng-show="isCategoryCollapsed" class="icon-angle-right pull-right"></i>
+                <i ng-hide="isCategoryCollapsed" class="icon-angle-down pull-right"></i>
+            </div>
+        </a>
+        <div collapse="isCategoryCollapsed" id="categories-filter" class="filter-group-container">
 
-			<div class="filter-option-group" ng-repeat="category in categories">
-				<p class="filter-option-group-label">{{ category.label | titleCase }} Data</p>
-				<ul class="unstyled filter-options">
-					<li ng-repeat="subcategory in category.subcategories" ng-click="toggleSubcategory(subcategory.key)">
-						<i ng-class="{'icon-check': isSelectedSubcategory(subcategory.key), 
-							'icon-check-empty': !isSelectedSubcategory(subcategory.key) }"></i>{{ subcategory.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ subcategory.count }}</strong>
+            <div class="filter-option-group" ng-repeat="category in categories">
+                <p class="filter-option-group-label">{{ category.label | titleCase }} Data</p>
+                <ul class="unstyled filter-options">
+                    <li ng-repeat="subcategory in category.subcategories" ng-click="toggleSubcategory(subcategory.key)">
+                        <i ng-class="{'icon-check': isSelectedSubcategory(subcategory.key), 
+                            'icon-check-empty': !isSelectedSubcategory(subcategory.key) }"></i>{{ subcategory.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ subcategory.count }}</strong>
 
-							<ul class="unstyled sub-filter-options" ng-if="showSubCategories(subcategory.subsubcategories)">
-								<li ng-repeat="subsubcategory in subcategory.subsubcategories" ng-click="toggleSubcategory(subsubcategory.key)">
-									<i ng-class="{'icon-check': isSelectedSubcategory(subsubcategory.key), 
-										'icon-check-empty': !isSelectedSubcategory(subsubcategory.key) }"></i>{{ subsubcategory.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ subsubcategory.count }}</strong>
-								</li>
-							</ul>
-					</li>
-				</ul>
-			</div>
+                            <ul class="unstyled sub-filter-options" ng-if="showSubCategories(subcategory.subsubcategories)">
+                                <li ng-repeat="subsubcategory in subcategory.subsubcategories" ng-click="toggleSubcategory(subsubcategory.key)">
+                                    <i ng-class="{'icon-check': isSelectedSubcategory(subsubcategory.key), 
+                                        'icon-check-empty': !isSelectedSubcategory(subsubcategory.key) }"></i>{{ subsubcategory.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ subsubcategory.count }}</strong>
+                                </li>
+                            </ul>
+                    </li>
+                </ul>
+            </div>
 
-		</div>
+        </div>
  
-		<!-- issues filter -->
-		<a class="filter-group-toggle" href="javascript:void(0)" ng-click="isIssuesCollapsed = !isIssuesCollapsed">
-			<div class="filter-group-label">
-				<i class="icon-tags subdued"></i>
-				Issues
-				<i ng-show="isIssuesCollapsed" class="icon-angle-right pull-right"></i>
-				<i ng-hide="isIssuesCollapsed" class="icon-angle-down pull-right"></i>
-			</div>
-		</a>
-		<div collapse="isIssuesCollapsed" id="tags-filter" class="filter-group-container">
+        <!-- issues filter -->
+        <a class="filter-group-toggle" href="javascript:void(0)" ng-click="isIssuesCollapsed = !isIssuesCollapsed">
+            <div class="filter-group-label">
+                <i class="icon-tags subdued"></i>
+                Issues
+                <i ng-show="isIssuesCollapsed" class="icon-angle-right pull-right"></i>
+                <i ng-hide="isIssuesCollapsed" class="icon-angle-down pull-right"></i>
+            </div>
+        </a>
+        <div collapse="isIssuesCollapsed" id="tags-filter" class="filter-group-container">
 
-			<ul class="unstyled filter-options">
-				<li ng-repeat="issue in issues" ng-click="toggleIssue(issue.key)">
-					<i ng-class="{'icon-check': isSelectedIssue(issue.key), 
-						'icon-check-empty': !isSelectedIssue(issue.key)}"></i>{{ issue.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ issue.count }}</strong>
-				</li>
-			</ul>
+            <ul class="unstyled filter-options">
+                <li ng-repeat="issue in issues" ng-click="toggleIssue(issue.key)">
+                    <i ng-class="{'icon-check': isSelectedIssue(issue.key), 
+                        'icon-check-empty': !isSelectedIssue(issue.key)}"></i>{{ issue.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ issue.count }}</strong>
+                </li>
+            </ul>
 
-		</div>
+        </div>
 
-                <!-- sources filter -->
-                <a class="filter-group-toggle" href="javascript:void(0)" ng-click="isSourcesCollapsed = !isSourcesCollapsed">
-                        <div class="filter-group-label">
-                                <i class="icon-cloud-download subdued"></i>
-                                Sources
-                                <i ng-show="isSourcesCollapsed" class="icon-angle-right pull-right"></i>
-                                <i ng-hide="isSourcesCollapsed" class="icon-angle-down pull-right"></i>
-                        </div>
-                </a>
-                <div collapse="isSourcesCollapsed" id="sourcess-filter" class="filter-group-container">
-
-                        <ul class="unstyled filter-options">
-                            <li ng-repeat="source in sources" ng-click="toggleSource(source.key)">
-                                <i ng-class="{'icon-check': isSelectedSource(source.key),
-                                    'icon-check-empty': !isSelectedSource(source.key) }"></i>{{ source.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ source.count }}</strong>
-                            </li>
-                        </ul>
+        <!-- data format filter -->
+        <a class="filter-group-toggle" href="javascript:void(0)" ng-click="isFormatsCollapsed = !isFormatsCollapsed">
+                <div class="filter-group-label">
+                        <i class="icon-list-alt subdued"></i>
+                        Data Formats
+                        <i ng-show="isFormatsCollapsed" class="icon-angle-right pull-right"></i>
+                        <i ng-hide="isFormatsCollapsed" class="icon-angle-down pull-right"></i>
                 </div>
+        </a>
+        <div collapse="isFormatsCollapsed" id="formats-filter" class="filter-group-container">
+
+                <ul class="unstyled filter-options">
+                    <li ng-repeat="format in formats" ng-click="toggleFormat(format.key)">
+                        <i ng-class="{'icon-check': isSelectedFormat(format.key),
+                            'icon-check-empty': !isSelectedFormat(format.key) }"></i>{{ format.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ format.count }}</strong>
+                    </li>
+                </ul>
+        </div>
+
+        <!-- sources filter -->
+        <a class="filter-group-toggle" href="javascript:void(0)" ng-click="isSourcesCollapsed = !isSourcesCollapsed">
+                <div class="filter-group-label">
+                        <i class="icon-cloud-download subdued"></i>
+                        Sources
+                        <i ng-show="isSourcesCollapsed" class="icon-angle-right pull-right"></i>
+                        <i ng-hide="isSourcesCollapsed" class="icon-angle-down pull-right"></i>
+                </div>
+        </a>
+        <div collapse="isSourcesCollapsed" id="sourcess-filter" class="filter-group-container">
+
+                <ul class="unstyled filter-options">
+                    <li ng-repeat="source in sources" ng-click="toggleSource(source.key)">
+                        <i ng-class="{'icon-check': isSelectedSource(source.key),
+                            'icon-check-empty': !isSelectedSource(source.key) }"></i>{{ source.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ source.count }}</strong>
+                    </li>
+                </ul>
+        </div>
 
 
-		<!-- formats filter -->
-		<!-- <a class="filter-group-toggle" href="javascript:void(0)" ng-click="isFormatsCollapsed = !isFormatsCollapsed">
-			<div class="filter-group-label">
-				<i class="icon-file-alt subdued"></i>
-				Formats
-				<i ng-show="isFormatsCollapsed" class="icon-angle-right pull-right"></i>
-				<i ng-hide="isFormatsCollapsed" class="icon-angle-down pull-right"></i>
-			</div>
-		</a>
-		<div collapse="isFormatsCollapsed" id="formats-filter" class="filter-group-container">
-			<a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
-			<ul class="unstyled filter-options">
-				<li><i class="icon-check-empty"></i>JSON <strong>00</strong></li>
-				<li><i class="icon-check-empty"></i>CSV <strong>00</strong></li>
-				<li><i class="icon-check-empty"></i>KML <strong>00</strong></li>
-				<li><i class="icon-check-empty"></i>Full Metadata <strong>00</strong></li>
-			</ul>
-		</div> -->
-		
-		<!-- <a ng-show="mobileMode" 
-			ng-click="manualSubmit()" 
-			class="filters-toggle filters-toggle-cancel"
-			href="javascript:void(0);">
-			CANCEL
-		</a> -->
-		
-		<a ng-show="mobileMode" 
-			ng-click="manualSubmit()" 
-			class="filters-toggle filters-toggle-submit"
-			href="javascript:void(0);">
-			SUBMIT <!-- <i class="icon-angle-right"></i> -->
-		</a>
+        <!-- formats filter -->
+        <!-- <a class="filter-group-toggle" href="javascript:void(0)" ng-click="isFormatsCollapsed = !isFormatsCollapsed">
+            <div class="filter-group-label">
+                <i class="icon-file-alt subdued"></i>
+                Formats
+                <i ng-show="isFormatsCollapsed" class="icon-angle-right pull-right"></i>
+                <i ng-hide="isFormatsCollapsed" class="icon-angle-down pull-right"></i>
+            </div>
+        </a>
+        <div collapse="isFormatsCollapsed" id="formats-filter" class="filter-group-container">
+            <a class="select-all-link" href="javascript:void(0)">SELECT ALL</a>
+            <ul class="unstyled filter-options">
+                <li><i class="icon-check-empty"></i>JSON <strong>00</strong></li>
+                <li><i class="icon-check-empty"></i>CSV <strong>00</strong></li>
+                <li><i class="icon-check-empty"></i>KML <strong>00</strong></li>
+                <li><i class="icon-check-empty"></i>Full Metadata <strong>00</strong></li>
+            </ul>
+        </div> -->
+        
+        <!-- <a ng-show="mobileMode" 
+            ng-click="manualSubmit()" 
+            class="filters-toggle filters-toggle-cancel"
+            href="javascript:void(0);">
+            CANCEL
+        </a> -->
+        
+        <a ng-show="mobileMode" 
+            ng-click="manualSubmit()" 
+            class="filters-toggle filters-toggle-submit"
+            href="javascript:void(0);">
+            SUBMIT <!-- <i class="icon-angle-right"></i> -->
+        </a>
 
 
-	</div>
+    </div>
 
 </div>
