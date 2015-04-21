@@ -33859,7 +33859,13 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	};
 
 	$scope.checkFiltersAreActive = function (filterVals) {
-		return (filterVals && (filterVals.text || filterVals.latLng || (filterVals.categories && filterVals.categories.length > 0) || (filterVals.issues && filterVals.issues.length > 0) || (filterVals.sources && filterVals.sources.length > 0)));
+		return (filterVals && (filterVals.text 
+							   || filterVals.latLng 
+							   || (filterVals.categories && filterVals.categories.length > 0) 
+							   || (filterVals.issues && filterVals.issues.length > 0) 
+							   || (filterVals.sources && filterVals.sources.length > 0)
+							   || (filterVals.formats && filterVals.formats.length > 0)
+				));
 	};
 
 	$scope.getQueryString = function () {
