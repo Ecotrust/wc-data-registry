@@ -63,14 +63,17 @@
             <div class="filter-option-group" ng-repeat="category in categories">
                 <p class="filter-option-group-label">{{ category.label | titleCase }} Data</p>
                 <ul class="unstyled filter-options">
-                    <li ng-repeat="subcategory in category.subcategories" ng-click="toggleSubcategory(subcategory.key)">
+                    <li ng-repeat="subcategory in category.subcategories" ng-click="toggleSubcategory(subcategory.key)" ng-hide="subcategory.count === 0" >
                         <i ng-class="{'icon-check': isSelectedSubcategory(subcategory.key), 
                             'icon-check-empty': !isSelectedSubcategory(subcategory.key) }"></i>{{ subcategory.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ subcategory.count }}</strong>
 
                             <ul class="unstyled sub-filter-options" ng-if="showSubCategories(subcategory.subsubcategories)">
-                                <li ng-repeat="subsubcategory in subcategory.subsubcategories" ng-click="toggleSubcategory(subsubcategory.key)">
-                                    <i ng-class="{'icon-check': isSelectedSubcategory(subsubcategory.key), 
-                                        'icon-check-empty': !isSelectedSubcategory(subsubcategory.key) }"></i>{{ subsubcategory.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ subsubcategory.count }}</strong>
+                                <li ng-repeat="subsubcategory in subcategory.subsubcategories"  
+                                    ng-hide="subsubcategory.count === 0" 
+                                    ng-click="toggleSubcategory(subsubcategory.key)"
+                                    >
+
+                                    <i ng-class="{'icon-check': isSelectedSubcategory(subsubcategory.key), 'icon-check-empty': !isSelectedSubcategory(subsubcategory.key) }"></i>{{ subsubcategory.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ subsubcategory.count }}</strong>
                                 </li>
                             </ul>
                     </li>
@@ -91,7 +94,7 @@
         <div collapse="isIssuesCollapsed" id="tags-filter" class="filter-group-container">
 
             <ul class="unstyled filter-options">
-                <li ng-repeat="issue in issues" ng-click="toggleIssue(issue.key)">
+                <li ng-repeat="issue in issues" ng-click="toggleIssue(issue.key)" ng-hide="issue.count === 0">
                     <i ng-class="{'icon-check': isSelectedIssue(issue.key), 
                         'icon-check-empty': !isSelectedIssue(issue.key)}"></i>{{ issue.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ issue.count }}</strong>
                 </li>
@@ -111,7 +114,7 @@
         <div collapse="isFormatsCollapsed" id="formats-filter" class="filter-group-container">
 
                 <ul class="unstyled filter-options">
-                    <li ng-repeat="format in formats" ng-click="toggleFormat(format.key)">
+                    <li ng-repeat="format in formats" ng-click="toggleFormat(format.key)" ng-hide="format.count === 0">
                         <i ng-class="{'icon-check': isSelectedFormat(format.key),
                             'icon-check-empty': !isSelectedFormat(format.key) }"></i>{{ format.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ format.count }}</strong>
                     </li>
@@ -130,7 +133,7 @@
         <div collapse="isSourcesCollapsed" id="sourcess-filter" class="filter-group-container">
 
                 <ul class="unstyled filter-options">
-                    <li ng-repeat="source in sources" ng-click="toggleSource(source.key)">
+                    <li ng-repeat="source in sources" ng-click="toggleSource(source.key)" ng-hide="source.count === 0">
                         <i ng-class="{'icon-check': isSelectedSource(source.key),
                             'icon-check-empty': !isSelectedSource(source.key) }"></i>{{ source.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ source.count }}</strong>
                     </li>

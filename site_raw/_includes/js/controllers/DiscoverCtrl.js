@@ -76,6 +76,11 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 		$scope.browseAll = true;
 	};
 
+	$scope.countFilter = function(val, index){
+		debugger
+		return (val.count > 0);
+	};
+
 	$scope.checkFiltersAreActive = function (filterVals) {
 		return (filterVals && (filterVals.text 
 							   || filterVals.latLng 
