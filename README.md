@@ -31,4 +31,5 @@ To get this ready for production run the following:
     jekyll build
     grunt
 
+
 This should then compile all the JS into one file, then minify it -> going from ~1.2M of JS to 340K
