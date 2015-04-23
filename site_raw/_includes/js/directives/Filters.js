@@ -67,7 +67,9 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     scope.isLocationCollapsed = true;
                     scope.isCategoryCollapsed = true;
                     scope.isIssuesCollapsed = true;
+                    scope.isFormatsCollapsed = true;
                     scope.isSourcesCollapsed = true;
+
                     scope.mobileMode = browserSize.isPhoneSize();
                     scope.showingMobileFiltersModal = false;
 
@@ -132,8 +134,11 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             scope.categories = collection.categories;
                             collection = scope.parseCollection('Issue', newVal);
                             scope.issues = collection.categories;
-                            collection = scope.parseSites(newVal);
+                            collection = scope.parseFacetCounts(newVal);
                             scope.sources = collection.sources;
+                            collection = scope.parseFacetCounts(newVal, 'dataAccessType_ss');
+                            scope.formats = collection.sources;
+
                         } else {
                             scope.categories = null;
                             scope.issues = null;
@@ -237,6 +242,14 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             }
 
                             pathArray = val.split('|');
+                            
+                            // Ignore facets with more than 4 layers.
+                            // The UI doesn't filter this deep and they mess up the counts.
+                            if (pathArray.length > 4) {
+                                return;
+                            };
+
+                            
                             var collectionName = pathArray[0],
                                 categoryName = pathArray[1],
                                 subcategoryName = pathArray[2];
@@ -286,14 +299,17 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         return !_.isEmpty(subsubcategories);
                     };
 
-                    scope.parseSites = function(facetCounts) {
+                    scope.parseFacetCounts = function(facetCounts, facetName) {
+                        if (facetName === undefined){
+                            facetName = 'sys.src.site.name_s';
+                        }
                         var sources = {};
 
-                        if (!_.has(facetCounts.facet_fields, 'sys.src.site.name_s')) {
+                        if (!_.has(facetCounts.facet_fields, facetName)) {
                             return null;
                         }
 
-                        _.each(facetCounts.facet_fields['sys.src.site.name_s'], function (val, _ssIndex, list) {
+                        _.each(facetCounts.facet_fields[facetName], function (val, _ssIndex, list) {
                             if (typeof val === 'number') {
                                 return;
                             }
@@ -324,7 +340,9 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             cats = scope.filteredCategories,
                             issues = scope.filteredIssues,
                             sources = scope.filteredSources,
+                            formats = scope.filteredFormats,
                             f;
+
 
                         // Text
                         if (txt && typeof txt === 'string' && txt.length > 0) {
@@ -354,6 +372,13 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             $location.search('i', issues.join('~'));
                         } else {
                             $location.search('i', null);
+                        }
+
+                        // Formats
+                        if (formats && _.isArray(formats) && formats.length > 0) {
+                            $location.search('f', formats.join('~'));
+                        } else {
+                            $location.search('f', null);
                         }
 
                         // Sources
@@ -508,12 +533,35 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         if (scope.isSelectedSubcategory(key))  {
                             // Unselect
                             scope.filteredCategories = _.reject(scope.filteredCategories, function (val) {
-                                return val === key;
+                                return val.indexOf(key) > -1;
                             });
                         } else {
                             // Select
                             scope.filteredCategories = scope.filteredCategories || [];
                             scope.filteredCategories.push(key);
+                        }
+                        scope.skipCollapse = true;
+                        scope.updateUrlQueryString();
+                    };
+
+                    scope.toggleSubSubcategory = function (key, parentKey) {
+                        if (scope.isSelectedSubcategory(key))  {
+                            // Unselect
+                            scope.filteredCategories = _.reject(scope.filteredCategories, function (val) {
+                                return val === key;
+                            });
+                        } else {
+                            // Select
+                            scope.filteredCategories = scope.filteredCategories || [];
+                            if (_.indexOf(scope.filteredCategories, parentKey) < 0){
+                                scope.filteredCategories.push(parentKey);
+                            }
+                            if (_.indexOf(scope.filteredCategories, key) < 0){
+                                scope.filteredCategories.push(key);
+                            }
+
+                            
+
                         }
                         scope.skipCollapse = true;
                         scope.updateUrlQueryString();
@@ -585,6 +633,54 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         scope.skipCollapse = true
                         scope.updateUrlQueryString();
                     }                    
+
+
+                    //
+                    //  F o r m a t  F i l t e r
+                    //
+
+                    /**
+                     * Take a query string list delimited by '~' and set the
+                     * filteredSources object used for the UI.
+                     * @param {string} c List delimited by '~'
+                     */
+                    scope.setFilteredFormats = function (sources) {
+                        // Break up listing into array.
+                        scope.filteredFormats = sources ? sources.split('~') : null;
+                    };
+
+                    scope.isSelectedFormat = function (key) {
+                        return _.contains(scope.filteredFormats, key);
+                    };
+
+                    scope.toggleFormat = function (key) {
+                        if (scope.isSelectedFormat(key))  {
+                            // Unselect
+                            scope.filteredFormats = _.reject(scope.filteredFormats, function (val) {
+                                return val === key;
+                            });
+                        } else {
+                            // Select
+                            scope.filteredFormats = scope.filteredFormats || [];
+                            scope.filteredFormats.push(key);
+                        }
+                        scope.skipCollapse = true
+                        scope.updateUrlQueryString();
+                    };
+
+                    scope.selectAllFormats = function () {
+                        scope.filteredFormats = scope.filteredFormats || [];
+
+                        // Select all sources
+                        _.each(scope.sources, function (source) {
+                            if (!scope.isSelectedFormat(source.key)) {
+                                scope.filteredFormats.push(source.key);
+                            }
+                        });
+
+                        scope.skipCollapse = true
+                        scope.updateUrlQueryString();
+                    }
 
                     //
                     //  S o u r c e   F i l t e r
@@ -659,10 +755,9 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         });
                         
                         scope.setFilteredCategories($location.search().c);
-
                         scope.setFilteredIssues($location.search().i);
-
                         scope.setFilteredSources($location.search().s);
+                        scope.setFilteredFormats($location.search().f);
 
                         if (scope.skipCollapse) {
                             // Query string was updated via user interaction such that we 
@@ -673,6 +768,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             scope.isLocationCollapsed = (scope.filteredLocation == null);
                             scope.isCategoryCollapsed = (scope.filteredCategories == null);
                             scope.isIssuesCollapsed = (scope.filteredIssues == null);
+
                         }
                     };
 
