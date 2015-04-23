@@ -31379,6 +31379,14 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             }
 
                             pathArray = val.split('|');
+                            
+                            // Ignore facets with more than 4 layers.
+                            // The UI doesn't filter this deep and they mess up the counts.
+                            if (pathArray.length > 4) {
+                                return;
+                            };
+
+                            
                             var collectionName = pathArray[0],
                                 categoryName = pathArray[1],
                                 subcategoryName = pathArray[2];
@@ -31662,12 +31670,35 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         if (scope.isSelectedSubcategory(key))  {
                             // Unselect
                             scope.filteredCategories = _.reject(scope.filteredCategories, function (val) {
-                                return val === key;
+                                return val.indexOf(key) > -1;
                             });
                         } else {
                             // Select
                             scope.filteredCategories = scope.filteredCategories || [];
                             scope.filteredCategories.push(key);
+                        }
+                        scope.skipCollapse = true;
+                        scope.updateUrlQueryString();
+                    };
+
+                    scope.toggleSubSubcategory = function (key, parentKey) {
+                        if (scope.isSelectedSubcategory(key))  {
+                            // Unselect
+                            scope.filteredCategories = _.reject(scope.filteredCategories, function (val) {
+                                return val === key;
+                            });
+                        } else {
+                            // Select
+                            scope.filteredCategories = scope.filteredCategories || [];
+                            if (_.indexOf(scope.filteredCategories, parentKey) < 0){
+                                scope.filteredCategories.push(parentKey);
+                            }
+                            if (_.indexOf(scope.filteredCategories, key) < 0){
+                                scope.filteredCategories.push(key);
+                            }
+
+                            
+
                         }
                         scope.skipCollapse = true;
                         scope.updateUrlQueryString();
@@ -33859,7 +33890,6 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	};
 
 	$scope.countFilter = function(val, index){
-		debugger
 		return (val.count > 0);
 	};
 

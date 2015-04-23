@@ -77,7 +77,6 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	};
 
 	$scope.countFilter = function(val, index){
-		debugger
 		return (val.count > 0);
 	};
 

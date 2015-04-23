@@ -7856,7 +7856,8 @@ ul.filter-options li:hover {
   cursor: pointer;
   color: #005580;
 }
-ul.filter-options li > i {
+ul.filter-options li > i,
+span > i {
   margin-right: 18px;
 }
 ul.sub-filter-options {
@@ -8206,9 +8207,9 @@ p.results-summary strong {
     font-size: 12px;
   }
   /*.home-item-cntr.welcome p.big {
-      font-size: 18px;
-      line-height: 38px;
-    }*/
+    font-size: 18px;
+    line-height: 38px;
+  }*/
   .packery-container .home-item.home-item-smaller {
     height: 140px;
   }

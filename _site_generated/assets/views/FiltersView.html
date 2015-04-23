@@ -63,19 +63,22 @@
             <div class="filter-option-group" ng-repeat="category in categories">
                 <p class="filter-option-group-label">{{ category.label | titleCase }} Data</p>
                 <ul class="unstyled filter-options">
-                    <li ng-repeat="subcategory in category.subcategories" ng-click="toggleSubcategory(subcategory.key)" ng-hide="subcategory.count === 0" >
+                    <li ng-repeat="subcategory in category.subcategories" 
+                        
+                        ng-hide="subcategory.count === 0" >
+                        <span ng-click="toggleSubcategory(subcategory.key)">
                         <i ng-class="{'icon-check': isSelectedSubcategory(subcategory.key), 
                             'icon-check-empty': !isSelectedSubcategory(subcategory.key) }"></i>{{ subcategory.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ subcategory.count }}</strong>
+                        </span>
+                        <ul class="unstyled sub-filter-options" ng-if="showSubCategories(subcategory.subsubcategories)">
+                            <li ng-repeat="subsubcategory in subcategory.subsubcategories"  
+                                ng-hide="subsubcategory.count === 0" 
+                                ng-click="toggleSubSubcategory(subsubcategory.key, subcategory.key)"
+                                >
 
-                            <ul class="unstyled sub-filter-options" ng-if="showSubCategories(subcategory.subsubcategories)">
-                                <li ng-repeat="subsubcategory in subcategory.subsubcategories"  
-                                    ng-hide="subsubcategory.count === 0" 
-                                    ng-click="toggleSubcategory(subsubcategory.key)"
-                                    >
-
-                                    <i ng-class="{'icon-check': isSelectedSubcategory(subsubcategory.key), 'icon-check-empty': !isSelectedSubcategory(subsubcategory.key) }"></i>{{ subsubcategory.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ subsubcategory.count }}</strong>
-                                </li>
-                            </ul>
+                                <i ng-class="{'icon-check': isSelectedSubcategory(subsubcategory.key), 'icon-check-empty': !isSelectedSubcategory(subsubcategory.key) }"></i>{{ subsubcategory.label | titleCase }}&nbsp;&nbsp;&nbsp;<strong>{{ subsubcategory.count }}</strong>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
