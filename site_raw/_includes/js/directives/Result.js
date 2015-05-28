@@ -101,7 +101,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                     label: 'ESRI REST',
                     tooltip: "ArcGIS Server Web Service"
                 },
-                open: {
+				website: {
                     label: 'Open',
                     tooltip: "Go to web page with more information"
                 }
