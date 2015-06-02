@@ -19,7 +19,8 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
 
             scope.marinePlannerUrl = '';
 
-            scope.geoportalUrl = "http://wcga-vm01.sdsc.edu";
+            //scope.geoportalUrl = "http://wcga-vm01.sdsc.edu";
+            scope.geoportalUrl = "http://wcga.sdsc.edu";
 
             scope.metadata = {
                 datePublished: '',

@@ -30609,8 +30609,8 @@ angular.module('wcodpApp').filter('titleCase', function() {
 
 angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http, $location) {
 
-    //var solrUrl = '/solr/collection1/select?';
-    var solrUrl = 'http://wcga-vm01.sdsc.edu/solr/collection1/select?';
+    var solrUrl = '/solr/collection1/select?';
+    //var solrUrl = 'http://wcga-vm01.sdsc.edu/solr/collection1/select?';
     function getTextFromUrl() {
         var txt = $location.search().text;
         return (txt) ? txt : "";
@@ -32119,7 +32119,8 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
 
             scope.marinePlannerUrl = '';
 
-            scope.geoportalUrl = "http://wcga-vm01.sdsc.edu";
+            //scope.geoportalUrl = "http://wcga-vm01.sdsc.edu";
+            scope.geoportalUrl = "http://wcga.sdsc.edu";
 
             scope.metadata = {
                 datePublished: '',
