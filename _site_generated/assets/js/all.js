@@ -30989,38 +30989,41 @@ angular.module('wcodpApp').factory('metadata', [function() {
             fgdc: "metadata > idinfo > citation > citeinfo > pubdate",
             // fgdc: "metadata > idinfo > timeperd > timeinfo > sngdate > caldate",
             iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:date > gmd\\:CI_Date > gmd\\:date > gco\\:DateTime, identificationInfo > MD_DataIdentification > citation > CI_Citation > date > CI_Date > date > DateTime",
-	    isoii: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:date > gmd\\:CI_Date > gmd\\:date > gco\\:Date, identificationInfo > MD_DataIdentification > citation > CI_Citation > date > CI_Date > gdate > Date"
+            //Note that for selector below, matching on 'gmd\\:' namespace within pseudoselectors 'has' and 'contains' was not returning a result, dropping this match in these places but leaving elsewhere worked for some reason
+            isoii: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:date > gmd\\:CI_Date:has(dateType:has(CI_DateTypeCode:contains('publication'))) > gmd\\:date > gco\\:Date, identificationInfo > MD_DataIdentification > citation > CI_Citation > date > CI_Date:has(dateType:has(CI_DateTypeCode:contains('publication'))) > gdate > Date",
+            //Original iso2 selector left as secondary
+            isoii2: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:date > gmd\\:CI_Date > gmd\\:date > gco\\:Date, identificationInfo > MD_DataIdentification > citation > CI_Citation > date > CI_Date > gdate > Date"
         },
         creator: {
             cd: "rdf\\:RDF > rdf\\:Description > dc\\:creator",
             fgdc: "metadata > idinfo > citation > citeinfo > origin",
             iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:pointOfContact > gmd\\:CI_ResponsibleParty > gmd\\:organisationName > gco\\:CharacterString, identificationInfo > MD_DataIdentification > pointOfContact > CI_ResponsibleParty > organisationName > CharacterString",
-	    isoii: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:citedResponsibleParty > gmd\\:CI_ResponsibleParty > gmd\\:organisationName > gco\\:CharacterString, identificationInfo > MD_DataIdentification > gcitation > CI_Citation > citedResponsibleParty > CI_ResponsibleParty > organisationName > CharacterString"
+            isoii: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:citedResponsibleParty > gmd\\:CI_ResponsibleParty > gmd\\:organisationName > gco\\:CharacterString, identificationInfo > MD_DataIdentification > gcitation > CI_Citation > citedResponsibleParty > CI_ResponsibleParty > organisationName > CharacterString"
         },
         publisher: {
             cd: "",
             fgdc: "metadata > distinfo > distrib > cntinfo > cntorgp > cntorg",
             //fgdc: "metadata > idinfo > citation > citeinfo > pubinfo > publish",
             iso: "gmd\\:contact > gmd\\:CI_ResponsibleParty > gmd\\:organisationName > gco\\:CharacterString, contact > CI_ResponsibleParty > organisationName > CharacterString",
-	    isoii: "gmd\\:contact > gmd\\:CI_ResponsibleParty > gmd\\:organisationName > gco\\:CharacterString, contact > CI_ResponsibleParty > organisationName > CharacterString"
+            isoii: "gmd\\:contact > gmd\\:CI_ResponsibleParty > gmd\\:organisationName > gco\\:CharacterString, contact > CI_ResponsibleParty > organisationName > CharacterString"
         },
         contactName: {
             cd: "",
             fgdc: "metadata > idinfo > ptcontac > cntinfo > cntorgp > cntper",
             iso: "gmd\\:MD_Metadata > gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:pointOfContact > gmd\\:CI_ResponsibleParty > gmd\\:individualName > gco\\:CharacterString, MI_Metadata > identificationInfo > MD_DataIdentification > pointOfContact > CI_ResponsibleParty > individualName > CharacterString",
-	    isoii: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:citedResponsibleParty > gmd\\:CI_ResponsibleParty > gmd\\:individualName, identificationInfo > MD_DataIdentification > citation > CI_Citation > citedResponsibleParty > CI_ResponsibleParty > individualName"
+            isoii: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:citedResponsibleParty > gmd\\:CI_ResponsibleParty > gmd\\:individualName, identificationInfo > MD_DataIdentification > citation > CI_Citation > citedResponsibleParty > CI_ResponsibleParty > individualName"
 		},
         contactEmail: {
             cd: "",
             fgdc: "metadata > idinfo > ptcontac > cntinfo > cntemail",
             iso: "gmd\\:contactInfo > gmd\\:CI_Contact > gmd\\:address > gmd\\:CI_Address > gmd\\:electronicMailAddress > gco\\:CharacterString, contactInfo > CI_Contact > address > CI_Address > electronicMailAddress > CharacterString",
-	    isoii: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:citedResponsibleParty > gmd\\:CI_ResponsibleParty > gmd\\:contactInfo > gmd\\:CI_Contact > gmd\\:address > gmd\\:CI_Address > gmd\\:electronicMailAddress > gco\\:CharacterString, identificationInfo > MD_DataIdentification > citation > CI_Citation > citedResponsibleParty > CI_ResponsibleParty > gmd\\:contactInfo > CI_Contact > address > CI_Address > electronicMailAddress > CharacterString"
+            isoii: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:citedResponsibleParty > gmd\\:CI_ResponsibleParty > gmd\\:contactInfo > gmd\\:CI_Contact > gmd\\:address > gmd\\:CI_Address > gmd\\:electronicMailAddress > gco\\:CharacterString, identificationInfo > MD_DataIdentification > citation > CI_Citation > citedResponsibleParty > CI_ResponsibleParty > gmd\\:contactInfo > CI_Contact > address > CI_Address > electronicMailAddress > CharacterString"
         },
         constraints: {
             cd: "rdf\\:RDF > rdf\\:Description > dct\\:abstract > rdf\\:value[rdf\\:resource='mxd.subject']",
             fgdc: "metadata > idinfo > useconst",
             iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:resourceConstraints > gmd\\:MD_LegalConstraints > gmd\\:otherConstraints > gco\\:CharacterString, identificationInfo > MD_DataIdentification > resourceConstraints > MD_LegalConstraints > otherConstraints > CharacterString",
-	    isoii: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:resourceConstraints > gmd\\:MD_LegalConstraints > gmd\\:useLimitation > gco\\:CharacterString, identificationInfo > MD_DataIdentification > resourceConstraints > MD_LegalConstraints > useLimitation > CharacterString"
+            isoii: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:resourceConstraints > gmd\\:MD_LegalConstraints > gmd\\:useLimitation > gco\\:CharacterString, identificationInfo > MD_DataIdentification > resourceConstraints > MD_LegalConstraints > useLimitation > CharacterString"
         }
     };
 
@@ -32120,7 +32123,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             scope.marinePlannerUrl = '';
 
             //scope.geoportalUrl = "http://wcga-vm01.sdsc.edu";
-            scope.geoportalUrl = "http://wcga.sdsc.edu";
+            scope.geoportalUrl = "http://wcgardf.sdsc.edu";
 
             scope.metadata = {
                 datePublished: '',
