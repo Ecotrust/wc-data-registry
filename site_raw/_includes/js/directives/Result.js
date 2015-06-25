@@ -22,6 +22,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             // This is the staing URL
             scope.geoportalUrl = "http://wcga-vm01.sdsc.edu";
             
+            
             // This is the prodiction URL
             //scope.geoportalUrl = "http://wcgardf.sdsc.edu";
 
