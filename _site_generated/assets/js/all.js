@@ -32143,7 +32143,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                     tooltip: "File Transfer Protocol"
                 },
                 html: {
-                    label: 'HTML',
+                    label: 'OPEN',
                     tooltip: "Web Page or Styled Metadata"
                 },
                 img: {
@@ -32151,11 +32151,11 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                     img: "Image File"
                 },
                 kml: {
-                    label: 'KML',
+                    label: 'OGC KML',
                     tooltip: "Google Earth KML File"
                 },
                 kmz: {
-                    label: 'KMZ',
+                    label: 'OGC KMZ',
                     tooltip: "Google Earth KML File"
                 },
                 pdf: {
@@ -32179,15 +32179,15 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                     tooltip: "Text Document"
                 },
                 wcs: {
-                    label: 'WCS',
+                    label: 'OGC WCS',
                     tooltip: "OGC Web Coverage Service"
                 },
                 wfs: {
-                    label: 'WFS',
+                    label: 'OGC WFS',
                     tooltip: "OGC Web Feature Service"
                 },
                 wms: {
-                    label: 'WMS',
+                    label: 'OGC WMS',
                     tooltip: "OGC Web Mapping Service"
                 },
                 xls: {
