@@ -10,7 +10,7 @@ angular.module('wcodpApp').factory('metadata', [function() {
             fgdc: "metadata > idinfo > citation > citeinfo > pubdate",
             // fgdc: "metadata > idinfo > timeperd > timeinfo > sngdate > caldate",
             iso: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:date > gmd\\:CI_Date > gmd\\:date > gco\\:DateTime, identificationInfo > MD_DataIdentification > citation > CI_Citation > date > CI_Date > date > DateTime",
-            //Note that for selector below, matching on 'gmd\\:' namespace within pseudoselectors 'has' and 'contains' was not returning a result, dropping this match in these places but leaving elsewhere worked for some reason
+            //Note that for selector below, matching on 'gmd\\:' namespace within pseudoselectors 'has' and 'contains' was not returning a result, dropping this match in these places but leaving elsewhere worked for some reason.
             isoii: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:date > gmd\\:CI_Date:has(dateType:has(CI_DateTypeCode:contains('publication'))) > gmd\\:date > gco\\:Date, identificationInfo > MD_DataIdentification > citation > CI_Citation > date > CI_Date:has(dateType:has(CI_DateTypeCode:contains('publication'))) > gdate > Date",
             //Original iso2 selector left as secondary
             isoii2: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:date > gmd\\:CI_Date > gmd\\:date > gco\\:Date, identificationInfo > MD_DataIdentification > citation > CI_Citation > date > CI_Date > gdate > Date"
