@@ -31019,8 +31019,9 @@ angular.module('wcodpApp').factory('metadata', [function() {
         contactEmail: {
             cd: "",
             fgdc: "metadata > idinfo > ptcontac > cntinfo > cntemail",
-            iso: "gmd\\:contactInfo > gmd\\:CI_Contact > gmd\\:address > gmd\\:CI_Address > gmd\\:electronicMailAddress > gco\\:CharacterString, contactInfo > CI_Contact > address > CI_Address > electronicMailAddress > CharacterString",
-            isoii: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:citedResponsibleParty > gmd\\:CI_ResponsibleParty > gmd\\:contactInfo > gmd\\:CI_Contact > gmd\\:address > gmd\\:CI_Address > gmd\\:electronicMailAddress > gco\\:CharacterString, identificationInfo > MD_DataIdentification > citation > CI_Citation > citedResponsibleParty > CI_ResponsibleParty > gmd\\:contactInfo > CI_Contact > address > CI_Address > electronicMailAddress > CharacterString"
+            //this isoii selector purposefully put before the iso selector to prevent false positive matches on the iso selector
+            isoii: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:citedResponsibleParty > gmd\\:CI_ResponsibleParty > gmd\\:contactInfo > gmd\\:CI_Contact > gmd\\:address > gmd\\:CI_Address > gmd\\:electronicMailAddress > gco\\:CharacterString, identificationInfo > MD_DataIdentification > citation > CI_Citation > citedResponsibleParty > CI_ResponsibleParty > gmd\\:contactInfo > CI_Contact > address > CI_Address > electronicMailAddress > CharacterString",
+            iso: "gmd\\:contactInfo > gmd\\:CI_Contact > gmd\\:address > gmd\\:CI_Address > gmd\\:electronicMailAddress > gco\\:CharacterString, contactInfo > CI_Contact > address > CI_Address > electronicMailAddress > CharacterString"            
         },
         constraints: {
             cd: "rdf\\:RDF > rdf\\:Description > dct\\:abstract > rdf\\:value[rdf\\:resource='mxd.subject']",
