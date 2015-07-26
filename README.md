@@ -17,7 +17,7 @@ Install Grunt
     sudo npm install -g grunt-cli
     sudo npm install grunt-contrib-uglify --save-dev
 
-Clone this repository. 
+Clone this repository using your git client of choice.
 
 Then install the dependencies via bower. From the root repository directory:
 
@@ -34,6 +34,8 @@ To change the URL that the app connects to for Geoportal change scope.geoportalU
 To change the URL that the app connects to for SOLR change solrUrl in:
 
     site_raw/_includes/js/services/Solr.js
+
+If you need to change either of those URLs to a different domain than this application is being served from (for testing purposes) you will want to temporarily allow cross-domain AJAX requests using a CORS plugin such as the "Allow-Control-Allow-Origin" extension for Chrome
 
 To get this ready for production run the following:
     jekyll build
