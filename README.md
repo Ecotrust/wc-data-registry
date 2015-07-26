@@ -27,10 +27,17 @@ And run the Jekyll server such that it auto compiles any code updates:
 
     jekyll serve --watch
 
+To change the URL that the app connects to for Geoportal change scope.geoportalUrl in:
+
+    site_raw/_includes/js/directives/Results.js
+
+To change the URL that the app connects to for SOLR change solrUrl in:
+
+    site_raw/_includes/js/services/Solr.js
+
 To get this ready for production run the following:
     jekyll build
     grunt
-
 
 This should then compile all the JS into one file, then minify it -> going from ~1.2M of JS to 340K
 
