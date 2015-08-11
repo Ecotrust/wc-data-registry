@@ -28,7 +28,9 @@
     "leaflet": "0.6.4",
     "angular-leaflet": "0.6.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "angular-mocks": "1.2.0-rc.1"
+  },
   "resolutions": {
     "angular": "1.2.0-rc.1"
   }
