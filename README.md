@@ -14,6 +14,7 @@ Install Jekyll:
     gem install jekyll
     
 Install Grunt
+
     sudo npm install -g grunt-cli
     sudo npm install grunt-contrib-uglify --save-dev
 
