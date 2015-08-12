@@ -95,14 +95,15 @@ angular.module('wcodpApp').factory('metadata', [function() {
                 selectors: "metadata > idinfo > ptcontac > cntinfo > cntemail",
                 formatter: "first"
             },
-            iso: {
-                selectors: "gmd\\:contactInfo > gmd\\:CI_Contact > gmd\\:address > gmd\\:CI_Address > gmd\\:electronicMailAddress > gco\\:CharacterString, contactInfo > CI_Contact > address > CI_Address > electronicMailAddress > CharacterString",
-                formatter: "first"
-            },
+            //this isoii selector purposefully put before the iso selector to prevent false positive matches on the iso selector
             isoii: {
                 selectors: "gmd\\:identificationInfo > gmd\\:MD_DataIdentification > gmd\\:citation > gmd\\:CI_Citation > gmd\\:citedResponsibleParty > gmd\\:CI_ResponsibleParty > gmd\\:contactInfo > gmd\\:CI_Contact > gmd\\:address > gmd\\:CI_Address > gmd\\:electronicMailAddress > gco\\:CharacterString, identificationInfo > MD_DataIdentification > citation > CI_Citation > citedResponsibleParty > CI_ResponsibleParty > gmd\\:contactInfo > CI_Contact > address > CI_Address > electronicMailAddress > CharacterString",
                 formatter: "first"
-            }
+            },            
+            iso: {
+                selectors: "gmd\\:contactInfo > gmd\\:CI_Contact > gmd\\:address > gmd\\:CI_Address > gmd\\:electronicMailAddress > gco\\:CharacterString, contactInfo > CI_Contact > address > CI_Address > electronicMailAddress > CharacterString",
+                formatter: "first"
+            }                
         },
         constraints: {
             cd: {
