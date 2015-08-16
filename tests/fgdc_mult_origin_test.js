@@ -10,13 +10,6 @@ describe("FGDC Multiple Origin Test", function (service) {
     service = $injector.get('metadata');
   }));
 
-  describe('get date published', function () {
-    it("should return valid date published", inject(function () {            
-      var value = service.get('datePublished',doc);
-      expect(value).toEqual('201309');
-    }))
-  })
-
   describe('get creator', function () {
     it("should return valid creator", inject(function () {            
       var value = service.get('creator',doc);
@@ -24,31 +17,4 @@ describe("FGDC Multiple Origin Test", function (service) {
     }))
   })
 
-  describe('get publisher', function () {
-    it("should return valid publisher", inject(function () {            
-      var value = service.get('publisher',doc);
-      expect(value).toEqual('National Fish Habitat Partnership Science and Data Committee');
-    }))
-  })
-
-  describe('get contact name', function () {
-    it("should return valid name", inject(function () {            
-      var value = service.get('contactName',doc);
-      expect(value).toEqual(null);
-    }))
-  })
-
-  describe('get contact email', function () {
-    it("should return valid email", inject(function () {            
-      var value = service.get('contactEmail',doc);
-      expect(value).toEqual('VHare@psmfc.org');
-    }))
-  })  
-
-  describe('get constraints', function () {
-    it("should return valid constraint", inject(function () {            
-      var value = service.get('constraints',doc);
-      expect(value).toEqual('No use constraints are associated with this data.');
-    }))
-  })
 });

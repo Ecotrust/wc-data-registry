@@ -1,5 +1,4 @@
-//Tests an FGDC doc that returns an empty string as the first contactEmail.  Should skip and go to the second value
-describe("FGDC Creator Test", function (service) {
+describe("FGDC empty string as first contactEmail", function (service) {
   beforeEach(function(){
       module('wcodpApp');
   });
@@ -11,45 +10,10 @@ describe("FGDC Creator Test", function (service) {
     service = $injector.get('metadata');
   }));
 
-  describe('get date published', function () {
-    it("should return valid date published", inject(function () {            
-      var value = service.get('datePublished',doc);
-      expect(value).toEqual('20060210');
-    }))
-  })
-
-  describe('get creator', function () {
-    it("should return valid creator", inject(function () {            
-      var value = service.get('creator',doc);
-      expect(value).toEqual('Bureau of Ocean Energy Management, Mapping and Boundary Branch');
-    }))
-  })
-
-  describe('get publisher', function () {
-    it("should return valid publisher", inject(function () {            
-      var value = service.get('publisher',doc);
-      expect(value).toEqual('Bureau of Ocean Energy Management, Mapping and Boundary Branch');
-    }))
-  })
-
-  describe('get contact name', function () {
-    it("should return valid name", inject(function () {            
-      var value = service.get('contactName',doc);
-      expect(value).toEqual('Branch Chief, Mapping and Boundary Branch');
-    }))
-  })
-
   describe('get contact email', function () {
     it("should return valid email", inject(function () {            
       var value = service.get('contactEmail',doc);
       expect(value).toEqual('mapping.boundary.branch@BOEM.gov');
     }))
   })  
-
-  describe('get constraints', function () {
-    it("should return valid constraint", inject(function () {            
-      var value = service.get('constraints',doc);
-      expect(value).toEqual('The data was developed within the U.S. Government; no proprietary rights may be attached to them nor may they be sold to the U.S. Government as part of any procurement of ADP products or services.');
-    }))
-  })
 });
