@@ -1,8 +1,8 @@
 
 angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http, $location) {
 
-    // This is a relive URL and will work when served from staging or prduction servers.
-    var solrUrl = '/solr/collection1/select?';
+    // This is a relive URL and will work when served from staging or production servers.
+    var solrUrl = '/usr/local/apps/solr/collection1/select?';
 
     // This is an absolute URL
     //var solrUrl = 'http://wcga-vm01.sdsc.edu/solr/collection1/select?';

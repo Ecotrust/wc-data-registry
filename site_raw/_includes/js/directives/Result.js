@@ -23,7 +23,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             //scope.geoportalUrl = "http://wcga-vm01.sdsc.edu";
             
             // This is the prodiction URL
-            scope.geoportalUrl = "http://wcgardf.sdsc.edu";
+            scope.geoportalUrl = "http://portal.westcoastoceans.org";
 
             scope.metadata = {
                 datePublished: '',
