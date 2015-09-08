@@ -20,9 +20,30 @@ module.exports = function(grunt) {
           ext: '.css'
         }]
       }
-    }
+    },
+    karma: {  
+      unit: {
+        options: {
+          frameworks: ['jasmine'],
+          singleRun: false,
+          browsers: ['Chrome'],
+          files: [
+            'site_raw/_includes/bower_components/jquery/jquery.js',
+            'site_raw/_includes/bower_components/underscore/underscore.js',
+            'site_raw/_includes/bower_components/angular/angular.js',
+            'site_raw/_includes/bower_components/angular-mocks/angular-mocks.js',
+            'tests/conf/test_setup.js',
+            'site_raw/_includes/js/services/Metadata.js',
+            'tests/*.js'
+          ]
+        }
+      }
+    }    
   });
+
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-karma');
   grunt.registerTask('default', ['uglify', 'cssmin']);
+  grunt.registerTask('test', ['karma']);
 }

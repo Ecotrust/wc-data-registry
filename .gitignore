@@ -1,6 +1,12 @@
 _site/*
 site_raw/_includes/bower_components/*
 
+#Ignore node_modules except what is already in repo
+node_modules/*
+!node_modules/grunt
+!node_modules/grunt-contrib-cssmin
+!node_modules/grunt-contrib-uglify
+
 Thumbs.db
 .DS_Store
 

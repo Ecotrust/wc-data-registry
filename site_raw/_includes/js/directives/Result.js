@@ -19,7 +19,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
 
             scope.marinePlannerUrl = '';
 
-            // This is the staing URL
+            // This is the staging URL
             //scope.geoportalUrl = "http://wcga-vm01.sdsc.edu";
             
             // This is the prodiction URL
