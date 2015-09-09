@@ -30613,7 +30613,7 @@ angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http
     //var solrUrl = '/solr/collection1/select?';
 
     // This is an absolute URL
-    var solrUrl = 'http://207.141.116.162/solr/collection1/select?';
+    var solrUrl = 'http://portal.westcoastoceans.org/solr/collection1/select?';
     function getTextFromUrl() {
         var txt = $location.search().text;
         return (txt) ? txt : "";
@@ -32237,8 +32237,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             // This is the staging URL
             //scope.geoportalUrl = "http://wcga-vm01.sdsc.edu";
             
-            
-            // This is the production URL
+            // This is the prodiction URL
             scope.geoportalUrl = "http://portal.westcoastoceans.org";
 
             scope.metadata = {
