@@ -32237,8 +32237,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             // This is the staging URL
             //scope.geoportalUrl = "http://wcga-vm01.sdsc.edu";
             
-            
-            // This is the production URL
+            // This is the prodiction URL
             scope.geoportalUrl = "http://portal.westcoastoceans.org";
 
             scope.metadata = {
