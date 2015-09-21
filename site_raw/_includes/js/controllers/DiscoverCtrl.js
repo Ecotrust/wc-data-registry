@@ -5,7 +5,7 @@ angular.module('wcodpApp').controller('DiscoverCtrl', ['$scope', '$http', '$loca
 	$scope.startIndex = 0;
 	$scope.pageIndex = 1;
 	$scope.pageIndexWatchInitialized = false;
-	$scope.resultsPerPage = 5;
+	$scope.resultsPerPage = 10;
 	$scope.resultsPerPageWatchInitialized = false;
 	$scope.queryStringWatchInitialized = false;
 	$scope.filtersAreActive = false;

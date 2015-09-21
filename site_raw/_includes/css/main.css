@@ -1,6 +1,9 @@
 .uppercase {
   text-transform: uppercase;
 }
+.margin-top-1 {
+  margin-top: 10px;
+}
 @font-face {
   font-family: 'OpenSans';
   src: url('../fonts/OpenSans/OpenSans-LightItalic-webfont.eot');
