@@ -157,12 +157,15 @@ angular.module('wcodpApp').factory('metadata', [function() {
 
     //Return the text value of the first match
     function _getFirstVal(elements) {        
-        var val = $(elements[0]).text();
-        if (val) {
-            return $.trim(val);
-        } else {
-            return null;
-        }
+        var val = null;
+        elements.each(function () {
+            val = $(this).text();
+            if (val) {
+                val = $.trim(val);
+            }
+            return; 
+        });
+        return val;
     }
     
     //Return a combined list of all matches, separated by semicolon
@@ -170,7 +173,11 @@ angular.module('wcodpApp').factory('metadata', [function() {
         var val = elements.map(function() {
             return $(this).text();
         }).toArray().join("; ");
-        return val;
+        if (val) {
+            return val;
+        } else {
+            return null;
+        }
     }
 
     return {

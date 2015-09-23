@@ -1,6 +1,9 @@
 .uppercase {
   text-transform: uppercase;
 }
+.margin-top-1 {
+  margin-top: 10px;
+}
 @font-face {
   font-family: 'OpenSans';
   src: url('../fonts/OpenSans/OpenSans-LightItalic-webfont.eot');
@@ -493,12 +496,12 @@ a.filter-group-toggle:first-of-type {
   display: inline;
 }
 .filter-option-group-label {
-  font-size: 16px;
+  font-size: 17px;
 }
 ul.filter-options {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
-ul.filter-options li {
+ul.filter-options > li {
   margin-top: 13px;
   font-family: OpenSans, sans-serif;
   font-size: 16px;
@@ -513,7 +516,9 @@ span > i {
   margin-right: 18px;
 }
 ul.sub-filter-options {
+  margin-top: 8px;
   margin-left: 33px;
+  font-size: 13px;
 }
 #location-filter {
   padding-left: 0;
@@ -701,14 +706,14 @@ p.results-summary strong {
 }
 .result-closed:hover,
 .result-opened {
-  background-color: rgba(0, 112, 207, 0.050000000000000044);
+  background-color: rgba(0, 112, 207, 0.05);
 }
 .result-closed:hover,
 .result-title:hover {
   cursor: pointer;
 }
 .result-opened {
-  background-color: rgba(0, 112, 207, 0.050000000000000044);
+  background-color: rgba(0, 112, 207, 0.05);
   border-top: none;
   margin-left: 0;
   margin-right: -20px;

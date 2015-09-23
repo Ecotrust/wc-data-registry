@@ -1,5 +1,32 @@
 module.exports = function(grunt) {
   grunt.initConfig({
+
+    //Compile LESS files
+    less: {
+      compile: {
+        options: {
+          // These paths are searched when trying to resolve @import in less file
+          paths: [
+            'site_raw/_includes/less'
+          ]
+        },
+        files: {
+          'site_raw/_includes/css/main.css': 'site_raw/_includes/less/main.less'
+        }
+      }
+    },
+
+    //Watch LESS files and recompile on change
+    watch: {
+      styles: {
+        files: [
+          'site_raw/_includes/less/*'
+        ],
+        tasks: 'less'
+      }
+    },
+
+    //Compress Javascript files
     uglify: {
       my_target: {
         files: [{
@@ -10,6 +37,8 @@ module.exports = function(grunt) {
         }]
       }
     },
+
+    //Compress CSS files
     cssmin: {
       my_target: {
         files: [{
@@ -21,6 +50,8 @@ module.exports = function(grunt) {
         }]
       }
     },
+
+    //Run test suite
     karma: {  
       unit: {
         options: {
@@ -38,12 +69,15 @@ module.exports = function(grunt) {
           ]
         }
       }
-    }    
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
-  grunt.registerTask('default', ['uglify', 'cssmin']);
+  grunt.registerTask('styles', ['less','watch']);
+  grunt.registerTask('compress', ['uglify', 'cssmin']);
   grunt.registerTask('test', ['karma']);
 }
