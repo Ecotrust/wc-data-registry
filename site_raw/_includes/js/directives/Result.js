@@ -20,7 +20,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             scope.marinePlannerUrl = '';
 
             // This is the staging URL
-            scope.geoportalUrl = "http://207.141.161.172";
+            scope.geoportalUrl = "http://207.141.116.172";
             
             // This is the production URL
             //scope.geoportalUrl = "http://portal.westcoastoceans.org";
