@@ -35,8 +35,8 @@
 			<span class="dropdown">
 				<a class="subdued dropdown-toggle" href="javascript:void(0)">SHOW <i class="icon-angle-down"></i></a>
 				<ul style="left:-120px" class="dropdown-menu">
-					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 5">5 per page</a></li>
-					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 15">15 per page</a></li>
+					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 10">10 per page</a></li>
+					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 20">20 per page</a></li>
 					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 50">50 per page</a></li>
 				</ul>
 			</span>
@@ -62,8 +62,54 @@
 		</div>
 	</div>
 
+	<div class="result-controls controls-bottom clearfix">
+		<div class="pull-right" ng-show="numPages() > 0">
+
+			<!-- P A G I N A T I O N -->	
+			<span class="pagination" ng-show="numPages() > 1">
+				<span>PAGE</span>
+
+				<a href="javascript:void(0)" 
+					class="subdued" 
+					ng-show="numPages() > maxPagesListed && pageIndex > 1" 
+					ng-click="pageIndex = pageIndex - 1">
+					&laquo;
+				</a>
+				
+				<a href="javascript:void(0)" 
+					class="subdued" 
+					ng-repeat="pi in pageIndexes()" 
+					ng-class="{active: isCurrentPage(pi)}"
+					ng-click="setPageIndex(pi)">
+					{{pi}}
+				</a>
+
+				<a href="javascript:void(0)" 
+					class="subdued" 
+					ng-show="numPages() > maxPagesListed && pageIndex < numPages()" 
+					ng-click="pageIndex = pageIndex + 1">
+					&raquo;
+				</a>
+			</span>
+
+			<!-- R O W S   P E R   P A G E  -->	
+			<span class="dropdown">
+				<a class="subdued dropdown-toggle" href="javascript:void(0)">SHOW <i class="icon-angle-down"></i></a>
+				<ul style="left:-120px" class="dropdown-menu">
+					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 10">10 per page</a></li>
+					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 20">20 per page</a></li>
+					<li><a href="javascript:void(0)" ng-click="resultsPerPage = 50">50 per page</a></li>
+				</ul>
+			</span>
+			<!--<span>
+				<a class="subdued" href="">ORDER BY <i class="icon-angle-down"></i></a>
+			</span>-->
+		</div>
+	</div>
+
 	<div class="results-end subdued pull-right" ng-show="showingLastPage()">
 		END
 	</div>
+
 
 </div>
