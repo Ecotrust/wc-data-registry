@@ -23,7 +23,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             scope.geoportalUrl = "/geoportal/rest/document";
             
             // This is the URL for dev use only
-            //scope.geoportalUrl = "http://portal.westcoastoceans.org";
+            //scope.geoportalUrl = "http://portal.westcoastoceans.org/geoportal/rest/document";
 
             scope.metadata = {
                 datePublished: '',
