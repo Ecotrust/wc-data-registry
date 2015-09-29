@@ -20,9 +20,9 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             scope.marinePlannerUrl = '';
 
             // This is the staging URL
-            scope.geoportalUrl = "http://207.141.116.172";
+            scope.geoportalUrl = "/geoportal/rest/document";
             
-            // This is the production URL
+            // This is the URL for dev use only
             //scope.geoportalUrl = "http://portal.westcoastoceans.org";
 
             scope.metadata = {
@@ -207,7 +207,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
             };
 
             scope.metadataXmlUrl = function () {
-                return scope.geoportalUrl + '/geoportal/rest/document?id=' + scope.resultData['sys.sync.foreign.id_s'];
+                return scope.geoportalUrl + '?id=' + scope.resultData['sys.sync.foreign.id_s'];
             };
 
             scope.jsonUrl = function () {
