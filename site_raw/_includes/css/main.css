@@ -964,7 +964,7 @@ p.results-summary strong {
 }
 @media (max-width: 767px) {
   .image-item {
-    margin-left: 0px;
+    margin-left: 10px;
     margin-top: 10px;
   }
 }
@@ -1001,7 +1001,7 @@ p.InformNumbers--footnote {
   display: block;
 }
 .MpLinkBlock--title {
-  padding-bottom: 10px;
+  padding-bottom: 0px;
   color: #332e1f;
 }
 .MpLinkBlock--caption {
