@@ -60,6 +60,11 @@ The following Jekyll command will compile the source code from site_raw into _si
 ```
 jekyll serve
 ```
+__NOTE__ if you have a version of Jekyll newer than v.2.5.3, (and you encounter errors), you can run an earlier version of Jekyll like this:
+
+```
+jekyll _2.5.3_ serve
+```
 
 You should now be able to view the home page in your browser at http://127.0.0.1:4000
 
