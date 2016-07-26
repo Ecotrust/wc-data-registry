@@ -5,7 +5,7 @@ links: ["discover", "connect", "inform", "visualize", "about"]
 
 name: West Coast Ocean Data Portal
 markdown: redcarpet
-pygments: true
+highlighter: pygments
 
 prose:
     siteurl: "http://portal.westcoastoceans.org/"
