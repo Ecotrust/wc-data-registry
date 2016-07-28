@@ -41,7 +41,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     angular.extend(scope, {
                         mapOptions: {
                             maxZoom: 8,
-                            tileLayer: 'http://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}.png',
+                            tileLayer: 'https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}.png',
                             
                             tileLayerOptions: {
                                 attribution: '',

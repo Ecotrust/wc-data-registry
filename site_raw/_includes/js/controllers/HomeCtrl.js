@@ -29,7 +29,11 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window',
 		},
 		options: {
 	        maxZoom: 8,
+<<<<<<< HEAD
 	        tileLayer: 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png',
+=======
+	        tileLayer: 'https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}.png',
+>>>>>>> 2fd68c4... Switch to National Geographic maps.
 	        tileLayerOptions: {
 	            attribution: '',
 	            subdomains: '1234'
