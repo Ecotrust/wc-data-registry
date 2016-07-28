@@ -29,7 +29,7 @@ angular.module('wcodpApp').controller('HomeCtrl', ['$scope', '$http', '$window',
 		},
 		options: {
 	        maxZoom: 8,
-	        tileLayer: 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png',
+	        tileLayer: 'http://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}.png',
 	        tileLayerOptions: {
 	            attribution: '',
 	            subdomains: '1234'
