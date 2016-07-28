@@ -182,7 +182,7 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                         keyboard: false
                     }).fitBounds(bbox);
 
-                    L.tileLayer('http://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}.png', {
+                    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}.png', {
                         attribution: '',
                         subdomains: '1234'
                     }).addTo(scope.map);
