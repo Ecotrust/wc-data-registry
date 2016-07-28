@@ -182,11 +182,8 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
                         keyboard: false
                     }).fitBounds(bbox);
 
-<<<<<<< HEAD
-                    L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
-=======
                     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}.png', {
->>>>>>> 2fd68c4... Switch to National Geographic maps.
+
                         attribution: '',
                         subdomains: '1234'
                     }).addTo(scope.map);
