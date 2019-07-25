@@ -2,10 +2,11 @@
 angular.module('wcodpApp').factory('solr', ['$http', '$location', function($http, $location) {
 
     // This is a relive URL and will work when served from staging or production servers.
-    var solrUrl = '/solr/collection1/select?';
+    var solrUrl = '/solr/collection129/select?';
 
     // This is an absolute URL for local dev server
-    //var solrUrl = 'http://portal.westcoastoceans.org/solr/collection1/select?';
+    // var solrUrl = 'http://207.141.116.172/solr/collection129/select?';   // dev server
+    //var solrUrl = 'http://portal.westcoastoceans.org/solr/collection129/select?';  // production server
     function getTextFromUrl() {
         var txt = $location.search().text;
         return (txt) ? txt : "";
