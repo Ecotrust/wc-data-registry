@@ -19,11 +19,11 @@ angular.module('wcodpApp').directive('result', ['$http', '$location', 'metadata'
 
             scope.marinePlannerUrl = '';
 
-            // This is the staging URL
-            scope.geoportalUrl = "/geoportal/rest/document";
+            // Relative URL
+            scope.geoportalUrl = "/geoportal129/rest/document";
             
-            // This is the URL for dev use only
-            //scope.geoportalUrl = "http://portal.westcoastoceans.org/geoportal/rest/document";
+            // This is the absolute URL for dev use only
+            //scope.geoportalUrl = "http://portal.westcoastoceans.org/geoportal129/rest/document";
 
             scope.metadata = {
                 datePublished: '',
