@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" xmlns:ng="http://angularjs.org" id="ng-app" class="ng-app:wcodpApp" ng-app="wcodpApp">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>West Coast Ocean Data Portal | Discover</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="/assets/css/all.css?v=0.4">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" href="/assets/css/ie8.css">
+    <![endif]-->
+    <!--[if lt IE 8]>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+      <link rel="stylesheet" href="/assets/css/ie7.css">
+    <![endif]-->
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    <![endif]-->
+
+<div class="container" id="discover" ng-controller="DiscoverCtrl">
+
+	<div class="row">
+
+		<div filters
+			id="filters"
+			class="span4"
+			facets="facets"
+			showing-mobile-filters-modal="showingMobileFiltersModal">
+		</div>
+
+		<div ng-show="(filtersAreActive || browseAll) && !showingMobileFiltersModal">
+			<div results-list
+				data="resultsData"
+				num-found="numFound"
+				page-index="pageIndex"
+				results-per-page="resultsPerPage"
+				class="span8"
+				id="results-list">
+			</div>
+		</div>
+
+		<div ng-hide="filtersAreActive || showingMobileFiltersModal || browseAll"
+			ng-animate="'animate'"
+			class="span8"
+			id="discover-landing">
+			<p>
+				Welcome to the West Coast Ocean Data Portal. There are <span ng-cloak class="highlight">{{ recordCount }}</span> registered resources available to discover.
+			</p>
+			<p>
+				Use the filtering tools provided to browse. You can filter by any combination of <i class="icon-search"></i> keyword, <i class="icon-map-marker"></i> location, <i class="icon-th"></i> category and <i class="icon-tags"></i> issue.
+			</p>
+
+                        <a ng-click="searchAll()" id="discover-browse-all">Browse All Resources<img style="margin-left: 10px;" src="/assets/img/icons/welcome_caret.png"></a>
+
+			<!-- <p>
+				Search the resources by entering your own terms into the search bar <i class="icon-search"></i> or by using the filtering tools provided to browse. You can filter by any combination of <i class="icon-map-marker"></i> location, <i class="icon-th"></i> category and <i class="icon-tags"></i> issue.
+			</p> -->
+		</div>
+
+	</div>
+</div>
+
+
+
+    <div class="footer container">
+	<div class="row">
+		<div class="span12">
+			<a href="mailto:portal.westcoastoceans@sccwrp.org">Feedback? email: PORTAL.WESTCOASTOCEANS@SCCWRP.ORG</a>
+			<span class="pull-right"><a class="subdued" href="/connect">API ACCESS</a></span>
+		</div>
+	</div>
+</div>
+
+    <!--[if lt IE 9]>
+      <script src="/assets/js/ie8.js"></script>
+    <![endif]-->
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+    <script src="/assets/js/all.js?v=0.4"></script>
+
+    <script>
+      var _gaq=[['_setAccount','UA-40820108-2'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src='//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script>
+  </body>
+</html>
