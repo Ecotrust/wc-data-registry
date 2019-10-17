@@ -19,7 +19,7 @@
 						<li>
 						{% endif %}
 							{% if link == 'visualize' %}
-							<a target="_blank" href="http://maps.westcoastoceans.org/visualize">{{ link }}</a>
+							<a target="_blank" href="https://maps.westcoastoceans.org/visualize">{{ link }}</a>
 							{% else %}
 							<a href="/{{ link }}">{{ link }}</a>
 							{% endif %}
@@ -40,7 +40,7 @@
 				{% endif %}
 						<a href="/">home</a>
 					</li>
-				
+
 				{% for link in site.links %}
 					{% if link == page.active %}
 					<li class="active {{ link }}">
@@ -50,7 +50,7 @@
 						<a href="/{{ link }}">{{ link }}</a>
 					</li>
 				{% endfor %}
-			</ul>				
+			</ul>
 		</div>
 
 	</div>

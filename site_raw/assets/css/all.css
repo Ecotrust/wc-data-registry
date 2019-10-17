@@ -1,8 +1,9 @@
 ---
 ---
 {% include css/thirdparty/bootstrap/bootstrap.css %}
+{% include css/thirdparty/leaflet/leaflet.css %}
 {% include css/main.css %}
- 
+
 .lt-ie9 .result:hover,
 .lt-ie9 .result-opened {
 	background-color: #f2f7fc;
@@ -12,4 +13,3 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#0C0070CF,endColorstr=#0C0070CF);
   zoom: 1;*/
 }
-

@@ -31,7 +31,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
         },
         compile: function compile(tElement, tAttrs, transclude) {
             return {
-                pre: function preLink(scope, element, attrs, controller) { 
+                pre: function preLink(scope, element, attrs, controller) {
                     // Some prelink setup is necessary for the location filter.
                     angular.extend(scope, {
                         center: angular.copy(defaultCenter),
@@ -42,28 +42,28 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                         mapOptions: {
                             maxZoom: 8,
                             tileLayer: 'https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}.png',
-                            
+
                             tileLayerOptions: {
                                 attribution: '',
                                 subdomains: '1234'
                             },
                             icon: {
-                                url: 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-icon.png',
-                                retinaUrl: 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-icon@2x.png',
+                                url: 'https://unpkg.com/leaflet@0.5.1/dist/images/marker-icon.png',
+                                retinaUrl: 'https://unpkg.com/leaflet@0.5.1/dist/images/marker-icon@2x.png',
                                 size: [25, 41],
                                 anchor: [12, 40],
                                 popup: [0, -40],
                                 shadow: {
-                                    url: 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-shadow.png',
-                                    retinaUrl: 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-shadow.png',
+                                    url: 'https://unpkg.com/leaflet@0.5.1/dist/images/marker-shadow.png',
+                                    retinaUrl: 'https://unpkg.com/leaflet@0.5.1/dist/images/marker-shadow.png',
                                     size: [41, 41],
                                     anchor: [12, 40]
                                 }
                             }
                         }
-                    });                    
+                    });
                 },
-                post: function postLink(scope, element, attrs, controller) { 
+                post: function postLink(scope, element, attrs, controller) {
 
                     scope.isLocationCollapsed = true;
                     scope.isCategoryCollapsed = true;
@@ -81,14 +81,14 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
 
                         scope.syncUiWithQueryString();
 
-                        // Run initial query only if values were provided in 
+                        // Run initial query only if values were provided in
                         // the query string.
                         queryNeeded = _.isString(scope.searchText) && scope.searchText.length > 0;
                         queryNeeded = queryNeeded || scope.filteredLocation !== null;
                         if (queryNeeded) {
                             scope.updateUrlQueryString(false);
                         }
-                    
+
                         browserSize.watchBrowserWidth(function () {
                             scope.$apply(function () {
                                 scope.mobileMode = browserSize.isPhoneSize();
@@ -107,13 +107,13 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                                     viewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
                                 }
                             } catch (e) {
-                                // The browser being used doesn't have querySelector. 
-                                // But that's fine. This is targeted at mobile 
+                                // The browser being used doesn't have querySelector.
+                                // But that's fine. This is targeted at mobile
                                 // devices. Mobile devices have querySelector.
                             }
                         });
 
-                        // For now, relying on jquery for desaturating 
+                        // For now, relying on jquery for desaturating
                         // non-hovered filter groups.
                         $('.filter-group-toggle, .filter-group-container').hover(function (event) {
                             $('.filter-group-toggle, .filter-group-container').addClass('desaturated');
@@ -144,7 +144,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             scope.categories = null;
                             scope.issues = null;
                             scope.sources = null;
-                        }                        
+                        }
                     };
 
                     scope.watchFacets = function () {
@@ -152,33 +152,33 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             scope.updateFacets(scope.facets);
 
                             if ($location.search().ctop) {
-                                // This only happens if somebody hits a link that should 
+                                // This only happens if somebody hits a link that should
                                 // select an entire category. For instance, the blocks on
                                 // the homepage.
                                 scope.selectEntireCategory($location.search().ctop, true);
                                 $location.search('ctop', null).replace();
-                            }                            
+                            }
                         }
                         scope.$watch('facets', function (newVal) {
                             scope.updateFacets(newVal);
                             if (newVal) {
                                 if ($location.search().ctop) {
-                                    // This only happens if somebody hits a link that should 
+                                    // This only happens if somebody hits a link that should
                                     // select an entire category. For instance, the blocks on
                                     // the homepage.
                                     scope.selectEntireCategory($location.search().ctop, true);
                                     $location.search('ctop', null).replace();
-                                }                                
+                                }
                             }
                         });
                     };
 
                     /**
-                     * Parse collections from Solr JSON (via Esri customization) into 
+                     * Parse collections from Solr JSON (via Esri customization) into
                      * filter sets.
                      * @param  {string} name        The key for the collection to be parsed (e.g., category, issue)
                      * @param  {object} facetCounts The facet_counts object from a Solr query result. An example of
-                     * what this JSON looks like: 
+                     * what this JSON looks like:
                      * {
                      *   facet_fields: {
                      *     sys.src.collections_txt: [
@@ -214,7 +214,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                      *          1
                      *      ]
                      *    }
-                     * } 
+                     * }
                      * @return {object}    An object tailored for the filter UI.
                      */
                     scope.parseCollection = function (name, facetCounts) {
@@ -224,17 +224,17 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             count,
                             index,
                             categories = {},
-                            isMultiTiered = false; 
+                            isMultiTiered = false;
 
                         if (! (_.has(facetCounts.facet_fields, 'sys.src.collections_ss') &&
                             _.has(facetCounts.facet_fields, 'sys.src.collections_txt'))) {
                             return null;
                         }
-                            
+
                         words = facetCounts.facet_fields['sys.src.collections_txt'];
                         paths = facetCounts.facet_fields['sys.src.collections_ss'];
 
-                        // Build data structure. 
+                        // Build data structure.
                         _.each(paths, function (val, _ssIndex, list) {
                             var pathArray,
                             _txtIndex;
@@ -243,14 +243,14 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             }
 
                             pathArray = val.split('|');
-                            
+
                             // Ignore facets with more than 4 layers.
                             // The UI doesn't filter this deep and they mess up the counts.
                             if (pathArray.length > 4) {
                                 return;
                             };
 
-                            
+
                             var collectionName = pathArray[0],
                                 categoryName = pathArray[1],
                                 subcategoryName = pathArray[2];
@@ -291,7 +291,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
 
                             }
                         });
-                        
+
                         return { 'isMultiTiered': isMultiTiered, 'categories': categories}
 
                     };
@@ -314,7 +314,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             if (typeof val === 'number') {
                                 return;
                             }
-                           
+
                             if (!_.has(sources, val)) {
                                 sources[val] = {
                                     key: val,
@@ -331,8 +331,8 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                      * Udates query string in URL with values from the filter
                      * controls. Other components can watch the query string
                      * for changes.
-                     * @param  {boolean} forceNewQuery Increments a 
-                     * querystring variable to force a new query. Not used 
+                     * @param  {boolean} forceNewQuery Increments a
+                     * querystring variable to force a new query. Not used
                      * anymore but leaving this in incase it is needed.
                      */
                     scope.updateUrlQueryString = function (forceNewQuery) {
@@ -417,7 +417,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             $timeout.cancel(scope.runningTimeout);
                             scope.runningTimeout = false;
                         }
-                        scope.runningTimeout = $timeout(function() { 
+                        scope.runningTimeout = $timeout(function() {
                             scope.skipCollapse = true
                             scope.updateUrlQueryString();
                         }, 300);
@@ -441,11 +441,11 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                             }
 
                             // Set map center.
-                            scope.center = { 
+                            scope.center = {
                                 lat: latlng.lat,
                                 lng: latlng.lng,
-                                zoom: scope.center.zoom 
-                            }; 
+                                zoom: scope.center.zoom
+                            };
 
                             // Set marker to center.
                             scope.markers.mainMarker = {
@@ -459,7 +459,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
 
                             // Set value used for query.
                             scope.filteredLocation = angular.copy(latlng);
-                        
+
                         } else {
                             // Clear value used for queries.
                             scope.filteredLocation = null;
@@ -470,19 +470,19 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
 
                     scope.$on('leafletDirectiveMap.click', function(event, args){
                         // Location filter map was clicked. But avoid acting
-                        // on double clicks (otherwise map can end up 
+                        // on double clicks (otherwise map can end up
                         // bouncing infinitely between two center points).
                         if (scope.clickTimerRunning) {
-                        
-                            // This is a multi click. Cancel acting on a 
+
+                            // This is a multi click. Cancel acting on a
                             // single click.
                             $timeout.cancel(scope.clickTimerRunning);
                             scope.clickTimerRunning = null;
-                        
+
                         } else {
 
                             // This is the first click.
-                            scope.clickTimerRunning = $timeout(function() { 
+                            scope.clickTimerRunning = $timeout(function() {
                                 scope.clickTimerRunning = null;
                                 // Act on single click.
                                 if (args && args.leafletEvent && args.leafletEvent.latlng) {
@@ -561,7 +561,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                                 scope.filteredCategories.push(key);
                             }
 
-                            
+
 
                         }
                         scope.skipCollapse = true;
@@ -633,7 +633,7 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
 
                         scope.skipCollapse = true
                         scope.updateUrlQueryString();
-                    }                    
+                    }
 
 
                     //
@@ -749,19 +749,19 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
 
                     scope.syncUiWithQueryString = function () {
                         scope.searchText = $location.search().text;
-                        
+
                         scope.setFilterLocation({
                             lat: $location.search().lat,
                             lng: $location.search().lng
                         });
-                        
+
                         scope.setFilteredCategories($location.search().c);
                         scope.setFilteredIssues($location.search().i);
                         scope.setFilteredSources($location.search().s);
                         scope.setFilteredFormats($location.search().f);
 
                         if (scope.skipCollapse) {
-                            // Query string was updated via user interaction such that we 
+                            // Query string was updated via user interaction such that we
                             // don't want to adjust which filters are expanded / collapsed
                             // but next time we might want to.
                             scope.skipCollapse = false;
@@ -774,9 +774,9 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
                     };
 
                     scope.manualSubmit = function () {
-                        
+
                         $timeout(function () {
-                            // Was experiencing an infinite loop once in 
+                            // Was experiencing an infinite loop once in
                             // a while on submit. Trying this in a timeout.
                             // Haven't seen it happen again yet.
 
@@ -784,8 +784,8 @@ angular.module('wcodpApp').directive('filters', ['$timeout', '$location', 'brows
 
                             // Hide mobile filters modal.
                             scope.showingMobileFiltersModal = false;
-                            
-                            // Remove focus from search text box 
+
+                            // Remove focus from search text box
                             // (mobile keyboard stays open otherwise)
                             $('#search-filter input').blur();
 

@@ -4,8 +4,8 @@ angular.module('wcodpApp').factory('marinePlanner', ['$http', '$location', funct
     var _availableLayers = [],
         _slugPlaceholder = '{layerSlug}',
         _isProduction = $location.host().indexOf('westcoastoceans.org') > -1,
-        _mpProdUrl = 'http://maps.westcoastoceans.org',
-        _mpStagingUrl = 'http://maps.westcoastoceans.org',
+        _mpProdUrl = 'https://maps.westcoastoceans.org',
+        _mpStagingUrl = 'https://maps.westcoastoceans.org',
         _mpUrl = _isProduction ? _mpProdUrl : _mpStagingUrl,
         _availableLayersEndpoint = _mpUrl + '/data_manager/geoportal_ids?callback=JSON_CALLBACK',
         _layerUrlPattern = _mpUrl + '/visualize/#' + _slugPlaceholder;
@@ -21,13 +21,13 @@ angular.module('wcodpApp').factory('marinePlanner', ['$http', '$location', funct
         } else {
             // Grab list of visualizable layers from mp.
             $http.jsonp(_availableLayersEndpoint).success(function (data) {
-                // 'data' should be a collection of objects, each containing 
+                // 'data' should be a collection of objects, each containing
                 // an id and a slug.
-                
-                // Cache result so we don't always have to fetch the list 
+
+                // Cache result so we don't always have to fetch the list
                 // from marine planner.
                 _availableLayers = data;
-                
+
                 //
                 // For testing purposes comment the above line adn replace with this:
                 //
@@ -40,23 +40,23 @@ angular.module('wcodpApp').factory('marinePlanner', ['$http', '$location', funct
                 //         }
                 //     ]
                 // };
-                // 
-                
+                //
+
                 // Satisfy the current request.
                 callback(_availableLayers);
 
             }).error(function (data, status, headers, config) {
-                if (console) { console.log('Error getting available layers list from marine planner.'); }  
+                if (console) { console.log('Error getting available layers list from marine planner.'); }
             });
         }
     }
 
 
     /**
-     *  Searches the contents of a list for an entry with a matching 
-     *  uuid and returns the slug variable of that entry. An example 
+     *  Searches the contents of a list for an entry with a matching
+     *  uuid and returns the slug variable of that entry. An example
      *  of the data structure is as follows
-     * 
+     *
      *  [
      *      {
      *          uuid: "sample-geoportal-uuid",
@@ -81,7 +81,7 @@ angular.module('wcodpApp').factory('marinePlanner', ['$http', '$location', funct
 
         /**
          * An asynchronous call to get a url, if any exists, from a Marine Planner
-         * end point that currently sits at: 
+         * end point that currently sits at:
          * http://maps.westcoastoceans.org/data_manager/geoportal_ids
          */
         getMarinePlannerUrl: function (uuid, success_callback, error_callback) {

@@ -9,19 +9,19 @@ leafletDirective.directive('leaflet', [
         doubleClickZoom: true,
         scrollWheelZoom: true,
         zoomControl: true,
-        tileLayer: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        tileLayer: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         tileLayerOptions: {
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         },
         icon: {
-            url: 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-icon.png',
-            retinaUrl: 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-icon@2x.png',
+            url: 'https://unpkg.com/leaflet@0.5.1/dist/images/marker-icon.png',
+            retinaUrl: 'https://unpkg.com/leaflet@0.5.1/dist/images/marker-icon@2x.png',
             size: [25, 41],
             anchor: [12, 40],
             popup: [0, -40],
             shadow: {
-                url: 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-shadow.png',
-                retinaUrl: 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-shadow.png',
+                url: 'https://unpkg.com/leaflet@0.5.1/dist/images/marker-shadow.png',
+                retinaUrl: 'https://unpkg.com/leaflet@0.5.1/dist/images/marker-shadow.png',
                 size: [41, 41],
                 anchor: [12, 40]
             }
@@ -319,7 +319,7 @@ leafletDirective.directive('leaflet', [
               }
             }
 
-            
+
             //Event setup watches for callbacks set in the parent scope
 			//$scope.events = {
 			//	dblclick: function(){
@@ -329,7 +329,7 @@ leafletDirective.directive('leaflet', [
 			//    // doThis()
 			//	}
 			//};
-             
+
 
             function setupMapEventCallbacks() {
                 if (typeof($scope.events) !== 'object') {
@@ -1363,7 +1363,7 @@ leafletDirective.directive('leaflet', [
             }
 
             function showZoomControls() {
-                
+
             }
         }
     };

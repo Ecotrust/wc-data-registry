@@ -33,7 +33,8 @@
 {% include js/third-party/packery.pkgd.min.js %}
 {% include js/third-party/backstretch.min.js %}
 {% include js/third-party/bootstrap-tooltip.js %}
-{% include bower_components/underscore/underscore-min.js %}
+{% include js/third-party/leaflet.js %}
+{% include js/third-party/underscore-min.js %}
 
 /*
  * End dependencies scripts
